@@ -7,6 +7,13 @@ multi-bleu.perl
 *.sublime-*
 .DS_Store
 data/
+model/
+mypredif*.txt
+nohup.out
+other_models/
+phrase-table.txt
+prediction/
+tools/codes*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
