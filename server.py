@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 from __future__ import unicode_literals
 import configargparse
+import sys
 
-from flask import Flask, jsonify, request,send_file
+from flask import Flask, jsonify, request,send_file,abort,send_from_directory
 from flask_cors import CORS
 from onmt.translate import TranslationServer, ServerModelError
 
@@ -18,6 +19,12 @@ from onmt.utils.parse import ArgumentParser
 STATUS_OK = "ok"
 STATUS_ERROR = "error"
 
+API_FILE_DIRECTORY = "src_tgt_api_files/"
+
+if not os.path.exists(API_FILE_DIRECTORY):
+    os.makedirs(os.path.join(API_FILE_DIRECTORY,'source_files/'))
+    os.makedirs(os.path.join(API_FILE_DIRECTORY,'target_files/'))
+    os.makedirs(os.path.join(API_FILE_DIRECTORY,'target_ref_files/'))
 
 def start(config_file,
           url_root="/translator",
@@ -120,6 +127,67 @@ def start(config_file,
             out['status'] = STATUS_ERROR
 
             return jsonify(out)
+
+    @app.route("/download-src")
+    def get_file():
+        """Download a file."""
+        out = {}
+        if 'type' not in request.form:
+            out['status'] = "No type found"
+            out['status_code'] = 404
+            return jsonify(out)
+        if request.form['type'] not in ['Gen','LC','GoI','TB']:
+            out['status'] = "Invalid file type of file to be downloaded !"
+            out['status_code'] = 401
+            return jsonify(out)  
+
+        try:
+            print("downloading the src %s.txt file" % request.form['type'])
+            return send_file(os.path.join(API_FILE_DIRECTORY,'source_files/', '%s.txt' % request.form['type']), as_attachment=True)
+        except:
+            out['status'] = "Something went wrong !"
+            out['status_code'] = 500
+            print("Unexpected error:", sys.exc_info()[0])
+            return jsonify(out) 
+
+    @app.route("/upload-tgt", methods=["POST"])
+    def post_file():
+        """Upload a file."""
+        print(request.files)
+        out = {}
+        # checking if the file is present or not.
+        if 'file' not in request.files:
+            out['status'] = "No file found"
+            out['status_code'] = 404
+            return jsonify(out)
+        print(request.form)    
+        if 'type' not in request.form:
+            out['status'] = "No type found"
+            out['status_code'] = 404
+            return jsonify(out)  
+        if request.form['type'] not in ['Gen','LC','GoI','TB']:
+            out['status'] = "Invalid file type of file to be uploaded !"
+            out['status_code'] = 401
+            return jsonify(out)  
+
+        try:
+            file = request.files['file']
+            tgt_file_loc = os.path.join(API_FILE_DIRECTORY,'target_files/', '%s.txt' % request.form['type'])
+            tgt_ref_file_loc = os.path.join(API_FILE_DIRECTORY,'target_ref_files/', '%s.txt' % request.form['type'])
+            file.save(tgt_file_loc)
+            os.system("python ./tools/calculatebleu.py ~/Desktop/OpenNmt-anuvada/OpenNMT-py/%s ~/Desktop/OpenNmt-anuvada/OpenNMT-py/%s" %(tgt_file_loc,tgt_ref_file_loc))
+            os.remove(tgt_file_loc)
+            print("Bleu calculated and file removed")
+            with open("bleu_out.txt") as zh:
+                out['bleu'] = zh.readlines()
+                out['status'] = STATUS_OK
+                out['status_code'] = 200
+                return jsonify(out)
+        except:
+            out['status'] = "Something went wrong !"
+            out['status_code'] = 500
+            print("Unexpected error:", sys.exc_info()[0])
+            return jsonify(out)    
 
     @app.route('/to_cpu/<int:model_id>', methods=['GET'])
     def to_cpu(model_id):
