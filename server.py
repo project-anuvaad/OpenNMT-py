@@ -29,7 +29,7 @@ if not os.path.exists(API_FILE_DIRECTORY):
 def start(config_file,
           url_root="/translator",
           host="0.0.0.0",
-          port=3000,
+          port=6000,
           debug=True):
     def prefix_route(route_function, prefix='', mask='{0}{1}'):
         def newroute(route, *args, **kwargs):
@@ -175,7 +175,7 @@ def start(config_file,
             tgt_file_loc = os.path.join(API_FILE_DIRECTORY,'target_files/', '%s.txt' % request.form['type'])
             tgt_ref_file_loc = os.path.join(API_FILE_DIRECTORY,'target_ref_files/', '%s.txt' % request.form['type'])
             file.save(tgt_file_loc)
-            os.system("python ./tools/calculatebleu.py ~/Desktop/OpenNmt-anuvada/OpenNMT-py/%s ~/Desktop/OpenNmt-anuvada/OpenNMT-py/%s" %(tgt_file_loc,tgt_ref_file_loc))
+            os.system("python ./tools/calculatebleu.py ~/OpenNmt-anuvada/OpenNMT-py/%s ~/OpenNmt-anuvada/OpenNMT-py/%s" %(tgt_file_loc,tgt_ref_file_loc))
             os.remove(tgt_file_loc)
             print("Bleu calculated and file removed")
             with open("bleu_out.txt") as zh:
@@ -214,7 +214,7 @@ def _get_parser():
         config_file_parser_class=configargparse.YAMLConfigFileParser,
         description="OpenNMT-py REST Server")
     parser.add_argument("--ip", type=str, default="0.0.0.0")
-    parser.add_argument("--port", type=int, default="3000")
+    parser.add_argument("--port", type=int, default="6000")
     parser.add_argument("--url_root", type=str, default="/translator")
     parser.add_argument("--debug", "-d", action="store_true")
     parser.add_argument("--config", "-c", type=str,

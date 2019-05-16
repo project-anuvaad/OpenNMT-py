@@ -1,18 +1,20 @@
 # repo-specific stuff
 pred.txt
-multi-bleu.perl
 *.pt
 \#*#
 .idea
 *.sublime-*
 .DS_Store
-data/
-model/
+data/*
+!data/.gitkeep
+model/*
+!model/.gitkeep
 mypredif*.txt
 nohup.out
 other_models/
 phrase-table.txt
-prediction/
+prediction/*
+!prediction/.gitkeep
 tools/codes*
 
 # Byte-compiled / optimized / DLL files
