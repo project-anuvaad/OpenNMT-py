@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 import configargparse
 import sys
+from config.config import statusCode
 
 from flask import Flask, jsonify, request,send_file,abort,send_from_directory
 from flask_cors import CORS
@@ -105,48 +106,49 @@ def start(config_file,
         return jsonify(out)
     @app.route('/translation', methods=['POST'])
     def translation():
-        print("here,this is custom made function using temporarily, Working Fine  !. Need to check above /translate")
+        print("custom made function")
         inputs = request.get_json(force=True)
         print(inputs)
         out = {}
         try:
-            with open("/home/ubuntu/test/apiInput.txt", "w") as text_file:
+            with open("~/test/apiInput.txt", "w") as text_file:
                 text_file.write(str(inputs[0]['src']))
             os.system('python ~/indic_nlp_library/src/indicnlp/tokenize/indic_tokenize.py ~/test/apiInput.txt ~/test/apiInputTok.txt hi')
-            os.system('~/OpenNMT-py/tools/apply_bpe.py -c ~/OpenNMT-py/tools/codesSrc0605.bpe < ~/test/apiInputTok.txt > ~/test/apiInputTokBpe0605.txt')
+            os.system('./tools/apply_bpe.py -c ~./tools/codesSrc0605.bpe < ~/test/apiInputTok.txt > ~/test/apiInputTokBpe0605.txt')
             os.system('python translate.py -model model/model_100105-model_step_90000.pt -src ~/test/apiInputTokBpe0605.txt -output mypredifTok.txt -replace_unk -verbose')
             os.system("sed -r 's/(@@ )|(@@ ?$)//g' mypredifTok.txt > finaltranslationEndeBpe90k0605.txt")
-            os.system("perl ~/OpenNMT-py/tools/detokenize.perl <finaltranslationEndeBpe90k0605.txt> finaltranslationEndeBpedeTok90k0605.txt -l en")
-            os.system("perl ~/OpenNMT-py/tools/detrucaser.perl  <finaltranslationEndeBpedeTok90k0605.txt>finaltranslationEndeBpedeTokdeTru90k0605.txt")
-            with open("/home/ubuntu/OpenNMT-py/finaltranslationEndeBpedeTokdeTru90k0605.txt") as zh:
+            os.system("perl ./tools/detokenize.perl <finaltranslationEndeBpe90k0605.txt> finaltranslationEndeBpedeTok90k0605.txt -l en")
+            os.system("perl ./tools/detrucaser.perl  <finaltranslationEndeBpedeTok90k0605.txt>finaltranslationEndeBpedeTokdeTru90k0605.txt")
+            with open("finaltranslationEndeBpedeTokdeTru90k0605.txt") as zh:
                 out = zh.readlines()
             #return send_file('/home/ubuntu/OpenNMT-py/mypredif.txt')
                 return jsonify(out)
         except ServerModelError as e:
-            out['error'] = str(e)
-            out['status'] = STATUS_ERROR
-
+            out = statusCode["SEVER_MODEL_ERR"]
+            out['errObj'] = str(e)
+            # out['status'] = STATUS_ERROR
             return jsonify(out)
+        except:
+            out = statusCode["SYSTEM_ERR"]
+            print("Unexpected error:", sys.exc_info()[0])
+            return jsonify(out)     
 
     @app.route("/download-src")
     def get_file():
         """Download a file."""
         out = {}
         if 'type' not in request.form:
-            out['status'] = "No type found"
-            out['status_code'] = 404
+            out = statusCode["TYPE_MISSING"]
             return jsonify(out)
         if request.form['type'] not in ['Gen','LC','GoI','TB']:
-            out['status'] = "Invalid file type of file to be downloaded !"
-            out['status_code'] = 401
+            out = statusCode["INVALID_TYPE"]
             return jsonify(out)  
 
         try:
             print("downloading the src %s.txt file" % request.form['type'])
             return send_file(os.path.join(API_FILE_DIRECTORY,'source_files/', '%s.txt' % request.form['type']), as_attachment=True)
         except:
-            out['status'] = "Something went wrong !"
-            out['status_code'] = 500
+            out = statusCode["SYSTEM_ERR"]
             print("Unexpected error:", sys.exc_info()[0])
             return jsonify(out) 
 
@@ -155,19 +157,15 @@ def start(config_file,
         """Upload a file."""
         print(request.files)
         out = {}
-        # checking if the file is present or not.
         if 'file' not in request.files:
-            out['status'] = "No file found"
-            out['status_code'] = 404
+            out = statusCode["FILE_MISSING"]
             return jsonify(out)
         print(request.form)    
         if 'type' not in request.form:
-            out['status'] = "No type found"
-            out['status_code'] = 404
+            out = statusCode["TYPE_MISSING"]
             return jsonify(out)  
         if request.form['type'] not in ['Gen','LC','GoI','TB']:
-            out['status'] = "Invalid file type of file to be uploaded !"
-            out['status_code'] = 401
+            out = statusCode["INVALID_TYPE"]
             return jsonify(out)  
 
         try:
@@ -175,17 +173,19 @@ def start(config_file,
             tgt_file_loc = os.path.join(API_FILE_DIRECTORY,'target_files/', '%s.txt' % request.form['type'])
             tgt_ref_file_loc = os.path.join(API_FILE_DIRECTORY,'target_ref_files/', '%s.txt' % request.form['type'])
             file.save(tgt_file_loc)
-            os.system("python ./tools/calculatebleu.py ~/OpenNmt-anuvada/OpenNMT-py/%s ~/OpenNmt-anuvada/OpenNMT-py/%s" %(tgt_file_loc,tgt_ref_file_loc))
+
+            if os.path.exists("bleu_out.txt"):
+               os.remove("bleu_out.txt")
+            
+            os.system("python ./tools/calculatebleu.py ./%s ./%s" %(tgt_file_loc,tgt_ref_file_loc))
             os.remove(tgt_file_loc)
             print("Bleu calculated and file removed")
             with open("bleu_out.txt") as zh:
+                out = statusCode["SUCCESS"]
                 out['bleu'] = zh.readlines()
-                out['status'] = STATUS_OK
-                out['status_code'] = 200
                 return jsonify(out)
         except:
-            out['status'] = "Something went wrong !"
-            out['status_code'] = 500
+            out = statusCode["SYSTEM_ERR"]
             print("Unexpected error:", sys.exc_info()[0])
             return jsonify(out)    
 
