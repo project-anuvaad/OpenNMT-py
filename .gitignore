@@ -16,6 +16,7 @@ phrase-table.txt
 prediction/*
 !prediction/.gitkeep
 tools/codes*
+bleu_out.txt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

@@ -178,11 +178,13 @@ def start(config_file,
             if os.path.exists("bleu_out.txt"):
                os.remove("bleu_out.txt")
             
-            os.system("python ./tools/calculatebleu.py ./%s ./%s" %(tgt_file_loc,tgt_ref_file_loc))
+            os.system("perl ./tools/multi-bleu-detok.perl ./%s < ./%s > bleu-detok.txt" %(tgt_file_loc,tgt_ref_file_loc))
+            os.system("python ./tools/calculatebleu.py ./%s ./%s" %(tgt_file_loc,tgt_ref_file_loc))            
             os.remove(tgt_file_loc)
             print("Bleu calculated and file removed")
-            with open("bleu_out.txt") as zh:
+            with open("bleu-detok.txt") as zh:
                 out = statusCode["SUCCESS"]
+                # out['bleu_for_uploaded_file'] = float(', '.join(zh.readlines()))
                 out['bleu_for_uploaded_file'] = float(', '.join(zh.readlines()))
                 out['openNMT_custom'] = bleu_results.OpenNMT_Custom
                 out['google_api'] = bleu_results.GOOGLE_API
