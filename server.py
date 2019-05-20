@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 import configargparse
 import sys
 from config.config import statusCode
+import bleu_results as bleu_results
 
 from flask import Flask, jsonify, request,send_file,abort,send_from_directory
 from flask_cors import CORS
@@ -182,7 +183,9 @@ def start(config_file,
             print("Bleu calculated and file removed")
             with open("bleu_out.txt") as zh:
                 out = statusCode["SUCCESS"]
-                out['bleu'] = zh.readlines()
+                out['bleu_for_uploaded_file'] = float(', '.join(zh.readlines()))
+                out['openNMT_custom'] = bleu_results.OpenNMT_Custom
+                out['google_api'] = bleu_results.GOOGLE_API
                 return jsonify(out)
         except:
             out = statusCode["SYSTEM_ERR"]
