@@ -31,7 +31,7 @@ if not os.path.exists(API_FILE_DIRECTORY):
 def start(config_file,
           url_root="/translator",
           host="0.0.0.0",
-          port=8088,
+          port=3003,
           debug=True):
     def prefix_route(route_function, prefix='', mask='{0}{1}'):
         def newroute(route, *args, **kwargs):
@@ -112,15 +112,15 @@ def start(config_file,
         print(inputs)
         out = {}
         try:
-            with open("~/test/apiInput.txt", "w") as text_file:
+            with open('intermediate_data/apiInput.txt', "w") as text_file:
                 text_file.write(str(inputs[0]['src']))
-            os.system('python ~/indic_nlp_library/src/indicnlp/tokenize/indic_tokenize.py ~/test/apiInput.txt ~/test/apiInputTok.txt hi')
-            os.system('./tools/apply_bpe.py -c ~./tools/codesSrc1005.bpe < ~/test/apiInputTok.txt > ~/test/apiInputTokBpe0605.txt')
-            os.system('python translate.py -model model/model_100105-model_step_90000.pt -src ~/test/apiInputTokBpe0605.txt -output mypredifTok.txt -replace_unk -verbose')
-            os.system("sed -r 's/(@@ )|(@@ ?$)//g' mypredifTok.txt > finaltranslationEndeBpe90k0605.txt")
-            os.system("perl ./tools/detokenize.perl <finaltranslationEndeBpe90k0605.txt> finaltranslationEndeBpedeTok90k0605.txt -l en")
-            os.system("perl ./tools/detrucaser.perl  <finaltranslationEndeBpedeTok90k0605.txt>finaltranslationEndeBpedeTokdeTru90k0605.txt")
-            with open("finaltranslationEndeBpedeTokdeTru90k0605.txt") as zh:
+            os.system('python ~/indic_nlp_library/src/indicnlp/tokenize/indic_tokenize.py ./intermediate_data/apiInput.txt ./intermediate_data/apiInputTok.txt hi')
+            os.system('./tools/apply_bpe.py -c ./tools/codesSrc1005.bpe < ./intermediate_data/apiInputTok.txt > ./intermediate_data/apiInputTokBpe1005.txt')
+            os.system('python translate.py -model model/model_100105-model_step_90000.pt -src ./intermediate_data/apiInputTokBpe1005.txt -output ./intermediate_data/mypredifTok.txt -replace_unk -verbose')
+            os.system("sed -r 's/(@@ )|(@@ ?$)//g' ./intermediate_data/mypredifTok.txt > ./intermediate_data/finaltranslationEndeBpe90k1005.txt")
+            os.system("perl ./tools/detokenize.perl <./intermediate_data/finaltranslationEndeBpe90k1005.txt> ./intermediate_data/finaltranslationEndeBpedeTok90k1005.txt -l en")
+            os.system("perl ./tools/detrucaser.perl  <./intermediate_data/finaltranslationEndeBpedeTok90k1005.txt> ./intermediate_data/finaltranslationEndeBpedeTokdeTru90k1005.txt")
+            with open("./intermediate_data/finaltranslationEndeBpedeTokdeTru90k1005.txt") as zh:
                 out = zh.readlines()
             #return send_file('/home/ubuntu/OpenNMT-py/mypredif.txt')
                 return jsonify(out)
@@ -221,7 +221,7 @@ def _get_parser():
         config_file_parser_class=configargparse.YAMLConfigFileParser,
         description="OpenNMT-py REST Server")
     parser.add_argument("--ip", type=str, default="0.0.0.0")
-    parser.add_argument("--port", type=int, default="8088")
+    parser.add_argument("--port", type=int, default="3003")
     parser.add_argument("--url_root", type=str, default="/translator")
     parser.add_argument("--debug", "-d", action="store_true")
     parser.add_argument("--config", "-c", type=str,

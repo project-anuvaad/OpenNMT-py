@@ -18,6 +18,8 @@ prediction/*
 tools/codes*
 bleu_out.txt
 bleu-detok.txt
+intermediate_data/*
+!intermediate_data/.gitkeep
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
