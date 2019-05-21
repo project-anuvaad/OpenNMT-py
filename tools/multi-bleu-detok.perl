@@ -177,7 +177,7 @@ $bleu = $brevity_penalty * exp((my_log( $bleu[1] ) +
 #     $length_translation / $length_reference,
 #     $length_translation,
 #     $length_reference;
-printf "%.2f", $bleu;
+printf "%.4f", $bleu;
 
 sub my_log {
   return -9999999999 unless $_[0];

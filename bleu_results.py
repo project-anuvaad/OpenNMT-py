@@ -1,7 +1,7 @@
 OpenNMT_Custom = {
   "LC": 0.20,
   "TB":0.30,
-  "Gen":0.40,
+  "Gen":0.1924,
   "GoI":0.50
 
 }
