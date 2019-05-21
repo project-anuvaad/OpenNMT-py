@@ -134,20 +134,22 @@ def start(config_file,
             print("Unexpected error:", sys.exc_info()[0])
             return jsonify(out)     
 
-    @app.route("/download-src")
+    @app.route("/download-src", methods=['GET'])
     def get_file():
         """Download a file."""
         out = {}
-        if 'type' not in request.form:
+        type = request.args.get('type')
+        print(type)
+        if  not type:
             out = statusCode["TYPE_MISSING"]
             return jsonify(out)
-        if request.form['type'] not in ['Gen','LC','GoI','TB']:
+        if type not in ['Gen','LC','GoI','TB']:
             out = statusCode["INVALID_TYPE"]
             return jsonify(out)  
 
         try:
-            print("downloading the src %s.txt file" % request.form['type'])
-            return send_file(os.path.join(API_FILE_DIRECTORY,'source_files/', '%s.txt' % request.form['type']), as_attachment=True)
+            print("downloading the src %s.txt file" % type)
+            return send_file(os.path.join(API_FILE_DIRECTORY,'source_files/', '%s.txt' % type), as_attachment=True)
         except:
             out = statusCode["SYSTEM_ERR"]
             print("Unexpected error:", sys.exc_info()[0])
