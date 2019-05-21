@@ -178,7 +178,7 @@ def start(config_file,
             if os.path.exists("bleu_out.txt"):
                os.remove("bleu_out.txt")
             
-            os.system("perl ./tools/multi-bleu-detok.perl ./%s < ./%s > bleu-detok.txt" %(tgt_file_loc,tgt_ref_file_loc))
+            os.system("perl ./tools/multi-bleu-detok.perl ./%s < ./%s > bleu-detok.txt" %(tgt_ref_file_loc,tgt_file_loc))
             os.system("python ./tools/calculatebleu.py ./%s ./%s" %(tgt_file_loc,tgt_ref_file_loc))            
             os.remove(tgt_file_loc)
             print("Bleu calculated and file removed")
