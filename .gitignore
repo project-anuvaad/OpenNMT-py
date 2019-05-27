@@ -20,6 +20,8 @@ bleu_out.txt
 bleu-detok.txt
 intermediate_data/*
 !intermediate_data/.gitkeep
+*.model
+*.vocab
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
