@@ -4,8 +4,6 @@ import configargparse
 import sys
 from config.config import statusCode
 import bleu_results as bleu_results
-import anuvada
-import tools.sp_enc_dec as sp
 
 from flask import Flask, jsonify, request,send_file,abort,send_from_directory
 from flask_cors import CORS
@@ -44,7 +42,7 @@ def start(config_file,
     CORS(app)
     app.route = prefix_route(app.route, url_root)
     translation_server = TranslationServer()
-    translation_server.start(config_file)
+   ## translation_server.start(config_file)##
 
     @app.route('/models', methods=['GET'])
     def get_models():
@@ -89,8 +87,9 @@ def start(config_file,
 
     @app.route('/translate', methods=['POST'])
     def translate():
-        ## not using
+        print("here1")
         inputs = request.get_json(force=True)
+        print(inputs)
         out = {}
         try:
             translation, scores, n_best, times = translation_server.run(inputs)
@@ -106,7 +105,6 @@ def start(config_file,
             out['status'] = STATUS_ERROR
 
         return jsonify(out)
-
     @app.route('/translation', methods=['POST'])
     def translation():
         print("custom made function")
@@ -137,7 +135,7 @@ def start(config_file,
             out = statusCode["SYSTEM_ERR"]
             print("Unexpected error:", sys.exc_info()[0])
             return jsonify(out)
-            
+     
     @app.route('/english', methods=['POST'])
     def english():
         print("custom made function")
@@ -170,98 +168,11 @@ def start(config_file,
             print("Unexpected error:", sys.exc_info()[0])
             return jsonify(out)
 
-    @app.route('/translation_sp_en', methods=['POST'])
-    def translation_sp_en():
-        inputs = request.get_json(force=True)
-        out = {}
-        try:
-            for i in inputs:
-                i['src'] = anuvada.moses_tokenizer(i['src'])
-                i['src'] = anuvada.truecaser(i['src'])
-                i['src'] = str(sp.encode_line('en-220519.model',i['src']))
-   
-            translation, scores, n_best, times = translation_server.run(inputs)
-            assert len(translation) == len(inputs)
-            assert len(scores) == len(inputs)
-            for i in range(len(translation)):
-                translation[i]= sp.decode_line('hi-220519.model',translation[i])
-                translation[i] = anuvada.indic_detokenizer(translation[i])
-
-            out = [[{"tgt": translation[i],
-                     "pred_score": scores[i]}
-                    for i in range(len(translation))]]
-        except ServerModelError as e:
-            out = statusCode["SEVER_MODEL_ERR"]
-            out['errObj'] = str(e)
-        except:
-            out = statusCode["SYSTEM_ERR"]
-            print("Unexpected error:", sys.exc_info()[0])    
-
-        return jsonify(out)        
-
-    @app.route('/translation_sp_hi', methods=['POST'])
-    def translation_sp_hi():
-        inputs = request.get_json(force=True)
-        out = {}
-        try:
-            for i in inputs:
-                i['src'] = anuvada.indic_tokenizer(i['src'])
-                i['src'] = str(sp.encode_line('hi-220519.model',i['src']))
-               
-            translation, scores, n_best, times = translation_server.run(inputs)
-            assert len(translation) == len(inputs)
-            assert len(scores) == len(inputs)
-            for i in range(len(translation)):
-                translation[i]= sp.decode_line('en-220519.model',translation[i])
-                translation[i] = anuvada.moses_detokenizer(translation[i])
-                translation[i] = anuvada.detruecaser(translation[i])
-
-            out = [[{"tgt": translation[i],
-                     "pred_score": scores[i]}
-                    for i in range(len(translation))]]
-        except ServerModelError as e:
-            out = statusCode["SEVER_MODEL_ERR"]
-            out['errObj'] = str(e)
-        except:
-            out = statusCode["SYSTEM_ERR"]
-            print("Unexpected error:", sys.exc_info()[0])   
-
-        return jsonify(out)
-
-    @app.route('/translation_subword_hi', methods=['POST'])
-    def translation_subword_hi():
-        inputs = request.get_json(force=True)
-        out = {}
-        try:
-            for i in inputs:
-                i['src'] = anuvada.indic_tokenizer(i['src'])
-                i['src'] = anuvada.apply_bpe('codesSrc1005.bpe',i['src'])
-   
-            translation, scores, n_best, times = translation_server.run(inputs)
-            assert len(translation) == len(inputs)
-            assert len(scores) == len(inputs)
-            for i in range(len(translation)):
-                translation[i] = anuvada.decode_bpe(translation[i])
-                translation[i] = anuvada.moses_detokenizer(translation[i])
-                translation[i] = anuvada.detruecaser(translation[i])
-
-            out = [[{"tgt": translation[i],
-                     "pred_score": scores[i]}
-                    for i in range(len(translation))]]
-        except ServerModelError as e:
-            out = statusCode["SEVER_MODEL_ERR"]
-            out['errObj'] = str(e)
-        except:
-            out = statusCode["SYSTEM_ERR"]
-            print("Unexpected error:", sys.exc_info()[0])    
-
-        return jsonify(out)
-     
     @app.route("/download-src", methods=['GET'])
     def get_file():
         """Download a file."""
         out = {}
-        type = request.args.get('type')
+
         print(type)
         if  not type:
             out = statusCode["TYPE_MISSING"]
