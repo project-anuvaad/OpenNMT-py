@@ -28,6 +28,18 @@ def encode_as_pieces(load_model,src_file,tgt_file):
         print("something went wrong!")
         print("Unexpected error:", sys.exc_info()[0])
         return
+
+def encode_line(load_model,line):
+    # makes segmenter instance and loads the model file (m.model)
+    try:
+        sp = spm.SentencePieceProcessor()
+        sp.load(load_model)
+        print("here, encoding line using sp")
+        return sp.encode_as_pieces(line)
+    except:
+        print("something went wrong!")
+        print("Unexpected error:", sys.exc_info()[0])
+        return
     
 
 def decode_as_pieces(load_model,src_file,tgt_file):
@@ -55,13 +67,31 @@ def decode_as_pieces(load_model,src_file,tgt_file):
     except:
         print("something went wrong!")
         print("Unexpected error:", sys.exc_info()[0])
+        return                    
+
+
+def decode_line(load_model,line):
+    # makes segmenter instance and loads the model file (m.model)
+    try:
+        print("here")
+        sp = spm.SentencePieceProcessor()
+        sp.load(load_model)
+        print("here2")
+        print(line)
+        return sp.DecodePieces(eval(line))
+    except:
+        print("something went wrong!")
+        print("Unexpected error:", sys.exc_info()[0])
         return
-    
-if sys.argv[1] == "train":
-    train_spm(sys.argv[2],sys.argv[3],sys.argv[4],sys.argv[5])
-elif sys.argv[1] == "encode":
-    encode_as_pieces(sys.argv[2],sys.argv[3],sys.argv[4])
-elif sys.argv[1] == "decode":
-    decode_as_pieces(sys.argv[2],sys.argv[3],sys.argv[4])
-else:
-    print("invalid request",sys.argv)           
+
+  
+if __name__ == '__main__':
+    if sys.argv[1] == "train":
+        train_spm(sys.argv[2],sys.argv[3],sys.argv[4],sys.argv[5])
+    elif sys.argv[1] == "encode":
+        encode_as_pieces(sys.argv[2],sys.argv[3],sys.argv[4])
+    elif sys.argv[1] == "decode":
+        decode_as_pieces(sys.argv[2],sys.argv[3],sys.argv[4])
+    else:
+        print("invalid request",sys.argv)
+           

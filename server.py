@@ -4,6 +4,8 @@ import configargparse
 import sys
 from config.config import statusCode
 import bleu_results as bleu_results
+import anuvada
+import tools.sp_enc_dec as sp
 
 from flask import Flask, jsonify, request,send_file,abort,send_from_directory
 from flask_cors import CORS
@@ -42,7 +44,7 @@ def start(config_file,
     CORS(app)
     app.route = prefix_route(app.route, url_root)
     translation_server = TranslationServer()
-   ## translation_server.start(config_file)##
+    translation_server.start(config_file)
 
     @app.route('/models', methods=['GET'])
     def get_models():
@@ -87,9 +89,8 @@ def start(config_file,
 
     @app.route('/translate', methods=['POST'])
     def translate():
-        print("here1")
+        ## not using
         inputs = request.get_json(force=True)
-        print(inputs)
         out = {}
         try:
             translation, scores, n_best, times = translation_server.run(inputs)
@@ -105,6 +106,7 @@ def start(config_file,
             out['status'] = STATUS_ERROR
 
         return jsonify(out)
+
     @app.route('/translation', methods=['POST'])
     def translation():
         print("custom made function")
@@ -115,12 +117,14 @@ def start(config_file,
             with open('intermediate_data/apiInput.txt', "w") as text_file:
                 text_file.write(str(inputs[0]['src']))
             os.system('python ~/indic_nlp_library/src/indicnlp/tokenize/indic_tokenize.py ./intermediate_data/apiInput.txt ./intermediate_data/apiInputTok.txt hi')
-            os.system('./tools/apply_bpe.py -c ./tools/codesSrc1005.bpe < ./intermediate_data/apiInputTok.txt > ./intermediate_data/apiInputTokBpe1005.txt')
-            os.system('python translate.py -model model/model_100105-model_step_90000.pt -src ./intermediate_data/apiInputTokBpe1005.txt -output ./intermediate_data/mypredifTok.txt -replace_unk -verbose')
-            os.system("sed -r 's/(@@ )|(@@ ?$)//g' ./intermediate_data/mypredifTok.txt > ./intermediate_data/finaltranslationEndeBpe90k1005.txt")
-            os.system("perl ./tools/detokenize.perl <./intermediate_data/finaltranslationEndeBpe90k1005.txt> ./intermediate_data/finaltranslationEndeBpedeTok90k1005.txt -l en")
-            os.system("perl ./tools/detrucaser.perl  <./intermediate_data/finaltranslationEndeBpedeTok90k1005.txt> ./intermediate_data/finaltranslationEndeBpedeTokdeTru90k1005.txt")
-            with open("./intermediate_data/finaltranslationEndeBpedeTokdeTru90k1005.txt") as zh:
+            #os.system('./tools/apply_bpe.py -c ./tools/codesSrc1005.bpe < ./intermediate_data/apiInputTok.txt > ./intermediate_data/apiInputTokBpe1005.txt')
+            os.system('python ./tools/sp_enc_dec.py encode hi-220519.model ./intermediate_data/apiInputTok.txt ./intermediate_data/apiInputTokSPBpe2205.txt')
+            os.system('python translate.py -model model/model_220519-model_step_80000.pt -src ./intermediate_data/apiInputTokSPBpe2205.txt -output ./intermediate_data/mypredifTokSP.txt -replace_unk -verbose')
+            #os.system("sed -r 's/(@@ )|(@@ ?$)//g' ./intermediate_data/mypredifTok.txt > ./intermediate_data/finaltranslationEndeBpe90k1005.txt")
+            os.system('python ./tools/sp_enc_dec.py decode en-220519.model ./intermediate_data/mypredifTokSP.txt ./intermediate_data/mypredifTokDeSPBE.txt')
+            os.system("perl ./tools/detokenize.perl <./intermediate_data/mypredifTokDeSPBE.txt> ./intermediate_data/mypredifDeTokDeSPBE.txt -l en")
+            os.system("perl ./tools/detrucaser.perl  <./intermediate_data/mypredifDeTokDeSPBE.txt> ./intermediate_data/mypredifDeTokDeSPBEDeTru.txt")
+            with open("./intermediate_data/mypredifDeTokDeSPBEDeTru.txt") as zh:
                 out = zh.readlines()
             #return send_file('/home/ubuntu/OpenNMT-py/mypredif.txt')
                 return jsonify(out)
@@ -132,7 +136,126 @@ def start(config_file,
         except:
             out = statusCode["SYSTEM_ERR"]
             print("Unexpected error:", sys.exc_info()[0])
-            return jsonify(out)     
+            return jsonify(out)
+            
+    @app.route('/english', methods=['POST'])
+    def english():
+        print("custom made function")
+        inputs = request.get_json(force=True)
+        print(inputs)
+        out = {}
+        try:
+            with open('intermediate_data/apiInputEng.txt', "w") as text_file:
+                text_file.write(str(inputs[0]['src']))
+            os.system('perl ./tools/tokenizer.perl <./intermediate_data/apiInputEng.txt> ./intermediate_data/apiInputEngTok.txt -l en')
+            os.system('perl ./tools/truecaser.perl --model truecaseModel_en100919 <./intermediate_data/apiInputEngTok.txt> ./intermediate_data/apiInputEngTokTru.txt')
+            #os.system('./tools/apply_bpe.py -c ./tools/codesTgt1005.bpe < ./intermediate_data/apiInputEngTokTru.txt > ./intermediate_data/apiInputEngTokTruBpe1005.txt')
+            os.system('python ./tools/sp_enc_dec.py encode en-220519.model ./intermediate_data/apiInputEngTokTru.txt ./intermediate_data/apiInputEngTokTruSPBpe2205.txt')
+            os.system('python translate.py -model model/model_270519-model_step_100000.pt -src ./intermediate_data/apiInputEngTokTruSPBpe2205.txt -output ./intermediate_data/mypredHinTokSPBpe2205.txt -replace_unk -verbose')
+            #os.system("sed -r 's/(@@ )|(@@ ?$)//g' ./intermediate_data/mypredHinTokBpe1005.txt > ./intermediate_data/finaltranslationHindeBpe1005.txt")
+            os.system('python ./tools/sp_enc_dec.py decode hi-220519.model ./intermediate_data/mypredHinTokSPBpe2205.txt ./intermediate_data/mypredHinTokDeSPBpe2205.txt')
+            os.system("python ~/indic_nlp_library/src/indicnlp/tokenize/indic_detokenize.py ./intermediate_data/mypredHinTokDeSPBpe2205.txt ./intermediate_data/mypredHinDeTokDeSPBpe2205.txt hi")
+           # os.system("perl ./tools/detrucaser.perl  <./intermediate_data/mypredifDeTokDeSPBE.txt> ./intermediate_data/mypredifDeTokDeSPBEDeTru.txt")
+            with open("./intermediate_data/mypredHinDeTokDeSPBpe2205.txt") as zh:
+                out = zh.readlines()
+            #return send_file('/home/ubuntu/OpenNMT-py/mypredif.txt')
+                return jsonify(out)
+        except ServerModelError as e:
+            out = statusCode["SEVER_MODEL_ERR"]
+            out['errObj'] = str(e)
+            # out['status'] = STATUS_ERROR
+            return jsonify(out)
+        except:
+            out = statusCode["SYSTEM_ERR"]
+            print("Unexpected error:", sys.exc_info()[0])
+            return jsonify(out)
+
+    @app.route('/translation_sp_en', methods=['POST'])
+    def translation_sp_en():
+        inputs = request.get_json(force=True)
+        out = {}
+        try:
+            for i in inputs:
+                i['src'] = anuvada.moses_tokenizer(i['src'])
+                i['src'] = anuvada.truecaser(i['src'])
+                i['src'] = str(sp.encode_line('en-220519.model',i['src']))
+   
+            translation, scores, n_best, times = translation_server.run(inputs)
+            assert len(translation) == len(inputs)
+            assert len(scores) == len(inputs)
+            for i in range(len(translation)):
+                translation[i]= sp.decode_line('hi-220519.model',translation[i])
+                translation[i] = anuvada.indic_detokenizer(translation[i])
+
+            out = [[{"tgt": translation[i],
+                     "pred_score": scores[i]}
+                    for i in range(len(translation))]]
+        except ServerModelError as e:
+            out = statusCode["SEVER_MODEL_ERR"]
+            out['errObj'] = str(e)
+        except:
+            out = statusCode["SYSTEM_ERR"]
+            print("Unexpected error:", sys.exc_info()[0])    
+
+        return jsonify(out)        
+
+    @app.route('/translation_sp_hi', methods=['POST'])
+    def translation_sp_hi():
+        inputs = request.get_json(force=True)
+        out = {}
+        try:
+            for i in inputs:
+                i['src'] = anuvada.indic_tokenizer(i['src'])
+                i['src'] = str(sp.encode_line('hi-220519.model',i['src']))
+               
+            translation, scores, n_best, times = translation_server.run(inputs)
+            assert len(translation) == len(inputs)
+            assert len(scores) == len(inputs)
+            for i in range(len(translation)):
+                translation[i]= sp.decode_line('en-220519.model',translation[i])
+                translation[i] = anuvada.moses_detokenizer(translation[i])
+                translation[i] = anuvada.detruecaser(translation[i])
+
+            out = [[{"tgt": translation[i],
+                     "pred_score": scores[i]}
+                    for i in range(len(translation))]]
+        except ServerModelError as e:
+            out = statusCode["SEVER_MODEL_ERR"]
+            out['errObj'] = str(e)
+        except:
+            out = statusCode["SYSTEM_ERR"]
+            print("Unexpected error:", sys.exc_info()[0])   
+
+        return jsonify(out)
+
+    @app.route('/translation_subword_hi', methods=['POST'])
+    def translation_subword_hi():
+        inputs = request.get_json(force=True)
+        out = {}
+        try:
+            for i in inputs:
+                i['src'] = anuvada.indic_tokenizer(i['src'])
+                i['src'] = anuvada.apply_bpe('codesSrc1005.bpe',i['src'])
+   
+            translation, scores, n_best, times = translation_server.run(inputs)
+            assert len(translation) == len(inputs)
+            assert len(scores) == len(inputs)
+            for i in range(len(translation)):
+                translation[i] = anuvada.decode_bpe(translation[i])
+                translation[i] = anuvada.moses_detokenizer(translation[i])
+                translation[i] = anuvada.detruecaser(translation[i])
+
+            out = [[{"tgt": translation[i],
+                     "pred_score": scores[i]}
+                    for i in range(len(translation))]]
+        except ServerModelError as e:
+            out = statusCode["SEVER_MODEL_ERR"]
+            out['errObj'] = str(e)
+        except:
+            out = statusCode["SYSTEM_ERR"]
+            print("Unexpected error:", sys.exc_info()[0])    
+
+        return jsonify(out)
 
     @app.route("/download-src", methods=['GET'])
     def get_file():

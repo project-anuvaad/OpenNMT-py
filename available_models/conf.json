@@ -2,28 +2,33 @@
     "models_root": "./available_models",
     "models": [
         {
-            "id": 100,
-            "model": "model_0.pt",
+            "id": 1,
+            "model": "model_270519-model_step_100000.pt",
             "timeout": 600,
             "on_timeout": "to_cpu",
             "load": true,
             "opt": {
-                "gpu": 0,
                 "beam_size": 5
-            },
-            "tokenizer": {
-                "type": "sentencepiece",
-                "model": "wmtenfr.model"
             }
-        }
-      ,{
-            "model": "model_0.light.pt",
-            "timeout": -1,
-            "on_timeout": "unload",
-            "model_root": "../other_models",
+        },
+        {
+            "id": 2,
+            "model": "model_220519-model_step_80000.pt",
+            "timeout": 600,
+            "on_timeout": "to_cpu",
+            "load": true,
             "opt": {
-                "batch_size": 1,
-                "beam_size": 10
+                "beam_size": 5
+            }
+        },
+        {
+            "id": 3,
+            "model": "model_100105-model_step_90000.pt",
+            "timeout": 600,
+            "on_timeout": "to_cpu",
+            "load": true,
+            "opt": {
+                "beam_size": 5
             }
         }
     ]

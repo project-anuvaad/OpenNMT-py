@@ -4,3 +4,5 @@ torch>=1.0
 git+https://github.com/pytorch/text.git@master#wheel=torchtext
 future
 configargparse
+sentencepiece
+git+https://github.com/aj7tesh/indic_nlp_library.git#wheel=indictok-anuvada
