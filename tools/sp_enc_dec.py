@@ -73,11 +73,8 @@ def decode_as_pieces(load_model,src_file,tgt_file):
 def decode_line(load_model,line):
     # makes segmenter instance and loads the model file (m.model)
     try:
-        print("here")
         sp = spm.SentencePieceProcessor()
         sp.load(load_model)
-        print("here2")
-        print(line)
         return sp.DecodePieces(eval(line))
     except:
         print("something went wrong!")

@@ -5,13 +5,14 @@ import subprocess
 import sys
 import codecs
 import os
+from onmt.utils.logging import logger
 
 def indic_tokenizer(s):
-    print("indic_tokenizing")
+    logger.info("indic_tokenizing")
     return ' '.join(indic_tok.trivial_tokenize_indic(s))
 
 def indic_detokenizer(s):
-    print("detokenizing indic")
+    logger.info("detokenizing using indic")
     return indic_detok.trivial_detokenize_indic(s)
 
 def moses_tokenizer(text):
@@ -28,7 +29,7 @@ def moses_detokenizer(text):
     detokenizer_path = "tools/detokenize.perl"
     text = text 
     lang = "en" 
-    print("detokenizing")
+    logger.info("moses detokenizing")
     pipe = subprocess.Popen(["perl", detokenizer_path, '-l', lang, text], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
     pipe.stdin.write(text.encode('utf-8'))
     pipe.stdin.close()
@@ -39,7 +40,7 @@ def truecaser(text):
     truecaser_path = "tools/truecaser.perl"
     text = text 
     model = "truecaseModel_en100919"
-    print("truecasing")
+    logger.info("truecasing")
     pipe = subprocess.Popen(["perl", truecaser_path, '--model', model, text], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
     pipe.stdin.write(text.encode('utf-8'))
     pipe.stdin.close()
@@ -49,7 +50,7 @@ def truecaser(text):
 def detruecaser(text):
     detruecaser_path = "tools/detrucaser.perl"
     text = text 
-    print("detruecasing")
+    logger.info("detruecasing")
     pipe = subprocess.Popen(["perl", detruecaser_path, text], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
     pipe.stdin.write(text.encode('utf-8'))
     pipe.stdin.close()
@@ -57,13 +58,13 @@ def detruecaser(text):
     return detruecased_output.strip().decode('utf-8')    
 
 def apply_bpe(bpe_model,text):
-    print("encoding using subword")
+    logger.info("subword encoding")
     codes = codecs.open(bpe_model, encoding='utf-8')
     bpe = subword_enc.BPE(codes)
     return bpe.process_line(text)
 
 def decode_bpe(text):
-    print("subword decoding")
+    logger.info("subword decoding")
     with open("intermediate_data/subword.txt","w") as f:
         f.write(text)
     # pipe = subprocess.call(["echo %s|sed -r 's/(@@ )|(@@ ?$)//g'" % text],shell=True)

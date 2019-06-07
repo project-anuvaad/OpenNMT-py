@@ -13,7 +13,7 @@ from onmt.translate import TranslationServer, ServerModelError
 
 from itertools import repeat
 
-from onmt.utils.logging import init_logger
+from onmt.utils.logging import init_logger,logger
 from onmt.utils.misc import split_corpus
 from onmt.translate.translator import build_translator
 import os
@@ -48,7 +48,13 @@ def start(config_file,
 
     @app.route('/models', methods=['GET'])
     def get_models():
-        out = translation_server.list_models()
+        out = {}
+        try:
+            out['status'] = statusCode["SUCCESS"]
+            out['response_body'] = translation_server.list_models()
+        except:
+            out['status'] = statusCode["SYSTEM_ERR"]
+            logger.info("Unexpected error: %s"% sys.exc_info()[0]) 
         return jsonify(out)
 
     @app.route('/clone_model/<int:model_id>', methods=['POST'])
@@ -137,7 +143,7 @@ def start(config_file,
             out = statusCode["SYSTEM_ERR"]
             print("Unexpected error:", sys.exc_info()[0])
             return jsonify(out)
-            
+
     @app.route('/english', methods=['POST'])
     def english():
         print("custom made function")
@@ -187,15 +193,16 @@ def start(config_file,
                 translation[i]= sp.decode_line('hi-220519.model',translation[i])
                 translation[i] = anuvada.indic_detokenizer(translation[i])
 
-            out = [[{"tgt": translation[i],
+            out['status'] = statusCode["SUCCESS"]
+            out['response_body'] = [{"tgt": translation[i],
                      "pred_score": scores[i]}
-                    for i in range(len(translation))]]
+                    for i in range(len(translation))]
         except ServerModelError as e:
-            out = statusCode["SEVER_MODEL_ERR"]
-            out['errObj'] = str(e)
+            out['status'] = statusCode["SEVER_MODEL_ERR"]
+            out['status']['errObj'] = str(e)
         except:
-            out = statusCode["SYSTEM_ERR"]
-            print("Unexpected error:", sys.exc_info()[0])    
+            out['status'] = statusCode["SYSTEM_ERR"]
+            logger.info("Unexpected error: %s"% sys.exc_info()[0])    
 
         return jsonify(out)        
 
@@ -216,15 +223,16 @@ def start(config_file,
                 translation[i] = anuvada.moses_detokenizer(translation[i])
                 translation[i] = anuvada.detruecaser(translation[i])
 
-            out = [[{"tgt": translation[i],
+            out['status'] = statusCode["SUCCESS"]
+            out['response_body'] = [{"tgt": translation[i],
                      "pred_score": scores[i]}
-                    for i in range(len(translation))]]
+                    for i in range(len(translation))]
         except ServerModelError as e:
-            out = statusCode["SEVER_MODEL_ERR"]
-            out['errObj'] = str(e)
+            out['status'] = statusCode["SEVER_MODEL_ERR"]
+            out['status']['errObj'] = str(e)
         except:
-            out = statusCode["SYSTEM_ERR"]
-            print("Unexpected error:", sys.exc_info()[0])   
+            out['status'] = statusCode["SYSTEM_ERR"]
+            logger.info("Unexpected error: %s"% sys.exc_info()[0])   
 
         return jsonify(out)
 
@@ -245,15 +253,16 @@ def start(config_file,
                 translation[i] = anuvada.moses_detokenizer(translation[i])
                 translation[i] = anuvada.detruecaser(translation[i])
 
-            out = [[{"tgt": translation[i],
+            out['status'] = statusCode["SUCCESS"]
+            out['response_body'] = [{"tgt": translation[i],
                      "pred_score": scores[i]}
-                    for i in range(len(translation))]]
+                    for i in range(len(translation))]
         except ServerModelError as e:
-            out = statusCode["SEVER_MODEL_ERR"]
-            out['errObj'] = str(e)
+            out['status'] = statusCode["SEVER_MODEL_ERR"]
+            out['status']['errObj'] = str(e)
         except:
-            out = statusCode["SYSTEM_ERR"]
-            print("Unexpected error:", sys.exc_info()[0])    
+            out['status'] = statusCode["SYSTEM_ERR"]
+            logger.info("Unexpected error: %s"% sys.exc_info()[0])    
 
         return jsonify(out)
      
@@ -264,18 +273,18 @@ def start(config_file,
         type = request.args.get('type')
         print(type)
         if  not type:
-            out = statusCode["TYPE_MISSING"]
+            out['status'] = statusCode["TYPE_MISSING"]
             return jsonify(out)
         if type not in ['Gen','LC','GoI','TB']:
-            out = statusCode["INVALID_TYPE"]
+            out['status'] = statusCode["INVALID_TYPE"]
             return jsonify(out)  
 
         try:
-            print("downloading the src %s.txt file" % type)
+            logger.info("downloading the src %s.txt file" % type)
             return send_file(os.path.join(API_FILE_DIRECTORY,'source_files/', '%s.txt' % type), as_attachment=True)
         except:
-            out = statusCode["SYSTEM_ERR"]
-            print("Unexpected error:", sys.exc_info()[0])
+            out['status'] = statusCode["SYSTEM_ERR"]
+            logger.info("Unexpected error: %s"% sys.exc_info()[0])
             return jsonify(out) 
 
     @app.route("/upload-tgt", methods=["POST"])
@@ -284,14 +293,14 @@ def start(config_file,
         print(request.files)
         out = {}
         if 'file' not in request.files:
-            out = statusCode["FILE_MISSING"]
+            out['status'] = statusCode["FILE_MISSING"]
             return jsonify(out)
         print(request.form)    
         if 'type' not in request.form:
-            out = statusCode["TYPE_MISSING"]
+            out['status'] = statusCode["TYPE_MISSING"]
             return jsonify(out)  
         if request.form['type'] not in ['Gen','LC','GoI','TB']:
-            out = statusCode["INVALID_TYPE"]
+            out['status'] = statusCode["INVALID_TYPE"]
             return jsonify(out)  
 
         try:
@@ -306,18 +315,17 @@ def start(config_file,
             os.system("perl ./tools/multi-bleu-detok.perl ./%s < ./%s > bleu-detok.txt" %(tgt_ref_file_loc,tgt_file_loc))
             os.system("python ./tools/calculatebleu.py ./%s ./%s" %(tgt_file_loc,tgt_ref_file_loc))            
             os.remove(tgt_file_loc)
-            print("Bleu calculated and file removed")
+            logger.info("Bleu calculated and file removed")
             with open("bleu-detok.txt") as zh:
-                out = statusCode["SUCCESS"]
-                # out['bleu_for_uploaded_file'] = float(', '.join(zh.readlines()))
-                out['bleu_for_uploaded_file'] = float(', '.join(zh.readlines()))
-                out['openNMT_custom'] = bleu_results.OpenNMT_Custom
-                out['google_api'] = bleu_results.GOOGLE_API
-                return jsonify(out)
+                out['status'] = statusCode["SUCCESS"]
+                out['response_body'] = {'bleu_for_uploaded_file':float(', '.join(zh.readlines())),
+                                        'openNMT_custom':bleu_results.OpenNMT_Custom, 'google_api': bleu_results.GOOGLE_API 
+                                        }
         except:
-            out = statusCode["SYSTEM_ERR"]
-            print("Unexpected error:", sys.exc_info()[0])
-            return jsonify(out)    
+            out['status'] = statusCode["SYSTEM_ERR"]
+            logger.info("Unexpected error: %s"% sys.exc_info()[0])
+        
+        return jsonify(out)    
 
     @app.route('/to_cpu/<int:model_id>', methods=['GET'])
     def to_cpu(model_id):
