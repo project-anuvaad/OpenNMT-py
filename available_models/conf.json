@@ -23,6 +23,17 @@
         },
         {
             "id": 3,
+            "model": "demo_180104-model_step_100000.pt",
+            "timeout": 600,
+            "on_timeout": "to_cpu",
+            "load": true,
+            "opt": {
+                "beam_size": 5,
+                "replace_unk":true
+            }
+        },
+        {
+            "id": 4,
             "model": "model_100105-model_step_90000.pt",
             "timeout": 600,
             "on_timeout": "to_cpu",

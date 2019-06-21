@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 import configargparse
 import sys
-from config.config import statusCode
+from config.config import statusCode,benchmark_types, language_supported, file_location
 import bleu_results as bleu_results
 import anuvada
 import tools.sp_enc_dec as sp
@@ -19,11 +19,14 @@ from onmt.translate.translator import build_translator
 import os
 import onmt.opts as opts
 from onmt.utils.parse import ArgumentParser
+from mongo_model import db,Benchmarks
+import datetime
 
 STATUS_OK = "ok"
 STATUS_ERROR = "error"
 
 API_FILE_DIRECTORY = "src_tgt_api_files/"
+mongo_config_dir = "config/mongo_config.py"
 
 if not os.path.exists(API_FILE_DIRECTORY):
     os.makedirs(os.path.join(API_FILE_DIRECTORY,'source_files/'))
@@ -42,6 +45,8 @@ def start(config_file,
 
     app = Flask(__name__)
     CORS(app)
+    app.config.from_pyfile(mongo_config_dir)
+    db.init_app(app)
     app.route = prefix_route(app.route, url_root)
     translation_server = TranslationServer()
     translation_server.start(config_file)
@@ -122,10 +127,10 @@ def start(config_file,
         try:
             with open('intermediate_data/apiInput.txt', "w") as text_file:
                 text_file.write(str(inputs[0]['src']))
-            os.system('python ~/indic_nlp_library/src/indicnlp/tokenize/indic_tokenize.py ./intermediate_data/apiInput.txt ./intermediate_data/apiInputTok.txt hi')
+            # os.system('python ~/indic_nlp_library/src/indicnlp/tokenize/indic_tokenize.py ./intermediate_data/apiInput.txt ./intermediate_data/apiInputTok.txt hi')
             #os.system('./tools/apply_bpe.py -c ./tools/codesSrc1005.bpe < ./intermediate_data/apiInputTok.txt > ./intermediate_data/apiInputTokBpe1005.txt')
-            os.system('python ./tools/sp_enc_dec.py encode hi-220519.model ./intermediate_data/apiInputTok.txt ./intermediate_data/apiInputTokSPBpe2205.txt')
-            os.system('python translate.py -model model/model_220519-model_step_80000.pt -src ./intermediate_data/apiInputTokSPBpe2205.txt -output ./intermediate_data/mypredifTokSP.txt -replace_unk -verbose')
+            os.system('python ./tools/sp_enc_dec.py encode hi-220519.model ./intermediate_data/apiInput.txt ./intermediate_data/apiInputTokSPBpe2205.txt')
+            os.system('python translate.py -model available_models/model_220519-model_step_80000.pt -src ./intermediate_data/apiInputTokSPBpe2205.txt -output ./intermediate_data/mypredifTokSP.txt -replace_unk -verbose')
             #os.system("sed -r 's/(@@ )|(@@ ?$)//g' ./intermediate_data/mypredifTok.txt > ./intermediate_data/finaltranslationEndeBpe90k1005.txt")
             os.system('python ./tools/sp_enc_dec.py decode en-220519.model ./intermediate_data/mypredifTokSP.txt ./intermediate_data/mypredifTokDeSPBE.txt')
             os.system("perl ./tools/detokenize.perl <./intermediate_data/mypredifTokDeSPBE.txt> ./intermediate_data/mypredifDeTokDeSPBE.txt -l en")
@@ -176,27 +181,35 @@ def start(config_file,
             print("Unexpected error:", sys.exc_info()[0])
             return jsonify(out)
 
-    @app.route('/translation_sp_en', methods=['POST'])
-    def translation_sp_en():
+    @app.route('/translation_en', methods=['POST'])
+    def translation_en():
         inputs = request.get_json(force=True)
         out = {}
+        tgt = list()
+        pred_score = list()
         try:
             for i in inputs:
+                if  any(v not in i for v in ['src','id']):
+                    out['status'] = statusCode["ID_OR_SRC_MISSING"]
+                    return jsonify(out)
+
                 i['src'] = anuvada.moses_tokenizer(i['src'])
-                i['src'] = anuvada.truecaser(i['src'])
-                i['src'] = str(sp.encode_line('en-220519.model',i['src']))
-   
-            translation, scores, n_best, times = translation_server.run(inputs)
-            assert len(translation) == len(inputs)
-            assert len(scores) == len(inputs)
-            for i in range(len(translation)):
-                translation[i]= sp.decode_line('hi-220519.model',translation[i])
-                translation[i] = anuvada.indic_detokenizer(translation[i])
+                i['src'] = anuvada.truecaser(i['src'])    
+                if i['id'] == 1:                   
+                    i['src'] = str(sp.encode_line('en-220519.model',i['src']))
+                    translation, scores, n_best, times = translation_server.run([i])
+                    translation = sp.decode_line('hi-220519.model',translation[0]) 
+                else:
+                    out['status'] = statusCode["INCORRECT_ID"]
+                    return jsonify(out)
+                translation = anuvada.indic_detokenizer(translation)
+                tgt.append(translation)
+                pred_score.append(scores[0])
 
             out['status'] = statusCode["SUCCESS"]
-            out['response_body'] = [{"tgt": translation[i],
-                     "pred_score": scores[i]}
-                    for i in range(len(translation))]
+            out['response_body'] = [{"tgt": tgt[i],
+                     "pred_score": pred_score[i]}
+                    for i in range(len(tgt))]
         except ServerModelError as e:
             out['status'] = statusCode["SEVER_MODEL_ERR"]
             out['status']['errObj'] = str(e)
@@ -206,66 +219,181 @@ def start(config_file,
 
         return jsonify(out)        
 
-    @app.route('/translation_sp_hi', methods=['POST'])
-    def translation_sp_hi():
+    @app.route('/translation_hi', methods=['POST'])
+    def translation_hi():
         inputs = request.get_json(force=True)
         out = {}
+        tgt = list()
+        pred_score = list()
         try:
             for i in inputs:
-                i['src'] = anuvada.indic_tokenizer(i['src'])
-                i['src'] = str(sp.encode_line('hi-220519.model',i['src']))
-               
-            translation, scores, n_best, times = translation_server.run(inputs)
-            assert len(translation) == len(inputs)
-            assert len(scores) == len(inputs)
-            for i in range(len(translation)):
-                translation[i]= sp.decode_line('en-220519.model',translation[i])
-                translation[i] = anuvada.moses_detokenizer(translation[i])
-                translation[i] = anuvada.detruecaser(translation[i])
+                if  any(v not in i for v in ['src','id']):
+                    out['status'] = statusCode["ID_OR_SRC_MISSING"]
+                    return jsonify(out) 
+                if i['id'] == 3:
+                    logger.info("translating using the first model")
+                    translation, scores, n_best, times = translation_server.run([i])
+                    translation = translation[0]   
+
+                else:
+                    i['src'] = anuvada.indic_tokenizer(i['src']) 
+
+                    if i['id'] == 2:
+                        i['src'] = str(sp.encode_line('hi-220519.model',i['src']))
+                        translation, scores, n_best, times = translation_server.run([i])
+                        translation = sp.decode_line('en-220519.model',translation[0])
+                    
+                    elif i['id'] == 4:
+                        i['src'] = anuvada.apply_bpe('codesSrc1005.bpe',i['src'])
+                        translation, scores, n_best, times = translation_server.run([i])
+                        translation = anuvada.decode_bpe(translation[0])
+                    else:
+                        out['status'] = statusCode["INCORRECT_ID"]
+                        return jsonify(out)      
+                    translation = anuvada.moses_detokenizer(translation)
+                    translation = anuvada.detruecaser(translation)
+                
+                tgt.append(translation)
+                pred_score.append(scores[0])
 
             out['status'] = statusCode["SUCCESS"]
-            out['response_body'] = [{"tgt": translation[i],
-                     "pred_score": scores[i]}
-                    for i in range(len(translation))]
+            out['response_body'] = [{"tgt": tgt[i],
+                     "pred_score": pred_score[i]}
+                    for i in range(len(tgt))]
         except ServerModelError as e:
             out['status'] = statusCode["SEVER_MODEL_ERR"]
             out['status']['errObj'] = str(e)
-        except:
+        except Exception as e:
             out['status'] = statusCode["SYSTEM_ERR"]
+            out['status']['errObj'] = str(e)
             logger.info("Unexpected error: %s"% sys.exc_info()[0])   
 
         return jsonify(out)
 
-    @app.route('/translation_subword_hi', methods=['POST'])
-    def translation_subword_hi():
-        inputs = request.get_json(force=True)
+    @app.route('/save_benchmark', methods=['POST'])
+    def save_benchmark():
         out = {}
+        # print(inputs = request.get_json(force=True))
+        if 'file' not in request.files:
+            out['status'] = statusCode["FILE_MISSING"]
+            return jsonify(out)
+            
+        if  any(v not in request.form for v in ['type','language']):
+            out['status'] = statusCode["TYPE_OR_LANGUAGE_MISSING"]
+            return jsonify(out) 
+        if request.form['type'] not in benchmark_types:
+            out['status'] = statusCode["INVALID_TYPE"]
+            return jsonify(out)
+        if request.form['language'] not in language_supported:
+            out['status'] = statusCode["UNSUPPORTED_LANGUAGE"]
+            return jsonify(out)    
         try:
-            for i in inputs:
-                i['src'] = anuvada.indic_tokenizer(i['src'])
-                i['src'] = anuvada.apply_bpe('codesSrc1005.bpe',i['src'])
-   
-            translation, scores, n_best, times = translation_server.run(inputs)
-            assert len(translation) == len(inputs)
-            assert len(scores) == len(inputs)
-            for i in range(len(translation)):
-                translation[i] = anuvada.decode_bpe(translation[i])
-                translation[i] = anuvada.moses_detokenizer(translation[i])
-                translation[i] = anuvada.detruecaser(translation[i])
+            file_type = request.form['type']
+            file = request.files['file']
+            language = request.form['language']
+            user_filename = file.filename
+            db_filename = user_filename +"-"+ str(datetime.datetime.now().timestamp())
 
+            if not os.path.exists(os.path.join(file_location['FILE_LOC'],'%s/'%language)):
+                os.makedirs(os.path.join(file_location['FILE_LOC'],'%s/'%language)) 
+            file_loc =  os.path.join(file_location["FILE_LOC"], language,db_filename)
+            Benchmarks(type = file_type,language = request.form['language'],user_filename = user_filename,db_filename = db_filename,version = 0 ,created_by = "", path = file_loc).save()
+
+            file.save(file_loc)
+            
+            logger.info("saving file name:%s ,type:%s"%(user_filename,file_type))
             out['status'] = statusCode["SUCCESS"]
-            out['response_body'] = [{"tgt": translation[i],
-                     "pred_score": scores[i]}
-                    for i in range(len(translation))]
-        except ServerModelError as e:
-            out['status'] = statusCode["SEVER_MODEL_ERR"]
-            out['status']['errObj'] = str(e)
-        except:
+            out['response_body'] = {}
+        except Exception as e:
             out['status'] = statusCode["SYSTEM_ERR"]
-            logger.info("Unexpected error: %s"% sys.exc_info()[0])    
-
+            out['status']['errObj'] = str(e)
+            logger.info("Unexpected error: %s"% sys.exc_info()[0]) 
+        
         return jsonify(out)
-     
+
+    @app.route('/list_benchmark', methods=['GET'])
+    def list_benchmark():
+        out = {}        
+        if  'language' not in request.args:
+            out['status'] = statusCode["LANGUAGE_MISSING"]
+            return jsonify(out)
+        if request.args.get('language') not in language_supported:
+            out['status'] = statusCode["UNSUPPORTED_LANGUAGE"]
+            return jsonify(out) 
+        try:  
+            language = request.args.get('language')         
+            list_benchmark = Benchmarks.objects(language = language).exclude('path').exclude('db_filename')   
+            
+            logger.info("listing benchmark files for %s language" % language)
+            out['status'] = statusCode["SUCCESS"]
+            out['response_body'] = {"list_benchmark":list_benchmark}
+        except Exception as e:
+            out['status'] = statusCode["SYSTEM_ERR"]
+            out['status']['errObj'] = str(e)
+            logger.info("Unexpected error: %s"% sys.exc_info()[0])
+        
+        return jsonify(out)
+
+    @app.route("/download_benchmark", methods=['GET'])
+    def download_benchmark():
+        out = {}
+        if  'id' not in request.args:
+            out['status'] = statusCode["MANDATORY_PARAM_MISSING"]
+            return jsonify(out)
+
+        try:
+            id = request.args.get('id')
+            path =  Benchmarks.objects(id =id).only('path')
+            
+            if len(path) > 0:
+                path = path[0].path
+                logger.info("downloading the benchmark file %s file" % path)
+                return send_file(path, as_attachment=True)
+            else:
+                out['status'] =  statusCode["No_File_DB"]           
+            
+        except Exception as e:
+            out['status'] = statusCode["SYSTEM_ERR"]
+            out['status']['errObj'] = str(e)
+            logger.info("Unexpected error: %s"% sys.exc_info()[0])
+        return jsonify(out)
+    
+    @app.route("/calculate_bleu", methods=["POST"])
+    def calculate_bleu():     
+        out = {}
+       
+        if 'file' not in request.files:
+            out['status'] = statusCode["FILE_MISSING"]
+            return jsonify(out)
+        if  'id' not in request.form:
+            out['status'] = statusCode["MANDATORY_PARAM_MISSING"]
+            return jsonify(out)
+        
+        try:
+            id = request.form['id']
+            file = request.files['file']
+            tgt_file_loc = os.path.join('intermediate_data', '%s.txt' % file.filename)
+            file.save(tgt_file_loc)
+            path =  Benchmarks.objects(id =id).only('path')
+            if len(path) > 0:
+                path = path[0].path
+                logger.info("calculating bleu using %s file" % path) 
+                bleu_file = os.popen("perl ./tools/multi-bleu-detok.perl %s < %s " %(path,tgt_file_loc)).read()    
+                os.remove(tgt_file_loc)
+                logger.info("Bleu calculated and file removed")
+                out['status'] = statusCode["SUCCESS"]
+                out['response_body'] = {'bleu_for_uploaded_file':float(bleu_file),
+                                        'openNMT_custom':bleu_results.OpenNMT_Custom, 'google_api': bleu_results.GOOGLE_API 
+                                        }                
+            else:
+                out['status'] =  statusCode["No_File_DB"]   
+
+        except Exception as e:
+            out['status'] = statusCode["SYSTEM_ERR"]
+            out['status']['errObj'] = str(e)
+            logger.info("Unexpected error: %s"% sys.exc_info()[0])
+        return jsonify(out)
+
     @app.route("/download-src", methods=['GET'])
     def get_file():
         """Download a file."""
