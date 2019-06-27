@@ -118,69 +118,6 @@ def start(config_file,
 
         return jsonify(out)
 
-    @app.route('/translation', methods=['POST'])
-    def translation():
-        print("custom made function")
-        inputs = request.get_json(force=True)
-        print(inputs)
-        out = {}
-        try:
-            with open('intermediate_data/apiInput.txt', "w") as text_file:
-                text_file.write(str(inputs[0]['src']))
-            #os.system('python ~/indic_nlp_library/src/indicnlp/tokenize/indic_tokenize.py ./intermediate_data/apiInput.txt ./intermediate_data/apiInputTok.txt hi')
-            #os.system('./tools/apply_bpe.py -c ./tools/codesSrc1005.bpe < ./intermediate_data/apiInputTok.txt > ./intermediate_data/apiInputTokBpe1005.txt')
-            os.system('python ./tools/sp_enc_dec.py encode hi-220519.model ./intermediate_data/apiInput.txt ./intermediate_data/apiInputTokSPBpe2205.txt')
-            os.system('python translate.py -model available_models/model_220519-model_step_80000.pt -src ./intermediate_data/apiInputTokSPBpe2205.txt -output ./intermediate_data/mypredifTokSP.txt -replace_unk -verbose')
-            #os.system("sed -r 's/(@@ )|(@@ ?$)//g' ./intermediate_data/mypredifTok.txt > ./intermediate_data/finaltranslationEndeBpe90k1005.txt")
-            os.system('python ./tools/sp_enc_dec.py decode en-220519.model ./intermediate_data/mypredifTokSP.txt ./intermediate_data/mypredifTokDeSPBE.txt')
-            os.system("perl ./tools/detokenize.perl <./intermediate_data/mypredifTokDeSPBE.txt> ./intermediate_data/mypredifDeTokDeSPBE.txt -l en")
-            os.system("perl ./tools/detrucaser.perl  <./intermediate_data/mypredifDeTokDeSPBE.txt> ./intermediate_data/mypredifDeTokDeSPBEDeTru.txt")
-            with open("./intermediate_data/mypredifDeTokDeSPBEDeTru.txt") as zh:
-                out = zh.readlines()
-            #return send_file('/home/ubuntu/OpenNMT-py/mypredif.txt')
-                return jsonify(out)
-        except ServerModelError as e:
-            out = statusCode["SEVER_MODEL_ERR"]
-            out['errObj'] = str(e)
-            # out['status'] = STATUS_ERROR
-            return jsonify(out)
-        except:
-            out = statusCode["SYSTEM_ERR"]
-            print("Unexpected error:", sys.exc_info()[0])
-            return jsonify(out)
-
-    @app.route('/english', methods=['POST'])
-    def english():
-        print("custom made function")
-        inputs = request.get_json(force=True)
-        print(inputs)
-        out = {}
-        try:
-            with open('intermediate_data/apiInputEng.txt', "w") as text_file:
-                text_file.write(str(inputs[0]['src']))
-            os.system('perl ./tools/tokenizer.perl <./intermediate_data/apiInputEng.txt> ./intermediate_data/apiInputEngTok.txt -l en')
-            os.system('perl ./tools/truecaser.perl --model truecaseModel_en100919 <./intermediate_data/apiInputEngTok.txt> ./intermediate_data/apiInputEngTokTru.txt')
-            #os.system('./tools/apply_bpe.py -c ./tools/codesTgt1005.bpe < ./intermediate_data/apiInputEngTokTru.txt > ./intermediate_data/apiInputEngTokTruBpe1005.txt')
-            os.system('python ./tools/sp_enc_dec.py encode en-220519.model ./intermediate_data/apiInputEngTokTru.txt ./intermediate_data/apiInputEngTokTruSPBpe2205.txt')
-            os.system('python translate.py -model model/model_270519-model_step_100000.pt -src ./intermediate_data/apiInputEngTokTruSPBpe2205.txt -output ./intermediate_data/mypredHinTokSPBpe2205.txt -replace_unk -verbose')
-            #os.system("sed -r 's/(@@ )|(@@ ?$)//g' ./intermediate_data/mypredHinTokBpe1005.txt > ./intermediate_data/finaltranslationHindeBpe1005.txt")
-            os.system('python ./tools/sp_enc_dec.py decode hi-220519.model ./intermediate_data/mypredHinTokSPBpe2205.txt ./intermediate_data/mypredHinTokDeSPBpe2205.txt')
-            os.system("python ~/indic_nlp_library/src/indicnlp/tokenize/indic_detokenize.py ./intermediate_data/mypredHinTokDeSPBpe2205.txt ./intermediate_data/mypredHinDeTokDeSPBpe2205.txt hi")
-           # os.system("perl ./tools/detrucaser.perl  <./intermediate_data/mypredifDeTokDeSPBE.txt> ./intermediate_data/mypredifDeTokDeSPBEDeTru.txt")
-            with open("./intermediate_data/mypredHinDeTokDeSPBpe2205.txt") as zh:
-                out = zh.readlines()
-            #return send_file('/home/ubuntu/OpenNMT-py/mypredif.txt')
-                return jsonify(out)
-        except ServerModelError as e:
-            out = statusCode["SEVER_MODEL_ERR"]
-            out['errObj'] = str(e)
-            # out['status'] = STATUS_ERROR
-            return jsonify(out)
-        except:
-            out = statusCode["SYSTEM_ERR"]
-            print("Unexpected error:", sys.exc_info()[0])
-            return jsonify(out)
-
     @app.route('/translation_en', methods=['POST'])
     def translation_en():
         inputs = request.get_json(force=True)
