@@ -127,7 +127,7 @@ def start(config_file,
         try:
             with open('intermediate_data/apiInput.txt', "w") as text_file:
                 text_file.write(str(inputs[0]['src']))
-            # os.system('python ~/indic_nlp_library/src/indicnlp/tokenize/indic_tokenize.py ./intermediate_data/apiInput.txt ./intermediate_data/apiInputTok.txt hi')
+            #os.system('python ~/indic_nlp_library/src/indicnlp/tokenize/indic_tokenize.py ./intermediate_data/apiInput.txt ./intermediate_data/apiInputTok.txt hi')
             #os.system('./tools/apply_bpe.py -c ./tools/codesSrc1005.bpe < ./intermediate_data/apiInputTok.txt > ./intermediate_data/apiInputTokBpe1005.txt')
             os.system('python ./tools/sp_enc_dec.py encode hi-220519.model ./intermediate_data/apiInput.txt ./intermediate_data/apiInputTokSPBpe2205.txt')
             os.system('python translate.py -model available_models/model_220519-model_step_80000.pt -src ./intermediate_data/apiInputTokSPBpe2205.txt -output ./intermediate_data/mypredifTokSP.txt -replace_unk -verbose')
