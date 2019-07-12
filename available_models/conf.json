@@ -41,6 +41,36 @@
             "opt": {
                 "beam_size": 5
             }
+        },
+        {
+            "id": 5,
+            "model": "model_28062019-model_step_160000.pt",
+            "timeout": 600,
+            "on_timeout": "to_cpu",
+            "load": true,
+            "opt": {
+                "beam_size": 5
+            }
+        },
+        {
+            "id": 6,
+            "model": "model_28062019-model_step_80000.pt",
+            "timeout": 600,
+            "on_timeout": "to_cpu",
+            "load": true,
+            "opt": {
+                "beam_size": 5
+            }
+        },
+        {
+            "id": 7,
+            "model": "model_080719-model_step_100000.pt",
+            "timeout": 600,
+            "on_timeout": "to_cpu",
+            "load": true,
+            "opt": {
+                "beam_size": 5
+            }
         }
     ]
 }

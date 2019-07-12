@@ -131,15 +131,20 @@ def start(config_file,
                     return jsonify(out)
 
                 i['src'] = anuvada.moses_tokenizer(i['src'])
-                i['src'] = anuvada.truecaser(i['src'])    
+                # i['src'] = anuvada.truecaser(i['src'])   
                 if i['id'] == 1:                   
                     i['src'] = str(sp.encode_line('en-220519.model',i['src']))
                     translation, scores, n_best, times = translation_server.run([i])
-                    translation = sp.decode_line('hi-220519.model',translation[0]) 
+                    translation = sp.decode_line('hi-220519.model',translation[0])
+                    translation = anuvada.indic_detokenizer(translation)
+                elif i['id'] == 7:                   
+                    i['src'] = str(sp.encode_line('enT-08072019-10k.model',i['src']))
+                    translation, scores, n_best, times = translation_server.run([i])
+                    translation = sp.decode_line('ta-08072019-10k.model',translation[0])     
                 else:
                     out['status'] = statusCode["INCORRECT_ID"]
                     return jsonify(out)
-                translation = anuvada.indic_detokenizer(translation)
+                
                 tgt.append(translation)
                 pred_score.append(scores[0])
 
@@ -179,7 +184,10 @@ def start(config_file,
                         i['src'] = str(sp.encode_line('hi-220519.model',i['src']))
                         translation, scores, n_best, times = translation_server.run([i])
                         translation = sp.decode_line('en-220519.model',translation[0])
-                    
+                    elif i['id'] in [5,6]:
+                        i['src'] = str(sp.encode_line('hi-28062019-10k.model',i['src']))
+                        translation, scores, n_best, times = translation_server.run([i])
+                        translation = sp.decode_line('en-28062019-10k.model',translation[0])
                     elif i['id'] == 4:
                         i['src'] = anuvada.apply_bpe('codesSrc1005.bpe',i['src'])
                         translation, scores, n_best, times = translation_server.run([i])
