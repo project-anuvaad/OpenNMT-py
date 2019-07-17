@@ -70,6 +70,20 @@ def decode_bpe(text):
     # pipe = subprocess.call(["echo %s|sed -r 's/(@@ )|(@@ ?$)//g'" % text],shell=True)
     decoded_text = os.popen("sed -r 's/(@@ )|(@@ ?$)//g' intermediate_data/subword.txt").read()
     return decoded_text
-                                                                                                                                                                                                                                    
+
+def replace_from_LC_table(text):
+    hindi_number=list()
+    for char in text:
+        if char.isdigit():
+            with open("lookup_table.txt", "r") as f:
+                            for line in f:
+                                if line.startswith(char):
+                                    char = line.split('|||')[1].strip() 
+
+        hindi_number.append(char) 
+    s = [str(i) for i in hindi_number] 
+    res = ("".join(s)) 
+    return res 
+
 ## def translate():
 

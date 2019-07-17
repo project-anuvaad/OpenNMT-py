@@ -130,20 +130,25 @@ def start(config_file,
                     out['status'] = statusCode["ID_OR_SRC_MISSING"]
                     return jsonify(out)
 
-                i['src'] = anuvada.moses_tokenizer(i['src'])
-                # i['src'] = anuvada.truecaser(i['src'])   
-                if i['id'] == 1:                   
-                    i['src'] = str(sp.encode_line('en-220519.model',i['src']))
-                    translation, scores, n_best, times = translation_server.run([i])
-                    translation = sp.decode_line('hi-220519.model',translation[0])
-                    translation = anuvada.indic_detokenizer(translation)
-                elif i['id'] == 7:                   
-                    i['src'] = str(sp.encode_line('enT-08072019-10k.model',i['src']))
-                    translation, scores, n_best, times = translation_server.run([i])
-                    translation = sp.decode_line('ta-08072019-10k.model',translation[0])     
+                if len(i['src'].split()) == 1 and float(i['src']):
+                    logger.info("translating using lookup table")
+                    translation = anuvada.replace_from_LC_table(i['src'])
+                    scores = [1]
                 else:
-                    out['status'] = statusCode["INCORRECT_ID"]
-                    return jsonify(out)
+                    i['src'] = anuvada.moses_tokenizer(i['src'])
+                    # i['src'] = anuvada.truecaser(i['src'])   
+                    if i['id'] == 1:                   
+                        i['src'] = str(sp.encode_line('en-220519.model',i['src']))
+                        translation, scores, n_best, times = translation_server.run([i])
+                        translation = sp.decode_line('hi-220519.model',translation[0])
+                        translation = anuvada.indic_detokenizer(translation)
+                    elif i['id'] == 7:                   
+                        i['src'] = str(sp.encode_line('enT-08072019-10k.model',i['src']))
+                        translation, scores, n_best, times = translation_server.run([i])
+                        translation = sp.decode_line('ta-08072019-10k.model',translation[0])     
+                    else:
+                        out['status'] = statusCode["INCORRECT_ID"]
+                        return jsonify(out)
                 
                 tgt.append(translation)
                 pred_score.append(scores[0])
