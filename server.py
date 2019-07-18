@@ -6,6 +6,7 @@ from config.config import statusCode,benchmark_types, language_supported, file_l
 import bleu_results as bleu_results
 import anuvada
 import tools.sp_enc_dec as sp
+import ancillary_functions.ancillary_functions as ancillary_functions
 
 from flask import Flask, jsonify, request,send_file,abort,send_from_directory
 from flask_cors import CORS
@@ -130,13 +131,15 @@ def start(config_file,
                     out['status'] = statusCode["ID_OR_SRC_MISSING"]
                     return jsonify(out)
 
-                if len(i['src'].split()) == 1 and float(i['src']):
+                if len(i['src'].split()) == 1 and i['src'].isalpha()== False:
                     logger.info("translating using lookup table")
-                    translation = anuvada.replace_from_LC_table(i['src'])
+                    translation = ancillary_functions.handle_single_token(i['src'])
                     scores = [1]
+                    print("111111111111111",translation)
                 else:
+                    print("hhhhhhhhhhhhhhh")
                     i['src'] = anuvada.moses_tokenizer(i['src'])
-                    # i['src'] = anuvada.truecaser(i['src'])   
+                    # i['src'] = anuvada.truecaser(i['src'])  
                     if i['id'] == 1:                   
                         i['src'] = str(sp.encode_line('en-220519.model',i['src']))
                         translation, scores, n_best, times = translation_server.run([i])
