@@ -28,3 +28,22 @@ def isfloat(str):
     except ValueError: 
         return False
     return True
+
+def capture_prefix_suffix(text):
+    prefix = text[0]
+    suffix = text[-1] 
+    if (prefix.isalpha() or prefix.isdigit()) and (suffix.isalpha() or suffix.isdigit() or suffix == '.'):
+        prefix = ""
+        suffix = ""
+        translation_text = text
+    elif (prefix.isalpha() or prefix.isdigit()) and (suffix.isalpha()== False and suffix.isdigit()==False and suffix != '.'): 
+        prefix = ""
+        translation_text = text[0:]
+    elif (prefix.isalpha()==False or prefix.isdigit()==False) and (suffix.isalpha()== False and suffix.isdigit()==False and suffix != '.'):
+        translation_text = text[1:-1]  
+    elif (prefix.isalpha()==False or prefix.isdigit()==False) and (suffix.isalpha() or suffix.isdigit() or suffix == '.'):  
+        suffix = ""
+        translation_text = text[1:]     
+    print(prefix,suffix,translation_text)
+    return prefix,suffix,translation_text
+

@@ -75,6 +75,10 @@ def decode_line(load_model,line):
     try:
         sp = spm.SentencePieceProcessor()
         sp.load(load_model)
+        if not line.startswith("["):
+            line = "["+line
+        if not line.endswith("]"):
+            line = line+"]"    
         return sp.DecodePieces(eval(line))
     except:
         print("something went wrong!")

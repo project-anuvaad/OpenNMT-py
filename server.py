@@ -135,9 +135,13 @@ def start(config_file,
                     logger.info("translating using lookup table")
                     translation = ancillary_functions.handle_single_token(i['src'])
                     scores = [1]
-                    print("111111111111111",translation)
+                elif len(i['src'].split()) == 1 and i['src'].isalpha() and len(i['src'])==1:
+                    logger.info("returning single character:%s"%i['src'])
+                    translation = i['src']
+                    scores = [1]  
                 else:
-                    print("hhhhhhhhhhhhhhh")
+                    logger.info("translating using NMT-models")
+                    prefix,suffix, i['src'] = ancillary_functions.capture_prefix_suffix(i['src'])
                     i['src'] = anuvada.moses_tokenizer(i['src'])
                     # i['src'] = anuvada.truecaser(i['src'])  
                     if i['id'] == 1:                   
@@ -152,7 +156,8 @@ def start(config_file,
                     else:
                         out['status'] = statusCode["INCORRECT_ID"]
                         return jsonify(out)
-                
+                    print(prefix,suffix,translation)
+                    translation = prefix+translation+suffix
                 tgt.append(translation)
                 pred_score.append(scores[0])
 
