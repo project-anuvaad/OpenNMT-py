@@ -6,3 +6,4 @@ future
 configargparse
 sentencepiece
 flask_mongoengine
+indic-transliteration

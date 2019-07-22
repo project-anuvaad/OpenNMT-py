@@ -125,8 +125,13 @@ def start(config_file,
         out = {}
         tgt = list()
         pred_score = list()
+        sentence_id = list()
         try:
             for i in inputs:
+                if 's_id'in i:
+                    s_id = [i['s_id']]
+                else:
+                    s_id = [0000]    
                 if  any(v not in i for v in ['src','id']):
                     out['status'] = statusCode["ID_OR_SRC_MISSING"]
                     return jsonify(out)
@@ -161,10 +166,11 @@ def start(config_file,
                     translation = (prefix+" "+translation+" "+suffix).strip()
                 tgt.append(translation)
                 pred_score.append(scores[0])
+                sentence_id.append(s_id[0])
 
             out['status'] = statusCode["SUCCESS"]
             out['response_body'] = [{"tgt": tgt[i],
-                     "pred_score": pred_score[i]}
+                     "pred_score": pred_score[i], "s_id": sentence_id[i]}
                     for i in range(len(tgt))]
         except ServerModelError as e:
             out['status'] = statusCode["SEVER_MODEL_ERR"]
@@ -181,8 +187,13 @@ def start(config_file,
         out = {}
         tgt = list()
         pred_score = list()
+        sentence_id = list()
         try:
             for i in inputs:
+                if 's_id'in i:
+                    s_id = [i['s_id']]
+                else:
+                    s_id = [0000]   
                 if  any(v not in i for v in ['src','id']):
                     out['status'] = statusCode["ID_OR_SRC_MISSING"]
                     return jsonify(out) 
@@ -214,10 +225,11 @@ def start(config_file,
                 
                 tgt.append(translation)
                 pred_score.append(scores[0])
+                sentence_id.append(s_id[0])
 
             out['status'] = statusCode["SUCCESS"]
             out['response_body'] = [{"tgt": tgt[i],
-                     "pred_score": pred_score[i]}
+                     "pred_score": pred_score[i], "s_id": sentence_id[i]}
                     for i in range(len(tgt))]
         except ServerModelError as e:
             out['status'] = statusCode["SEVER_MODEL_ERR"]
