@@ -141,8 +141,8 @@ def start(config_file,
                     translation = ancillary_functions.handle_single_token(i['src'])
                     scores = [1]
                 elif len(i['src'].split()) == 1 and i['src'].isalpha() and len(i['src'])==1:
-                    logger.info("transliterating single character:%s"%i['src'])
-                    translation = ancillary_functions.transliterate_text(i['src'])
+                    logger.info("returning single characteras it is:%s"%i['src'])
+                    translation = i['src']
                     scores = [1]  
                 else:
                     logger.info("translating using NMT-models")
@@ -164,6 +164,7 @@ def start(config_file,
                         return jsonify(out)
                     
                     translation = (prefix+" "+translation+" "+suffix).strip()
+                translation = ancillary_functions.replace_hindi_numbers(translation)
                 tgt.append(translation)
                 pred_score.append(scores[0])
                 sentence_id.append(s_id[0])
