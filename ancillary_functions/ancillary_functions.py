@@ -116,6 +116,4 @@ def replace_hindi_numbers(text):
         text = text.replace(i,eng_numbers[hindi_numbers.index(i)]) 
     return text    
 
-# match = re.search(r'\(?([0-9A-Za-z]+)\)?', token)
-        # print(match.group(1))
-        # x = re.sub(r'\(?([0-9A-Za-z]+)\)?',"chink lives in gwlr" ,token)  
+      

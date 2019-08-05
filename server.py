@@ -7,6 +7,7 @@ import bleu_results as bleu_results
 import anuvada
 import tools.sp_enc_dec as sp
 import ancillary_functions.ancillary_functions as ancillary_functions
+import ancillary_functions.sc_preface_handler as sc_preface_handler
 
 from flask import Flask, jsonify, request,send_file,abort,send_from_directory
 from flask_cors import CORS
@@ -148,17 +149,27 @@ def start(config_file,
                     logger.info("translating using NMT-models")
                     prefix,suffix, i['src'] = ancillary_functions.separate_alphanumeric_and_symbol(i['src'])
                     print(prefix,suffix,i['src'])
-                    i['src'] = anuvada.moses_tokenizer(i['src'])
+                    # i['src'] = anuvada.moses_tokenizer(i['src'])
                     # i['src'] = anuvada.truecaser(i['src'])  
-                    if i['id'] == 1:                   
+                    if i['id'] == 1:
+                        i['src'] = anuvada.moses_tokenizer(i['src'])                   
                         i['src'] = str(sp.encode_line('en-220519.model',i['src']))
                         translation, scores, n_best, times = translation_server.run([i])
                         translation = sp.decode_line('hi-220519.model',translation[0])
                         translation = anuvada.indic_detokenizer(translation)
-                    elif i['id'] == 7:                   
+                    elif i['id'] == 7:   
+                        i['src'] = anuvada.moses_tokenizer(i['src'])                
                         i['src'] = str(sp.encode_line('enT-08072019-10k.model',i['src']))
                         translation, scores, n_best, times = translation_server.run([i])
-                        translation = sp.decode_line('ta-08072019-10k.model',translation[0])     
+                        translation = sp.decode_line('ta-08072019-10k.model',translation[0])
+                    elif i['id'] == 8:
+                        numbers = sc_preface_handler.get_numbers(i['src'])
+                        i['src'] = sc_preface_handler.replace_numbers_with_hash(i['src'])
+                        i['src'] = str(sp.encode_line('enSC-02082019-2k.model',i['src']))
+                        translation, scores, n_best, times = translation_server.run([i])
+                        translation = sp.decode_line('hiSC-02082019-1k.model',translation[0])
+                        translation = sc_preface_handler.replace_hash_with_original_number(translation,numbers)  
+
                     else:
                         out['status'] = statusCode["INCORRECT_ID"]
                         return jsonify(out)

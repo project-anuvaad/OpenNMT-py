@@ -72,6 +72,16 @@
             "opt": {
                 "beam_size": 5
             }
+        },
+        {
+            "id": 8,
+            "model": "model_020819-model_step_5000.pt",
+            "timeout": 600,
+            "on_timeout": "to_cpu",
+            "load": true,
+            "opt": {
+                "beam_size": 5
+            }
         }
     ]
 }
