@@ -24,6 +24,14 @@ intermediate_data/*
 *.vocab
 *.bpe
 *truecaseModel_en100919
+/corpus/IITB-splitted-data/*
+!corpus/IITB-splitted-data/.gitkeep
+corpus/intermediate-data/*
+!corpus/intermediate-data/.gitkeep
+corpus/master-corpus/*
+!corpus/master-corpus/.gitkeep
+!corpus/data/.gitkeep
+corpus/data/*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

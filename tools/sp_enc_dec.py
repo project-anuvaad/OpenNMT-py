@@ -1,10 +1,14 @@
 import sentencepiece as spm
-import sys, getopt 
+import sys, getopt
+import shutil 
 
 
 def train_spm(input_file,prefix,vocab_size,model_type):  
     try:
-        spm.SentencePieceTrainer.Train('--input={} --model_prefix={} --vocab_size={} --model_type={}'.format(input_file,prefix,vocab_size,model_type))
+        user_defined_symbol = 'UuRrLl'
+        spm.SentencePieceTrainer.Train('--input={} --model_prefix={} --vocab_size={} --model_type={} --user_defined_symbols={}'.format(input_file,prefix,vocab_size,model_type,user_defined_symbol))
+        shutil.move("{}".format(prefix+'.model'), "model/sentencepiece_models/")
+        shutil.move("{}".format(prefix+'.vocab'), "model/sentencepiece_models/")
         return
     except:
         print("something went wrong!")
