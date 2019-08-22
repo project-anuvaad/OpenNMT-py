@@ -2,7 +2,7 @@ import re
 from indic_transliteration import sanscript
 from indic_transliteration.sanscript import SchemeMap, SCHEMES, transliterate
 from onmt.utils.logging import logger
-import common_util_functions as util
+import ancillary_functions_anuvaad.common_util_functions as util
 
 def handle_single_token(token):
    try:
