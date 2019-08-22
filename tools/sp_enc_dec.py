@@ -1,11 +1,12 @@
 import sentencepiece as spm
 import sys, getopt
 import shutil 
+from onmt.utils.logging import logger
 
 
 def train_spm(input_file,prefix,vocab_size,model_type):  
     try:
-        user_defined_symbol = 'UuRrLl'
+        user_defined_symbol = 'UuRrLl,DdAaTtEe'
         spm.SentencePieceTrainer.Train('--input={} --model_prefix={} --vocab_size={} --model_type={} --user_defined_symbols={}'.format(input_file,prefix,vocab_size,model_type,user_defined_symbol))
         shutil.move("{}".format(prefix+'.model'), "model/sentencepiece_models/")
         shutil.move("{}".format(prefix+'.vocab'), "model/sentencepiece_models/")
@@ -38,12 +39,12 @@ def encode_line(load_model,line):
     try:
         sp = spm.SentencePieceProcessor()
         sp.load(load_model)
-        print("here, encoding line using sp")
+        logger.info("encoding using sp model {}".format(load_model))
         return sp.encode_as_pieces(line)
     except:
-        print("something went wrong!")
-        print("Unexpected error:", sys.exc_info()[0])
-        return
+        logger.info("something went wrong!")
+        logger.info("Unexpected error: %s"% sys.exc_info()[0])
+        return ""
     
 
 def decode_as_pieces(load_model,src_file,tgt_file):
@@ -64,7 +65,9 @@ def decode_as_pieces(load_model,src_file,tgt_file):
                         print("here2")
                         print(xlines[i])
                         xlines[i] = xlines[i].rstrip()+"]" 
-                        print(xlines[i])         
+                        print(xlines[i])
+                    xlines[i] = xlines[i][0]+xlines[i][1:-1].replace('[',"")+xlines[i][-1] 
+                    xlines[i] = xlines[i][0]+xlines[i][1:-1].replace(']',"")+xlines[i][-1]            
                     encLine = spH.DecodePieces(eval(xlines[i]))
                     outfile.write(str(encLine))
                     outfile.write("\n")
@@ -82,12 +85,15 @@ def decode_line(load_model,line):
         if not line.startswith("["):
             line = "["+line
         if not line.endswith("]"):
-            line = line+"]"    
+            line = line+"]"     
+        line = line[0]+line[1:-1].replace('[',"")+line[-1] 
+        line = line[0]+line[1:-1].replace(']',"")+line[-1]  
+        logger.info("decoding using sp model {}".format(load_model))
         return sp.DecodePieces(eval(line))
     except:
-        print("something went wrong!")
-        print("Unexpected error:", sys.exc_info()[0])
-        return
+        logger.info("something went wrong!")
+        logger.info("Unexpected error: %s"% sys.exc_info()[0])
+        return ""
 
   
 if __name__ == '__main__':

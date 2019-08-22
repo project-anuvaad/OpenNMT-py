@@ -8,6 +8,7 @@ import anuvada
 import tools.sp_enc_dec as sp
 import ancillary_functions.ancillary_functions as ancillary_functions
 import ancillary_functions.sc_preface_handler as sc_preface_handler
+import ancillary_functions.handle_date_url as date_url_util
 
 from flask import Flask, jsonify, request,send_file,abort,send_from_directory
 from flask_cors import CORS
@@ -142,9 +143,13 @@ def start(config_file,
                     translation = ancillary_functions.handle_single_token(i['src'])
                     scores = [1]
                 elif len(i['src'].split()) == 1 and i['src'].isalpha() and len(i['src'])==1:
-                    logger.info("returning single characteras it is:%s"%i['src'])
+                    logger.info("returning single character as it is:%s"%i['src'])
                     translation = i['src']
-                    scores = [1]  
+                    scores = [1]
+                elif ancillary_functions.special_case_fits(i['src']):
+                    logger.info("sentence fits in special case, returning accordingly and not going to model")
+                    translation = ancillary_functions.handle_special_cases(i['src'])
+                    scores = [1]      
                 else:
                     logger.info("translating using NMT-models")
                     prefix,suffix, i['src'] = ancillary_functions.separate_alphanumeric_and_symbol(i['src'])
