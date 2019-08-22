@@ -6,9 +6,9 @@ from config.config import statusCode,benchmark_types, language_supported, file_l
 import bleu_results as bleu_results
 import anuvada
 import tools.sp_enc_dec as sp
-import ancillary_functions.ancillary_functions as ancillary_functions
-import ancillary_functions.sc_preface_handler as sc_preface_handler
-import ancillary_functions.handle_date_url as date_url_util
+import ancillary_functions_anuvaad.ancillary_functions as ancillary_functions
+import ancillary_functions_anuvaad.sc_preface_handler as sc_preface_handler
+import ancillary_functions_anuvaad.handle_date_url as date_url_util
 
 from flask import Flask, jsonify, request,send_file,abort,send_from_directory
 from flask_cors import CORS
