@@ -148,12 +148,12 @@ def start(config_file,
                     scores = [1]
                 elif ancillary_functions.special_case_fits(i['src']):
                     logger.info("sentence fits in special case, returning accordingly and not going to model")
-                    translation = ancillary_functions.handle_special_cases(i['src'])
+                    translation = ancillary_functions.handle_special_cases(i['src'],i['id'])
                     scores = [1]      
                 else:
                     logger.info("translating using NMT-models")
                     prefix,suffix, i['src'] = ancillary_functions.separate_alphanumeric_and_symbol(i['src'])
-                    print(prefix,suffix,i['src'])
+                    print("prefix :{},suffix :{},i[src] :{}".format(prefix,suffix,i['src']))
                     # i['src'] = anuvada.moses_tokenizer(i['src'])
                     # i['src'] = anuvada.truecaser(i['src'])  
                     if i['id'] == 1:

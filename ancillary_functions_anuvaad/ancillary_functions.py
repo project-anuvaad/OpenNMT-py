@@ -131,8 +131,24 @@ def special_case_fits(text):
         return True
         
 
-def handle_special_cases(text):
-    if util.token_is_date(text):
-        text = transliterate_text(text)
-        logger.info('transliterating dates in long alpha-numeric format')
+def handle_special_cases(text,model_id):
+    try:
+        if util.token_is_date(text):
+            hindi_months = ['जनवरी', 'फ़रवरी', 'मार्च', 'अप्रैल','मई','जून','जुलाई','अगस्त','सितंबर','अक्टूबर','नवंबर','दिसंबर']
+            tamil_months = ['ஜனவரி', 'பிப்ரவரி', 'மார்ச்', 'ஏப்ரல்','மே','ஜூன்','ஜூலை','ஆகஸ்ட்','செப்டம்பர்','அக்டோபர்','நவம்பர்','டிசம்பர்']
+            eng_months = ['january','february','march','april','may','june','july','august','september','october','november','december'] 
+            if model_id == 1:
+                "english to hindi"
+                for i in eng_months : 
+                    text = text.casefold().replace(i.casefold(),hindi_months[eng_months.index(i)]) 
+            elif model_id == 7:
+                "english to tamil"
+                for i in eng_months : 
+                    text = text.casefold().replace(i.casefold(),tamil_months[eng_months.index(i)])
+
+            logger.info('handling dates before model in long alpha-numeric format')
+            return text
+    except Exception as e:
+        logger.info("error when handling special cases :{}".format(e))
         return text
+    
