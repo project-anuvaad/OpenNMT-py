@@ -162,7 +162,7 @@ def start(config_file,
                         translation, scores, n_best, times = translation_server.run([i])
                         translation = sp.decode_line('hi-220519.model',translation[0])
                         translation = anuvada.indic_detokenizer(translation)
-                    elif i['id'] == 7:   
+                    elif i['id'] == 9:   
                         i['src'] = anuvada.moses_tokenizer(i['src'])                
                         i['src'] = str(sp.encode_line('enT-08072019-10k.model',i['src']))
                         translation, scores, n_best, times = translation_server.run([i])
@@ -174,7 +174,7 @@ def start(config_file,
                         translation, scores, n_best, times = translation_server.run([i])
                         translation = sp.decode_line('hiSC-02082019-1k.model',translation[0])
                         translation = sc_preface_handler.replace_hash_with_original_number(translation,numbers)  
-                    elif i['id'] == 9:  
+                    elif i['id'] == 7:  
                         i['src'],date_original,url_original = date_url_util.tag_number_date_url(i['src'])   
                         print("herere")           
                         i['src'] = str(sp.encode_line('model/sentencepiece_models/enT-210819-7k.model',i['src']))
