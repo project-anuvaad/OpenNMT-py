@@ -174,6 +174,15 @@ def start(config_file,
                         translation, scores, n_best, times = translation_server.run([i])
                         translation = sp.decode_line('hiSC-02082019-1k.model',translation[0])
                         translation = sc_preface_handler.replace_hash_with_original_number(translation,numbers)  
+                    elif i['id'] == 9:  
+                        i['src'],date_original,url_original = date_url_util.tag_number_date_url(i['src'])   
+                        print("herere")           
+                        i['src'] = str(sp.encode_line('model/sentencepiece_models/enT-210819-7k.model',i['src']))
+                        translation, scores, n_best, times = translation_server.run([i])
+                        print("translaion output, ",translation[0])
+                        translation = sp.decode_line('model/sentencepiece_models/ta-210819-7k.model',translation[0])
+                        print("decoded: ",translation)
+                        translation = date_url_util.replace_tags_with_original(translation,date_original,url_original)  
 
                     else:
                         out['status'] = statusCode["INCORRECT_ID"]
@@ -192,8 +201,9 @@ def start(config_file,
         except ServerModelError as e:
             out['status'] = statusCode["SEVER_MODEL_ERR"]
             out['status']['errObj'] = str(e)
-        except:
+        except Exception as e:
             out['status'] = statusCode["SYSTEM_ERR"]
+            print("error: {}".format(e))
             logger.info("Unexpected error: %s"% sys.exc_info()[0])    
 
         return jsonify(out)        

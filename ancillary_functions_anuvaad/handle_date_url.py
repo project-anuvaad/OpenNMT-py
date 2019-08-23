@@ -12,11 +12,24 @@ def tag_number_date_url(text):
     for word in text.split():
         print("word",word)
         # if len(word)>4 and len(word)<12 and token_is_date(word):
-        if word.isalpha()== False and common_utils.token_is_date(word):
-            date_original.append(word)  
-            word = 'DdAaTtEe'+str(count_date)
-            count_date +=1
-            print("ggg")
+        ext = [".",",","?","!"]
+        if word.isalpha()== False and word[:-1].isalpha() == False and len(word)>4 and common_utils.token_is_date(word):
+            if word.endswith(tuple(ext)):
+              end_token = word[-1]
+              word = word[:-1]
+              if len(word)<7 and int(word):
+                word = word+end_token
+                print("kkkk")
+              else:
+                date_original.append(word)
+                word = 'DdAaTtEe'+str(count_date)+end_token
+                count_date +=1
+                print("jjj")
+            else:
+              date_original.append(word)  
+              word = 'DdAaTtEe'+str(count_date)
+              count_date +=1
+              print("ggg")
         elif common_utils.token_is_url(word):
             url_original.append(word)
             word = 'UuRrLl'+str(count_url)

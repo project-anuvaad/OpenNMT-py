@@ -81,7 +81,17 @@
             "load": true,
             "opt": {
                 "beam_size": 5,
-            	"gpu":0
+                "gpu":0
+            }
+        },
+        {
+            "id": 9,
+            "model": "model_210819-model_step_90000.pt",
+            "timeout": 600,
+            "on_timeout": "to_cpu",
+            "load": true,
+            "opt": {
+                "beam_size": 5
             }
         }
     ]

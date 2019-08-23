@@ -57,6 +57,9 @@ def decode_as_pieces(load_model,src_file,tgt_file):
                 xlines= xh.readlines()
         
                 for i in range(len(xlines)):
+                    xlines[i] = xlines[i][0]+xlines[i][1:-1].replace('[',"")+xlines[i][-1] 
+                    xlines[i] = xlines[i][0]+xlines[i][1:-1].replace(']',"")+xlines[i][-1] 
+
                     if not xlines[i].startswith("["):
                         print("here1")
                         xlines[i] = "["+xlines[i].rstrip()
@@ -66,13 +69,12 @@ def decode_as_pieces(load_model,src_file,tgt_file):
                         print(xlines[i])
                         xlines[i] = xlines[i].rstrip()+"]" 
                         print(xlines[i])
-                    xlines[i] = xlines[i][0]+xlines[i][1:-1].replace('[',"")+xlines[i][-1] 
-                    xlines[i] = xlines[i][0]+xlines[i][1:-1].replace(']',"")+xlines[i][-1]            
+                                 
                     encLine = spH.DecodePieces(eval(xlines[i]))
                     outfile.write(str(encLine))
                     outfile.write("\n")
-    except:
-        print("something went wrong!")
+    except Exception as e:
+        print("something went wrong!: ",e)
         print("Unexpected error:", sys.exc_info()[0])
         return                    
 
