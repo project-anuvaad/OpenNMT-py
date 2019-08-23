@@ -64,7 +64,7 @@
             }
         },
         {
-            "id": 7,
+            "id": 9,
             "model": "model_080719-model_step_100000.pt",
             "timeout": 600,
             "on_timeout": "to_cpu",
@@ -85,7 +85,7 @@
             }
         },
         {
-            "id": 9,
+            "id": 7,
             "model": "model_210819-model_step_90000.pt",
             "timeout": 600,
             "on_timeout": "to_cpu",
