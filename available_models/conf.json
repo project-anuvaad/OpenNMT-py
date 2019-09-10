@@ -9,7 +9,7 @@
             "load": true,
             "opt": {
                 "beam_size": 5,
-                "gpu":0
+                "gpu":1
             }
         },
         {
@@ -81,7 +81,7 @@
             "load": true,
             "opt": {
                 "beam_size": 5,
-                "gpu":0
+                "gpu":1
             }
         },
         {
@@ -91,7 +91,8 @@
             "on_timeout": "to_cpu",
             "load": true,
             "opt": {
-                "beam_size": 5
+                "beam_size": 5,
+                "gpu":0
             }
         }
     ]

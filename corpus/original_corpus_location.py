@@ -30,8 +30,8 @@ english_gujrati = {
     "FILE_NAMES_GUJRATI": ['corpus/original_data/english_gujrati/target_gu.txt'],
     "DEV_ENGLISH": "corpus/original_data/english_gujrati/source_2k_gu.txt",
     "DEV_GUJRATI": "corpus/original_data/english_gujrati/target_2k_gu.txt",
-    "TEST_ENGLISH": "",
-    "TEST_GUJRATI": ""
+    "TEST_ENGLISH": "corpus/original_data/english_gujrati/8k_sen_gu_source.txt",
+    "TEST_GUJRATI": "corpus/original_data/english_gujrati/8k_sen_gu_target.txt"
 }
 
 english_bengali = {
