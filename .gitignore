@@ -32,7 +32,12 @@ corpus/master_corpus/*
 !corpus/master_corpus/.gitkeep
 !corpus/original_data/.gitkeep
 corpus/original_data/IITB.en-hi*
-corpus/original_data/english_tamil
+corpus/original_data/english_tamil/*
+corpus/original_data/english_gujrati/*
+corpus/original_data/english_bengali/*
+!corpus/original_data/english_gujrati/.gitkeep
+!corpus/original_data/english_bengali/.gitkeep
+!corpus/original_data/english_tamil/.gitkeep
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

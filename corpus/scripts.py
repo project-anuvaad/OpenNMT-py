@@ -122,11 +122,124 @@ def english_hindi():
     except Exception as e:
         print(e)
 
+def english_gujrati():
+    try:
+        model_intermediate_folder = os.path.join(INTERMEDIATE_DATA_LOCATION, 'english_gujrati')
+        model_master_folder = os.path.join(MASTER_DATA_LOCATION, 'english_gujrati')
+        english_merged_file_name = os.path.join(model_intermediate_folder, 'english_merged_original.txt')
+        gujrati_merged_file_name = os.path.join(model_intermediate_folder, 'gujrati_merged_original.txt')
+        tab_sep_out_file = os.path.join(model_intermediate_folder, 'tab_sep_corpus.txt')
+        tab_sep_out_file_no_duplicate = os.path.join(model_intermediate_folder, 'tab_sep_corpus_no_duplicate.txt')
+        replaced_hindi_number_file_name = os.path.join(model_intermediate_folder, 'corpus_no_hindi_num.txt')
+        eng_separated = os.path.join(model_intermediate_folder, 'eng_train_separated.txt')
+        gujrati_separated = os.path.join(model_intermediate_folder, 'gujrati_train_separated.txt')
+        english_tagged = os.path.join(model_master_folder, 'eng_train_corpus_final.txt')
+        gujrati_tagged = os.path.join(model_master_folder, 'gujrati_train_corpus_final.txt')
+
+        dev_english_tagged = os.path.join(model_master_folder, 'english_dev_final.txt')
+        dev_gujrati_tagged = os.path.join(model_master_folder, 'gujrati_dev_final.txt')
+        test_english_tagged = os.path.join(model_master_folder, 'english_test_final.txt')
+        test_gujrati_tagged = os.path.join(model_master_folder, 'gujrati_test_final.txt')
+
+        if not any ([os.path.exists(model_intermediate_folder),os.path.exists(model_master_folder)]):
+            os.makedirs(model_intermediate_folder)
+            os.makedirs(model_master_folder)
+            print("folder created at {} and {}".format(model_intermediate_folder,model_master_folder))
+
+        file_names_english = ocl.english_gujrati['FILE_NAMES_ENGLISH']
+        file_names_gujrati = ocl.english_gujrati['FILE_NAMES_GUJRATI']
+        fm.file_merger(file_names_english, english_merged_file_name)
+        fm.file_merger(file_names_gujrati, gujrati_merged_file_name)
+        print("original src and tgt file merged successfully")
+
+        fc.tab_separated_parllel_corpus(gujrati_merged_file_name, english_merged_file_name, tab_sep_out_file)
+        print("tab separated corpus created")
+        fc.drop_duplicate(tab_sep_out_file, tab_sep_out_file_no_duplicate)
+        print("duplicates removed from combined corpus")
+
+        format_handler.replace_hindi_numbers(tab_sep_out_file_no_duplicate,replaced_hindi_number_file_name)
+        print("hindi number replaced")
+
+        fc.separate_corpus(0, replaced_hindi_number_file_name, eng_separated)
+        fc.separate_corpus(1, replaced_hindi_number_file_name, gujrati_separated)
+        print("corpus separated into src and tgt")
+
+        format_handler.tag_number_date_url(eng_separated, english_tagged)
+        format_handler.tag_number_date_url(gujrati_separated, gujrati_tagged)
+        print("url,num and date tagging done, corpus in master folder")
+
+        format_handler.tag_number_date_url(ocl.english_gujrati['DEV_ENGLISH'], dev_english_tagged)
+        format_handler.tag_number_date_url(ocl.english_gujrati['DEV_GUJRATI'], dev_gujrati_tagged)
+        format_handler.tag_number_date_url(ocl.english_gujrati['TEST_ENGLISH'], test_english_tagged)
+        format_handler.tag_number_date_url(ocl.english_gujrati['TEST_GUJRATI'], test_gujrati_tagged)
+        print("test and dev data taggeg and in master folder")
+
+    except Exception as e:
+        print(e)
+
+def english_bengali():
+    try:
+        model_intermediate_folder = os.path.join(INTERMEDIATE_DATA_LOCATION, 'english_bengali')
+        model_master_folder = os.path.join(MASTER_DATA_LOCATION, 'english_bengali')
+        english_merged_file_name = os.path.join(model_intermediate_folder, 'english_merged_original.txt')
+        bengali_merged_file_name = os.path.join(model_intermediate_folder, 'bengali_merged_original.txt')
+        tab_sep_out_file = os.path.join(model_intermediate_folder, 'tab_sep_corpus.txt')
+        tab_sep_out_file_no_duplicate = os.path.join(model_intermediate_folder, 'tab_sep_corpus_no_duplicate.txt')
+        replaced_hindi_number_file_name = os.path.join(model_intermediate_folder, 'corpus_no_hindi_num.txt')
+        eng_separated = os.path.join(model_intermediate_folder, 'eng_train_separated.txt')
+        bengali_separated = os.path.join(model_intermediate_folder, 'bengali_train_separated.txt')
+        english_tagged = os.path.join(model_master_folder, 'eng_train_corpus_final.txt')
+        bengali_tagged = os.path.join(model_master_folder, 'bengali_train_corpus_final.txt')
+
+        dev_english_tagged = os.path.join(model_master_folder, 'english_dev_final.txt')
+        dev_bengali_tagged = os.path.join(model_master_folder, 'bengali_dev_final.txt')
+        test_english_tagged = os.path.join(model_master_folder, 'english_test_final.txt')
+        test_bengali_tagged = os.path.join(model_master_folder, 'bengali_test_final.txt')
+
+        if not any ([os.path.exists(model_intermediate_folder),os.path.exists(model_master_folder)]):
+            os.makedirs(model_intermediate_folder)
+            os.makedirs(model_master_folder)
+            print("folder created at {} and {}".format(model_intermediate_folder,model_master_folder))
+
+        file_names_english = ocl.english_bengali['FILE_NAMES_ENGLISH']
+        file_names_bengali = ocl.english_bengali['FILE_NAMES_GUJRATI']
+        fm.file_merger(file_names_english, english_merged_file_name)
+        fm.file_merger(file_names_bengali, bengali_merged_file_name)
+        print("original src and tgt file merged successfully")
+
+        fc.tab_separated_parllel_corpus(bengali_merged_file_name, english_merged_file_name, tab_sep_out_file)
+        print("tab separated corpus created")
+        fc.drop_duplicate(tab_sep_out_file, tab_sep_out_file_no_duplicate)
+        print("duplicates removed from combined corpus")
+
+        format_handler.replace_hindi_numbers(tab_sep_out_file_no_duplicate,replaced_hindi_number_file_name)
+        print("hindi number replaced")
+
+        fc.separate_corpus(0, replaced_hindi_number_file_name, eng_separated)
+        fc.separate_corpus(1, replaced_hindi_number_file_name, bengali_separated)
+        print("corpus separated into src and tgt")
+
+        format_handler.tag_number_date_url(eng_separated, english_tagged)
+        format_handler.tag_number_date_url(bengali_separated, bengali_tagged)
+        print("url,num and date tagging done, corpus in master folder")
+
+        format_handler.tag_number_date_url(ocl.english_bengali['DEV_ENGLISH'], dev_english_tagged)
+        format_handler.tag_number_date_url(ocl.english_bengali['DEV_GUJRATI'], dev_bengali_tagged)
+        format_handler.tag_number_date_url(ocl.english_bengali['TEST_ENGLISH'], test_english_tagged)
+        format_handler.tag_number_date_url(ocl.english_bengali['TEST_GUJRATI'], test_bengali_tagged)
+        print("test and dev data taggeg and in master folder")
+
+    except Exception as e:
+        print(e)    
 
 if __name__ == '__main__':
     if sys.argv[1] == "english-tamil":
         english_tamil()
     elif sys.argv[1] == "english-hindi":
         english_hindi()
+    elif sys.argv[1] == "english-gujrati":
+        english_gujrati() 
+    elif sys.argv[1] == "english-bengali":
+        english_bengali()       
     else:
         print("invalid request", sys.argv)

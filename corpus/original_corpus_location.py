@@ -24,3 +24,21 @@ english_tamil = {
     "FILE_NAMES_ENGLISH": [],
     "FILE_NAMES_TAMIL": []
 }
+
+english_gujrati = {
+    "FILE_NAMES_ENGLISH": ['corpus/original_data/english_gujrati/source_gu.txt'],
+    "FILE_NAMES_GUJRATI": ['corpus/original_data/english_gujrati/target_gu.txt'],
+    "DEV_ENGLISH": "corpus/original_data/english_gujrati/source_2k_gu.txt",
+    "DEV_GUJRATI": "corpus/original_data/english_gujrati/target_2k_gu.txt",
+    "TEST_ENGLISH": "",
+    "TEST_GUJRATI": ""
+}
+
+english_bengali = {
+    "FILE_NAMES_ENGLISH": [],
+    "FILE_NAMES_BENGALI": [],
+    "DEV_ENGLISH": "",
+    "DEV_BENGALI": "",
+    "TEST_ENGLISH": "",
+    "TEST_BENGALI": ""
+}

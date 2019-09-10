@@ -8,7 +8,7 @@
 "6. 7th---NnUuMm0th"
 "7. 11,11,11 --numbers like this can be treated as one nmber or 3 different numbers. we are treating three different numbers"
 "Note: applying reverse sorting on array, so that largest number is num0 always"
-"handling only upto 20 numbers in a string"
+"handling only upto 30 numbers in a string and using hindi numerals for tagging numbers"
 
 import re
 import sys
