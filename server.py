@@ -182,7 +182,17 @@ def start(config_file,
                         print("translaion output, ",translation[0])
                         translation = sp.decode_line('model/sentencepiece_models/ta-210819-7k.model',translation[0])
                         print("decoded: ",translation)
-                        translation = date_url_util.replace_tags_with_original(translation,date_original,url_original)  
+                        translation = date_url_util.replace_tags_with_original(translation,date_original,url_original)
+                    elif i['id'] == 10:  
+                        "english-gujrati"
+                        i['src'],date_original,url_original,num_array = date_url_util.tag_number_date_url_1(i['src'])   
+                        print("tagged string",i['src'])           
+                        i['src'] = str(sp.encode_line('model/sentencepiece_models/en-2019-09-10-10k.model',i['src']))
+                        translation, scores, n_best, times = translation_server.run([i])
+                        print("translaion output, ",translation[0])
+                        translation = sp.decode_line('model/sentencepiece_models/guj-2019-09-10-10k.model',translation[0])
+                        print("decoded: ",translation)
+                        translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)      
 
                     else:
                         out['status'] = statusCode["INCORRECT_ID"]
