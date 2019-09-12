@@ -8,8 +8,7 @@
             "on_timeout": "to_cpu",
             "load": true,
             "opt": {
-                "beam_size": 5,
-                "gpu":1
+                "beam_size": 5
             }
         },
         {
@@ -80,8 +79,7 @@
             "on_timeout": "to_cpu",
             "load": true,
             "opt": {
-                "beam_size": 5,
-                "gpu":1
+                "beam_size": 5
             }
         },
         {
@@ -91,12 +89,17 @@
             "on_timeout": "to_cpu",
             "load": true,
             "opt": {
-                "beam_size": 5,
-<<<<<<< 81a6d2d2b7256976fc8392cd7df37beb63187b95
-                "gpu":0
-=======
-		"gpu":0
->>>>>>> conf.json in gitignore
+                "beam_size": 5
+            }
+        },
+        {
+            "id": 10,
+            "model": "model_2019-09-10-model_step_90000.pt",
+            "timeout": 600,
+            "on_timeout": "to_cpu",
+            "load": true,
+            "opt": {
+                "beam_size": 5
             }
         }
     ]
