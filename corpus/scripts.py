@@ -202,7 +202,7 @@ def english_bengali():
             print("folder created at {} and {}".format(model_intermediate_folder,model_master_folder))
 
         file_names_english = ocl.english_bengali['FILE_NAMES_ENGLISH']
-        file_names_bengali = ocl.english_bengali['FILE_NAMES_GUJRATI']
+        file_names_bengali = ocl.english_bengali['FILE_NAMES_BENGALI']
         fm.file_merger(file_names_english, english_merged_file_name)
         fm.file_merger(file_names_bengali, bengali_merged_file_name)
         print("original src and tgt file merged successfully")
@@ -224,9 +224,9 @@ def english_bengali():
         print("url,num and date tagging done, corpus in master folder")
 
         format_handler.tag_number_date_url(ocl.english_bengali['DEV_ENGLISH'], dev_english_tagged)
-        format_handler.tag_number_date_url(ocl.english_bengali['DEV_GUJRATI'], dev_bengali_tagged)
+        format_handler.tag_number_date_url(ocl.english_bengali['DEV_BENGALI'], dev_bengali_tagged)
         format_handler.tag_number_date_url(ocl.english_bengali['TEST_ENGLISH'], test_english_tagged)
-        format_handler.tag_number_date_url(ocl.english_bengali['TEST_GUJRATI'], test_bengali_tagged)
+        format_handler.tag_number_date_url(ocl.english_bengali['TEST_BENGALI'], test_bengali_tagged)
         print("test and dev data taggeg and in master folder")
 
     except Exception as e:
