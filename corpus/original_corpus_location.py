@@ -35,10 +35,10 @@ english_gujrati = {
 }
 
 english_bengali = {
-    "FILE_NAMES_ENGLISH": [],
-    "FILE_NAMES_BENGALI": [],
-    "DEV_ENGLISH": "",
-    "DEV_BENGALI": "",
-    "TEST_ENGLISH": "",
-    "TEST_BENGALI": ""
+    "FILE_NAMES_ENGLISH": ['corpus/original_data/english_bengali/final_bn_source.txt'],
+    "FILE_NAMES_BENGALI": ['corpus/original_data/english_bengali/final_bn_target.txt'],
+    "DEV_ENGLISH": "corpus/original_data/english_bengali/bn2k_source.txt",
+    "DEV_BENGALI": "corpus/original_data/english_bengali/bn2k_result.txt",
+    "TEST_ENGLISH": "corpus/original_data/english_bengali/bn8k_source.txt",
+    "TEST_BENGALI": "corpus/original_data/english_bengali/bn8k_result.txt"
 }
