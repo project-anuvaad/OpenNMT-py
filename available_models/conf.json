@@ -92,7 +92,11 @@
             "load": true,
             "opt": {
                 "beam_size": 5,
+<<<<<<< 81a6d2d2b7256976fc8392cd7df37beb63187b95
                 "gpu":0
+=======
+		"gpu":0
+>>>>>>> conf.json in gitignore
             }
         }
     ]
