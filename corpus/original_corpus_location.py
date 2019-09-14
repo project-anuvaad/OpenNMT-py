@@ -42,3 +42,11 @@ english_bengali = {
     "TEST_ENGLISH": "corpus/original_data/english_bengali/bn8k_source.txt",
     "TEST_BENGALI": "corpus/original_data/english_bengali/bn8k_result.txt"
 }
+
+english_marathi = {
+    "FILE_NAMES_ENGLISH": ['corpus/original_data/english_marathi/final_source_mt.txt'],
+    "FILE_NAMES_MARATHI": ['corpus/original_data/english_marathi/final_target_mt.txt'],
+    "DEV_ENGLISH": "corpus/original_data/english_marathi/dev2k_eng.txt",
+    "DEV_MARATHI": "corpus/original_data/english_marathi/dev2k_marathi.txt",
+    "TEST_ENGLISH": "corpus/original_data/english_marathi/test8k.txt"
+}

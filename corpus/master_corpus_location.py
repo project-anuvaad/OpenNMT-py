@@ -26,3 +26,11 @@ english_bengali = {
     "DEV_BENGALI": "corpus/master_corpus/english_bengali/bengali_dev_final.txt",
     "TEST_ENGLISH": "corpus/master_corpus/english_bengali/english_test_final.txt"
 }
+
+english_marathi = {
+    "ENGLISH_TRAIN_FILE": 'corpus/master_corpus/english_marathi/eng_train_corpus_final.txt',
+    "MARATHI_TRAIN_FILE": 'corpus/master_corpus/english_marathi/marathi_train_corpus_final.txt',
+    "DEV_ENGLISH": "corpus/master_corpus/english_marathi/english_dev_final.txt",
+    "DEV_MARATHI": "corpus/master_corpus/english_marathi/marathi_dev_final.txt",
+    "TEST_ENGLISH": "corpus/master_corpus/english_marathi/english_test_final.txt"
+}

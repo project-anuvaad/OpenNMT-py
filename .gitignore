@@ -38,6 +38,8 @@ corpus/original_data/english_bengali/*
 !corpus/original_data/english_gujrati/.gitkeep
 !corpus/original_data/english_bengali/.gitkeep
 !corpus/original_data/english_tamil/.gitkeep
+corpus/original_data/english_marathi/*
+!corpus/original_data/english_marathi/.gitkeep
 
 
 # Byte-compiled / optimized / DLL files

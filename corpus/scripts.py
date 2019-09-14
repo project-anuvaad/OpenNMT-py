@@ -232,6 +232,61 @@ def english_bengali():
     except Exception as e:
         print(e)    
 
+def english_marathi():
+    try:
+        model_intermediate_folder = os.path.join(INTERMEDIATE_DATA_LOCATION, 'english_marathi')
+        model_master_folder = os.path.join(MASTER_DATA_LOCATION, 'english_marathi')
+        english_merged_file_name = os.path.join(model_intermediate_folder, 'english_merged_original.txt')
+        marathi_merged_file_name = os.path.join(model_intermediate_folder, 'marathi_merged_original.txt')
+        tab_sep_out_file = os.path.join(model_intermediate_folder, 'tab_sep_corpus.txt')
+        tab_sep_out_file_no_duplicate = os.path.join(model_intermediate_folder, 'tab_sep_corpus_no_duplicate.txt')
+        replaced_hindi_number_file_name = os.path.join(model_intermediate_folder, 'corpus_no_hindi_num.txt')
+        eng_separated = os.path.join(model_intermediate_folder, 'eng_train_separated.txt')
+        marathi_separated = os.path.join(model_intermediate_folder, 'marathi_train_separated.txt')
+        english_tagged = os.path.join(model_master_folder, 'eng_train_corpus_final.txt')
+        marathi_tagged = os.path.join(model_master_folder, 'marathi_train_corpus_final.txt')
+
+        dev_english_tagged = os.path.join(model_master_folder, 'english_dev_final.txt')
+        dev_marathi_tagged = os.path.join(model_master_folder, 'marathi_dev_final.txt')
+        test_english_tagged = os.path.join(model_master_folder, 'english_test_final.txt')
+        # test_marathi_tagged = os.path.join(model_master_folder, 'marathi_test_final.txt')
+
+        if not any ([os.path.exists(model_intermediate_folder),os.path.exists(model_master_folder)]):
+            os.makedirs(model_intermediate_folder)
+            os.makedirs(model_master_folder)
+            print("folder created at {} and {}".format(model_intermediate_folder,model_master_folder))
+
+        file_names_english = ocl.english_marathi['FILE_NAMES_ENGLISH']
+        file_names_marathi = ocl.english_marathi['FILE_NAMES_MARATHI']
+        fm.file_merger(file_names_english, english_merged_file_name)
+        fm.file_merger(file_names_marathi, marathi_merged_file_name)
+        print("original src and tgt file merged successfully")
+
+        fc.tab_separated_parllel_corpus(marathi_merged_file_name, english_merged_file_name, tab_sep_out_file)
+        print("tab separated corpus created")
+        fc.drop_duplicate(tab_sep_out_file, tab_sep_out_file_no_duplicate)
+        print("duplicates removed from combined corpus")
+
+        format_handler.replace_hindi_numbers(tab_sep_out_file_no_duplicate,replaced_hindi_number_file_name)
+        print("hindi number replaced")
+
+        fc.separate_corpus(0, replaced_hindi_number_file_name, eng_separated)
+        fc.separate_corpus(1, replaced_hindi_number_file_name, marathi_separated)
+        print("corpus separated into src and tgt")
+
+        format_handler.tag_number_date_url(eng_separated, english_tagged)
+        format_handler.tag_number_date_url(marathi_separated, marathi_tagged)
+        print("url,num and date tagging done, corpus in master folder")
+
+        format_handler.tag_number_date_url(ocl.english_marathi['DEV_ENGLISH'], dev_english_tagged)
+        format_handler.tag_number_date_url(ocl.english_marathi['DEV_MARATHI'], dev_marathi_tagged)
+        format_handler.tag_number_date_url(ocl.english_marathi['TEST_ENGLISH'], test_english_tagged)
+        # format_handler.tag_number_date_url(ocl.english_marathi['TEST_MARATHI'], test_marathi_tagged)
+        print("test and dev data taggeg and in master folder")
+
+    except Exception as e:
+        print(e)
+
 if __name__ == '__main__':
     if sys.argv[1] == "english-tamil":
         english_tamil()
@@ -240,6 +295,8 @@ if __name__ == '__main__':
     elif sys.argv[1] == "english-gujrati":
         english_gujrati() 
     elif sys.argv[1] == "english-bengali":
-        english_bengali()       
+        english_bengali()
+    elif sys.argv[1] == "english-marathi":
+        english_marathi()           
     else:
         print("invalid request", sys.argv)
