@@ -101,6 +101,26 @@
             "opt": {
                 "beam_size": 5
             }
+        },
+        {
+            "id": 11,
+            "model": "model_2019-09-12-model_step_100000.pt",
+            "timeout": 600,
+            "on_timeout": "to_cpu",
+            "load": true,
+            "opt": {
+                "beam_size": 5
+            }
+        },
+        {
+            "id": 12,
+            "model": "model_2019-09-14-model_step_100000.pt",
+            "timeout": 600,
+            "on_timeout": "to_cpu",
+            "load": true,
+            "opt": {
+                "beam_size": 5
+            }
         }
     ]
 }

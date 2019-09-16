@@ -140,7 +140,12 @@ def replace_tags_with_original_1(text,date_original,url_original,num_array):
     for j in array:
       end_hin_number = j[-1]
       index = hindi_numbers.index(end_hin_number)
-      text = text.replace(j,str(num_array[index]),1)
+      try:
+        text = text.replace(j,str(num_array[index]),1)
+      except Exception as e:
+        print("inside str.replace error,but handling it:",e)
+        text = text.replace(j,"",1)
+      
 
     for word in text.split():
       if word[:-1] == 'DdAaTtEe':
@@ -157,5 +162,5 @@ def replace_tags_with_original_1(text,date_original,url_original,num_array):
     print(res,"response")
     return res    
   except Exception as e:
-    print(e)
+    print("errror:",e)
     pass
