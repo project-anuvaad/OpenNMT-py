@@ -64,7 +64,7 @@ def english_hindi():
         model_master_folder = os.path.join(MASTER_DATA_LOCATION, 'english_hindi')
         # model_intermediate_folder = datetime.datetime.now().strftime('%Y-%m-%d')
         english_merged_file_name = os.path.join(model_intermediate_folder, 'english_merged_original.txt')
-        english_merged_lowercased_file_name = os.path.join(model_intermediate_folder, 'english_merged_lowercased_original.txt')
+        # english_merged_lowercased_file_name = os.path.join(model_intermediate_folder, 'english_merged_lowercased_original.txt')
         hindi_merged_file_name = os.path.join(model_intermediate_folder, 'hindi_merged_original.txt')
         tab_sep_out_file = os.path.join(model_intermediate_folder, 'tab_sep_corpus.txt')
         tab_sep_out_file_no_duplicate = os.path.join(model_intermediate_folder, 'tab_sep_corpus_no_duplicate.txt')
@@ -74,12 +74,12 @@ def english_hindi():
         english_tagged = os.path.join(model_master_folder, 'eng_train_corpus_final.txt')
         hindi_tagged = os.path.join(model_master_folder, 'hindi_train_corpus_final.txt')
 
-        dev_english_lowercased = os.path.join(model_intermediate_folder, 'english_dev_lowercased.txt')
+        # dev_english_lowercased = os.path.join(model_intermediate_folder, 'english_dev_lowercased.txt')
         dev_english_tagged = os.path.join(model_master_folder, 'english_dev_final.txt')
         dev_hindi_tagged = os.path.join(model_master_folder, 'hindi_dev_final.txt')
-        test_Gen_english_lowercased = os.path.join(model_intermediate_folder, 'english_test_Gen_lowercased.txt')
-        test_LC_english_lowercased = os.path.join(model_intermediate_folder, 'english_test_LC_lowercased.txt')
-        test_TB_english_lowercased = os.path.join(model_intermediate_folder, 'english_test_TB_lowercased.txt')
+        # test_Gen_english_lowercased = os.path.join(model_intermediate_folder, 'english_test_Gen_lowercased.txt')
+        # test_LC_english_lowercased = os.path.join(model_intermediate_folder, 'english_test_LC_lowercased.txt')
+        # test_TB_english_lowercased = os.path.join(model_intermediate_folder, 'english_test_TB_lowercased.txt')
         test_Gen_english_tagged = os.path.join(model_master_folder, 'english_test_Gen_final.txt')
         test_LC_english_tagged = os.path.join(model_master_folder, 'english_test_LC_final.txt')
         test_TB_english_tagged = os.path.join(model_master_folder, 'english_test_TB_final.txt')
@@ -91,23 +91,15 @@ def english_hindi():
             os.makedirs(model_intermediate_folder)
             os.makedirs(model_master_folder)
             print("folder created at {} and {}".format(model_intermediate_folder,model_master_folder))
-
+        
         file_names_english = ocl.english_hindi['FILE_NAMES_ENGLISH']
         file_names_hindi = ocl.english_hindi['FILE_NAMES_HINDI']
         fm.file_merger(file_names_english, english_merged_file_name)
         fm.file_merger(file_names_hindi, hindi_merged_file_name)
         print("original src and tgt file merged successfully")
-        # "below is for lowercasing"
-        with open(english_merged_file_name) as xh:
-            with open(english_merged_lowercased_file_name,"w") as zh:
-              xlines = xh.readlines()   
-              #Write to third file
-              for i in range(len(xlines)):
-                line = xlines[i].lower()
-                zh.write(line)
-        print("lowercasing train eng done")        
+                
 
-        fc.tab_separated_parllel_corpus(hindi_merged_file_name, english_merged_lowercased_file_name, tab_sep_out_file)
+        fc.tab_separated_parllel_corpus(hindi_merged_file_name, english_merged_file_name, tab_sep_out_file)
         print("tab separated corpus created")
         # fc.drop_duplicate(tab_sep_out_file, tab_sep_out_file_no_duplicate)
         # print("duplicates removed from combined corpus")
@@ -123,47 +115,11 @@ def english_hindi():
         format_handler.tag_number_date_url(hindi_separated, hindi_tagged)
         print("url,num and date tagging done, corpus in master folder")
 
-        # "below is for lowercasing"
-        with open(ocl.english_hindi['DEV_ENGLISH']) as xh:
-            with open(dev_english_lowercased,"w") as zh:
-              xlines = xh.readlines()   
-              #Write to third file
-              for i in range(len(xlines)):
-                line = xlines[i].lower()
-                zh.write(line)
-        print("lowercasing dev eng done")
-        # "below is for lowercasing"
-        with open(ocl.english_hindi['TEST_ENGLISH_GEN']) as xh:
-            with open(test_Gen_english_lowercased,"w") as zh:
-              xlines = xh.readlines()   
-              #Write to third file
-              for i in range(len(xlines)):
-                line = xlines[i].lower()
-                zh.write(line)
-        print("lowercasing test gen eng done")
-        # "below is for lowercasing"
-        with open(ocl.english_hindi['TEST_ENGLISH_LC']) as xh:
-            with open(test_LC_english_lowercased,"w") as zh:
-              xlines = xh.readlines()   
-              #Write to third file
-              for i in range(len(xlines)):
-                line = xlines[i].lower()
-                zh.write(line)
-        print("lowercasing test lc eng done")
-        with open(ocl.english_hindi['TEST_ENGLISH_TB']) as xh:
-            with open(test_TB_english_lowercased,"w") as zh:
-              xlines = xh.readlines()   
-              #Write to third file
-              for i in range(len(xlines)):
-                line = xlines[i].lower()
-                zh.write(line)
-        print("lowercasing test tb eng done")
-
-        format_handler.tag_number_date_url(dev_english_lowercased, dev_english_tagged)
+        format_handler.tag_number_date_url(ocl.english_hindi['DEV_ENGLISH'], dev_english_tagged)
         format_handler.tag_number_date_url(ocl.english_hindi['DEV_HINDI'], dev_hindi_tagged)
-        format_handler.tag_number_date_url(test_Gen_english_lowercased, test_Gen_english_tagged)
-        format_handler.tag_number_date_url(test_LC_english_lowercased, test_LC_english_tagged)
-        format_handler.tag_number_date_url(test_TB_english_lowercased, test_TB_english_tagged)
+        format_handler.tag_number_date_url(ocl.english_hindi['TEST_ENGLISH_GEN'], test_Gen_english_tagged)
+        format_handler.tag_number_date_url(ocl.english_hindi['TEST_ENGLISH_LC'], test_LC_english_tagged)
+        format_handler.tag_number_date_url(ocl.english_hindi['TEST_ENGLISH_TB'], test_TB_english_tagged)
         format_handler.tag_number_date_url(ocl.english_hindi['TEST_HINDI_GEN'], test_Gen_hindi_tagged)
         format_handler.tag_number_date_url(ocl.english_hindi['TEST_HINDI_LC'], test_LC_hindi_tagged)
         format_handler.tag_number_date_url(ocl.english_hindi['TEST_HINDI_TB'], test_TB_hindi_tagged)
