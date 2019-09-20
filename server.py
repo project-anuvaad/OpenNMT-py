@@ -138,22 +138,23 @@ def start(config_file,
                     out['status'] = statusCode["ID_OR_SRC_MISSING"]
                     return jsonify(out)
 
-                if len(i['src'].split()) == 1 and i['src'].isalpha()== False:
-                    logger.info("handling single token")
-                    translation = ancillary_functions.handle_single_token(i['src'])
-                    scores = [1]
-                elif len(i['src'].split()) == 1 and i['src'].isalpha() and len(i['src'])==1:
-                    logger.info("returning single character as it is:%s"%i['src'])
-                    translation = i['src']
-                    scores = [1]
-                elif ancillary_functions.special_case_fits(i['src']):
+                # if len(i['src'].split()) == 1 and i['src'].isalpha()== False:
+                #     logger.info("handling single token")
+                #     translation = ancillary_functions.handle_single_token(i['src'])
+                #     scores = [1]
+                # if len(i['src'].split()) == 1 and i['src'].isalpha() and len(i['src'])==1:
+                #     logger.info("returning single character as it is:%s"%i['src'])
+                #     translation = i['src']
+                #     scores = [1]
+                i['src'] = i['src'].strip()
+                if ancillary_functions.special_case_fits(i['src']):
                     logger.info("sentence fits in special case, returning accordingly and not going to model")
                     translation = ancillary_functions.handle_special_cases(i['src'],i['id'])
                     scores = [1]      
                 else:
                     logger.info("translating using NMT-models")
-                    prefix,suffix, i['src'] = ancillary_functions.separate_alphanumeric_and_symbol(i['src'])
-                    print("prefix :{},suffix :{},i[src] :{}".format(prefix,suffix,i['src']))
+                    # prefix,suffix, i['src'] = ancillary_functions.separate_alphanumeric_and_symbol(i['src'])
+                    # print("prefix :{},suffix :{},i[src] :{}".format(prefix,suffix,i['src']))
                     # i['src'] = anuvada.moses_tokenizer(i['src'])
                     # i['src'] = anuvada.truecaser(i['src'])  
                     if i['id'] == 1:
@@ -206,13 +207,23 @@ def start(config_file,
                         translation, scores, n_best, times = translation_server.run([i])
                         translation = sp.decode_line('model/sentencepiece_models/marathi-2019-09-14-10k.model',translation[0])
                         logger.info("decoded marathi: {}".format(translation))
-                        translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)               
+                        translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)
+                    elif i['id'] in [13,14]:  
+                        "170919 eng-hin"
+                        i['src'] = i['src'].lower()
+                        i['src'],date_original,url_original,num_array = date_url_util.tag_number_date_url_1(i['src'])            
+                        i['src'] = str(sp.encode_line('model/sentencepiece_models/en-2019-09-17-10k.model',i['src']))
+                        logger.info("encoded english: {}".format( i['src']))
+                        translation, scores, n_best, times = translation_server.run([i])
+                        translation = sp.decode_line('model/sentencepiece_models/hi-2019-09-17-10k.model',translation[0])
+                        logger.info("decoded hindi: {}".format( i['src']))
+                        translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)                   
 
                     else:
                         out['status'] = statusCode["INCORRECT_ID"]
                         return jsonify(out)
                     
-                    translation = (prefix+" "+translation+" "+suffix).strip()
+                    # translation = (prefix+" "+translation+" "+suffix).strip()
                 translation = ancillary_functions.replace_hindi_numbers(translation)
                 tgt.append(translation)
                 pred_score.append(scores[0])

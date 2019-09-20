@@ -135,18 +135,7 @@ def replace_tags_with_original_1(text,date_original,url_original,num_array):
   try:
     resultant_str = list()
     hindi_numbers = ['०', '१', '२', '३','४','५','६','७','८','९','१०','११','१२','१३','१४','१५','	१६','	१७','	१८','१९','२०','२१','२२','२३','२४','२५','२६','२७','२८','२९','३०']
-    array = re.findall(r'NnUuMm.', text)  
-    print("NnUuMm array after translation",array) 
-    for j in array:
-      end_hin_number = j[-1]
-      index = hindi_numbers.index(end_hin_number)
-      try:
-        text = text.replace(j,str(num_array[index]),1)
-      except Exception as e:
-        print("inside str.replace error,but handling it:",e)
-        text = text.replace(j,"",1)
-      
-
+    
     for word in text.split():
       if word[:-1] == 'DdAaTtEe':
         word = date_original[int(word[-1])]
@@ -159,8 +148,43 @@ def replace_tags_with_original_1(text,date_original,url_original,num_array):
       s = [str(i) for i in resultant_str] 
       res = str(" ".join(s))
 
-    print(res,"response")
+    print("response after url and date replacemnt",res)
+    array = re.findall(r'NnUuMm..|NnUuMm.', res) 
+    print("NnUuMm array after translation",array)  
+    for j in array:
+      try:
+        if j[-2:] in hindi_numbers:
+          end_hin_number = j[-2:]
+          index = hindi_numbers.index(end_hin_number)
+          res = res.replace(j,str(num_array[index]),1)
+        elif j[:-1]== "NnUuMm":
+          end_hin_number = j[-1]
+          index = hindi_numbers.index(end_hin_number)
+          res = res.replace(j,str(num_array[index]),1)
+        else:
+          end_hin_number = j[-2]
+          j = j[:-1]
+          index = hindi_numbers.index(end_hin_number)     
+          res = res.replace(j,str(num_array[index]),1)
+      
+      except Exception as e:
+          print("inside str.replace error,but handling it:",e)
+          res = res.replace(j,"",1)
+        
+    # for word in text.split():
+    #   if word[:-1] == 'DdAaTtEe':
+    #     word = date_original[int(word[-1])]
+    #     print(word,"date")
+    #   elif word[:-1] == 'UuRrLl':
+    #     word = url_original[int(word[-1])]  
+    #     print("url",word)        
+
+    #   resultant_str.append(word)
+    #   s = [str(i) for i in resultant_str] 
+    #   res = str(" ".join(s))
+
+    print("response after tags replacement",res)
     return res    
   except Exception as e:
     print("errror:",e)
-    pass
+    return e

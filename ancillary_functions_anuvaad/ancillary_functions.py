@@ -11,24 +11,30 @@ def handle_single_token(token):
        elif util.token_is_date(token):
            print("returning date")
            return token     
-       elif token.isalnum():
-            logger.info("transliterating alphanum")
-            return transliterate_text(token)
+    #    elif token.isalnum():
+    #         logger.info("transliterating alphanum")
+    #         return transliterate_text(token)
+    #    elif len(lookup_table(model_id,token))>0:
+    #        token = lookup_table(model_id,token)
+    #        print("handling single token from looku table: ",token)
+    #        return token     
        elif len(token) > 1 and token_is_alphanumeric_char(token):
             if len(token) ==3 and (token[0].isalnum() == False) and (token[1].isalnum() == True):
                 return token 
+            print("token is alphanumericchar: ",token)    
             prefix,suffix,translation_text = separate_alphanumeric_and_symbol(token)
             # translation_text = transliterate_text(translation_text)
-            return prefix+translation_text+suffix
+            # return prefix+translation_text+suffix
+            return ""
        elif token.isalpha() and len(token)==1:
-            return (token)
-                
+            print("handling single token and returning character as it is")
+            return (token)            
        else:
-            logger.info("returning token as it is")
-            return token
+            logger.info("returning null to allow token to go to model")
+            return ""
    except:
-       logger.info("returning token as it is")
-       return token
+       logger.info("returning null to allow token to go to model")
+       return ""
           
 
 def replace_from_LC_table(token):
@@ -129,9 +135,10 @@ def replace_hindi_numbers(text):
 def special_case_fits(text):
     if util.token_is_date(text):
         return True
-    # elif util.token_is_url(text):
-    #     print("herere")
-    #     return True    
+    elif util.token_is_url(text):
+        return True
+    elif len(text.split()) == 1 and len(handle_single_token(text))>0:  
+        return True  
 
 def handle_special_cases(text,model_id):
     try:
@@ -150,7 +157,26 @@ def handle_special_cases(text,model_id):
 
             logger.info('handling dates before model in long alpha-numeric format')
             return text
+        elif util.token_is_url(text):
+            logger.info('handling url before model')
+            return text   
+        elif len(text.split()) == 1 and len(handle_single_token(text))>0:
+            return handle_single_token(text) 
     except Exception as e:
         logger.info("error when handling special cases :{}".format(e))
         return text
     
+# "lookup table"
+# def lookup_table(model_id,token):
+#     if model_id in [1]:
+#         with open("lookup_dictionary_eng_hin.txt",encoding ='utf-16') as xh:
+#             xlines = xh.readlines()
+#             for i in range(len(xlines)):
+#                 if xlines[i].split('|||')[0] == token.strip():
+#                     token = xlines[i].split('|||')[1].strip()
+#                 else:
+#                     token = ""    
+#     else:
+#         token = ""                
+    
+#     return token                
