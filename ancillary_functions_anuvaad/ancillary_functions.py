@@ -135,8 +135,8 @@ def replace_hindi_numbers(text):
 def special_case_fits(text):
     if util.token_is_date(text):
         return True
-    elif util.token_is_url(text):
-        return True
+    # elif util.token_is_url(text):
+    #     return True
     elif len(text.split()) == 1 and len(handle_single_token(text))>0:  
         return True  
 

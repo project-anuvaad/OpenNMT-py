@@ -216,7 +216,7 @@ def start(config_file,
                         logger.info("encoded english: {}".format( i['src']))
                         translation, scores, n_best, times = translation_server.run([i])
                         translation = sp.decode_line('model/sentencepiece_models/hi-2019-09-17-10k.model',translation[0])
-                        logger.info("decoded hindi: {}".format( i['src']))
+                        logger.info("decoded hindi: {}".format(translation))
                         translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)                   
 
                     else:

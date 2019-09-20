@@ -96,31 +96,32 @@ def tag_number_date_url_1(text):
 
     print("number tagging done")
     for word in text.split():
-        print("word",word)
         # if len(word)>4 and len(word)<12 and token_is_date(word):
-        ext = [".",",","?","!"]
-        if word.isalpha()== False and word[:-1].isalpha() == False and len(word)>4 and common_utils.token_is_date(word):
+        try:
+          ext = [".",",","?","!"]
+          if word.isalpha()== False and word[:-1].isalpha() == False and len(word)>4 and common_utils.token_is_date(word):
             if word.endswith(tuple(ext)):
               end_token = word[-1]
               word = word[:-1]
               if len(word)<7 and int(word):
                 word = word+end_token
-                print("kkkk")
               else:
                 date_original.append(word)
                 word = 'DdAaTtEe'+str(count_date)+end_token
                 count_date +=1
-                print("jjj")
             else:
               date_original.append(word)  
               word = 'DdAaTtEe'+str(count_date)
               count_date +=1
-              print("ggg")
-        elif common_utils.token_is_url(word):
+          elif common_utils.token_is_url(word):
             url_original.append(word)
             word = 'UuRrLl'+str(count_url)
             count_url +=1
-            print("kkk")
+        except Exception as e:
+          print(e)
+          print("in exception,",word)
+          word = word
+        
 
         resultant_str.append(word)   
         s = [str(i) for i in resultant_str] 
@@ -136,6 +137,8 @@ def replace_tags_with_original_1(text,date_original,url_original,num_array):
     resultant_str = list()
     hindi_numbers = ['०', '१', '२', '३','४','५','६','७','८','९','१०','११','१२','१३','१४','१५','	१६','	१७','	१८','१९','२०','२१','२२','२३','२४','२५','२६','२७','२८','२९','३०']
     
+    if len(text) == 0:
+      return ""
     for word in text.split():
       if word[:-1] == 'DdAaTtEe':
         word = date_original[int(word[-1])]
