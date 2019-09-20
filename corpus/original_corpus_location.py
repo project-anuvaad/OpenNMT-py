@@ -68,17 +68,17 @@ english_telgu = {
 }
 
 english_malayalam = {
-    "FILE_NAMES_ENGLISH": [''],
-    "FILE_NAMES_MALAYALAM": [''],
-    "DEV_ENGLISH": "",
-    "DEV_MALAYALAM": "",
-    "TEST_ENGLISH": ""
+    "FILE_NAMES_ENGLISH": ['corpus/original_data/english_malayalam/ml_source.txt'],
+    "FILE_NAMES_MALAYALAM": ['corpus/original_data/english_malayalam/ml_target.txt'],
+    "DEV_ENGLISH": "corpus/original_data/english_malayalam/dev2k_eng.txt",
+    "DEV_MALAYALAM": "corpus/original_data/english_malayalam/dev2k_malayalam.txt",
+    "TEST_ENGLISH": "corpus/original_data/english_malayalam/test8k.txt"
 }
 
 english_punjabi = {
-    "FILE_NAMES_ENGLISH": [''],
-    "FILE_NAMES_PUNJABI": [''],
-    "DEV_ENGLISH": "",
-    "DEV_PUNJABI": "",
-    "TEST_ENGLISH": ""
+    "FILE_NAMES_ENGLISH": ['corpus/original_data/english_punjabi/punjabi_source.txt'],
+    "FILE_NAMES_PUNJABI": ['corpus/original_data/english_punjabi/punjabi_target.txt'],
+    "DEV_ENGLISH": "corpus/original_data/english_punjabi/dev2k_eng.txt",
+    "DEV_PUNJABI": "corpus/original_data/english_punjabi/dev2k_punjabi.txt",
+    "TEST_ENGLISH": "corpus/original_data/english_punjabi/test8k.txt"
 }
