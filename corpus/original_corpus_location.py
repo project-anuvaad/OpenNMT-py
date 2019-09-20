@@ -50,3 +50,35 @@ english_marathi = {
     "DEV_MARATHI": "corpus/original_data/english_marathi/dev2k_marathi.txt",
     "TEST_ENGLISH": "corpus/original_data/english_marathi/test8k.txt"
 }
+
+english_kannada = {
+    "FILE_NAMES_ENGLISH": ['corpus/original_data/english_kannada/kn_source.txt'],
+    "FILE_NAMES_KANNADA": ['corpus/original_data/english_kannada/kn_target.txt'],
+    "DEV_ENGLISH": "corpus/original_data/english_kannada/dev2k_eng.txt",
+    "DEV_KANNADA": "corpus/original_data/english_kannada/dev2k_kannada.txt",
+    "TEST_ENGLISH": "corpus/original_data/english_kannada/test8k.txt"
+}
+
+english_telgu = {
+    "FILE_NAMES_ENGLISH": ['corpus/original_data/english_telgu/te_s_source.txt'],
+    "FILE_NAMES_TELGU": ['corpus/original_data/english_telgu/te_s_target.txt'],
+    "DEV_ENGLISH": "corpus/original_data/english_telgu/dev2k_eng.txt",
+    "DEV_TELGU": "corpus/original_data/english_telgu/dev2k_telgu.txt",
+    "TEST_ENGLISH": "corpus/original_data/english_telgu/test8k.txt"
+}
+
+english_malayalam = {
+    "FILE_NAMES_ENGLISH": [''],
+    "FILE_NAMES_MALAYALAM": [''],
+    "DEV_ENGLISH": "",
+    "DEV_MALAYALAM": "",
+    "TEST_ENGLISH": ""
+}
+
+english_punjabi = {
+    "FILE_NAMES_ENGLISH": [''],
+    "FILE_NAMES_PUNJABI": [''],
+    "DEV_ENGLISH": "",
+    "DEV_PUNJABI": "",
+    "TEST_ENGLISH": ""
+}
