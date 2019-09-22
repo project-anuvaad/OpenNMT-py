@@ -8,7 +8,8 @@
             "on_timeout": "to_cpu",
             "load": true,
             "opt": {
-                "beam_size": 5
+                "beam_size": 5,
+                "gpu":0
             }
         },
         {
@@ -18,7 +19,8 @@
             "on_timeout": "to_cpu",
             "load": true,
             "opt": {
-                "beam_size": 5
+                "beam_size": 5,
+                "gpu":0
             }
         },
         {
@@ -89,7 +91,8 @@
             "on_timeout": "to_cpu",
             "load": true,
             "opt": {
-                "beam_size": 5
+                "beam_size": 5,
+                "gpu":0
             }
         },
         {
@@ -99,7 +102,8 @@
             "on_timeout": "to_cpu",
             "load": true,
             "opt": {
-                "beam_size": 5
+                "beam_size": 5,
+                "gpu":0
             }
         },
         {
@@ -109,7 +113,8 @@
             "on_timeout": "to_cpu",
             "load": true,
             "opt": {
-                "beam_size": 5
+                "beam_size": 5,
+                "gpu":0
             }
         },
         {
@@ -119,7 +124,8 @@
             "on_timeout": "to_cpu",
             "load": true,
             "opt": {
-                "beam_size": 5
+                "beam_size": 5,
+                "gpu":0
             }
         },
         {
@@ -129,7 +135,52 @@
             "on_timeout": "to_cpu",
             "load": true,
             "opt": {
-                "beam_size": 5
+                "beam_size": 5,
+                "gpu":0
+            }
+        },
+        {
+            "id": 15,
+            "model": "model_kannada_2019-09-20-model_step_100000.pt",
+            "timeout": 600,
+            "on_timeout": "to_cpu",
+            "load": true,
+            "opt": {
+                "beam_size": 5,
+                "gpu":0
+            }
+        },
+        {
+            "id": 16,
+            "model": "model_telgu_2019-09-20-model_step_100000.pt",
+            "timeout": 600,
+            "on_timeout": "to_cpu",
+            "load": true,
+            "opt": {
+                "beam_size": 5,
+                "gpu":0
+            }
+        },
+        {
+            "id": 17,
+            "model": "model_malayalam_2019-09-20-model_step_90000.pt",
+            "timeout": 600,
+            "on_timeout": "to_cpu",
+            "load": true,
+            "opt": {
+                "beam_size": 5,
+                "gpu":0
+            }
+        },
+        {
+            "id": 18,
+            "model": "model_punjabi_2019-09-20-model_step_80000.pt",
+            "timeout": 600,
+            "on_timeout": "to_cpu",
+            "load": true,
+            "opt": {
+                "beam_size": 5,
+                "gpu":0
             }
         }
     ]

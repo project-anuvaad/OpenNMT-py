@@ -219,6 +219,38 @@ def start(config_file,
                         logger.info("decoded hindi: {}".format(translation))
                         translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)                   
 
+                    elif i['id'] == 15:  
+                        "english-kannada"
+                        i['src'],date_original,url_original,num_array = date_url_util.tag_number_date_url_1(i['src'])             
+                        i['src'] = str(sp.encode_line('model/sentencepiece_models/enKn-2019-09-20-10k.model',i['src']))
+                        translation, scores, n_best, times = translation_server.run([i])
+                        translation = sp.decode_line('model/sentencepiece_models/kannada-2019-09-20-10k.model',translation[0])
+                        logger.info("decoded kannada: {}".format(translation))
+                        translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)
+                    elif i['id'] == 16:  
+                        "english-telgu"
+                        i['src'],date_original,url_original,num_array = date_url_util.tag_number_date_url_1(i['src'])             
+                        i['src'] = str(sp.encode_line('model/sentencepiece_models/enTe-2019-09-20-10k.model',i['src']))
+                        translation, scores, n_best, times = translation_server.run([i])
+                        translation = sp.decode_line('model/sentencepiece_models/telgu-2019-09-20-10k.model',translation[0])
+                        logger.info("decoded telgu: {}".format(translation))
+                        translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)
+                    elif i['id'] == 17:  
+                        "english-malayalam"
+                        i['src'],date_original,url_original,num_array = date_url_util.tag_number_date_url_1(i['src'])             
+                        i['src'] = str(sp.encode_line('model/sentencepiece_models/enMl-2019-09-20-10k.model',i['src']))
+                        translation, scores, n_best, times = translation_server.run([i])
+                        translation = sp.decode_line('model/sentencepiece_models/malayalam-2019-09-20-10k.model',translation[0])
+                        logger.info("decoded malayalam: {}".format(translation))
+                        translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)
+                    elif i['id'] == 18:  
+                        "english-punjabi"
+                        i['src'],date_original,url_original,num_array = date_url_util.tag_number_date_url_1(i['src'])             
+                        i['src'] = str(sp.encode_line('model/sentencepiece_models/enPu-2019-09-20-10k.model',i['src']))
+                        translation, scores, n_best, times = translation_server.run([i])
+                        translation = sp.decode_line('model/sentencepiece_models/punjabi-2019-09-20-10k.model',translation[0])
+                        logger.info("decoded punjabi: {}".format(translation))
+                        translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)
                     else:
                         out['status'] = statusCode["INCORRECT_ID"]
                         return jsonify(out)
