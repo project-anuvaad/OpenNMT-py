@@ -140,10 +140,10 @@ def replace_tags_with_original_1(text,date_original,url_original,num_array):
     if len(text) == 0:
       return ""
     for word in text.split():
-      if word[:-1] == 'DdAaTtEe':
+      if word[:-1] == 'DdAaTtEe' and len(date_original) > 0:
         word = date_original[int(word[-1])]
         print(word,"date")
-      elif word[:-1] == 'UuRrLl':
+      elif word[:-1] == 'UuRrLl' and len(url_original)> 0 :
         word = url_original[int(word[-1])]  
         print("url",word)        
 
@@ -190,4 +190,3 @@ def replace_tags_with_original_1(text,date_original,url_original,num_array):
     return res    
   except Exception as e:
     print("errror:",e)
-    return e
