@@ -21,8 +21,14 @@ english_hindi = {
 }
 
 english_tamil = {
-    "FILE_NAMES_ENGLISH": [],
-    "FILE_NAMES_TAMIL": []
+    "FILE_NAMES_ENGLISH": ['corpus/original_data/english_tamil/en-ta-parallel-v2_UFAL/corpus.bcn.train.en','corpus/original_data/english_tamil/SC-translated-from-google-210819/1566367056_eng_filtered.txt',
+                            'corpus/original_data/english_tamil/other_india_kanoon/ta_final_source.txt'],
+    "FILE_NAMES_TAMIL": ['corpus/original_data/english_tamil/en-ta-parallel-v2_UFAL/corpus.bcn.train.ta','corpus/original_data/english_tamil/SC-translated-from-google-210819/1566367056_tam_filtered.txt',
+                        'corpus/original_data/english_tamil/other_india_kanoon/ta_final_target.txt'],
+    "DEV_ENGLISH": "corpus/original_data/english_tamil/en-ta-parallel-v2_UFAL/corpus.bcn.dev.en",
+    "DEV_TAMIL": "corpus/original_data/english_tamil/en-ta-parallel-v2_UFAL/corpus.bcn.dev.ta",
+    "TEST_ENGLISH": "corpus/original_data/english_tamil/en-ta-parallel-v2_UFAL/corpus.bcn.test.en",
+    "TEST_TAMIL": "corpus/original_data/english_tamil/en-ta-parallel-v2_UFAL/corpus.bcn.test.ta"
 }
 
 english_gujrati = {
