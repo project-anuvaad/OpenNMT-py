@@ -128,6 +128,8 @@ def start(config_file,
         tgt = list()
         pred_score = list()
         sentence_id = list()
+        input_subwords = list()
+        output_subwords = list()
         try:
             for i in inputs:
                 if 's_id'in i:
@@ -160,7 +162,9 @@ def start(config_file,
                     if i['id'] == 1:
                         i['src'] = anuvada.moses_tokenizer(i['src'])                   
                         i['src'] = str(sp.encode_line('en-220519.model',i['src']))
+                        input_sw = i['src']
                         translation, scores, n_best, times = translation_server.run([i])
+                        output_sw = translation[0]
                         translation = sp.decode_line('hi-220519.model',translation[0])
                         translation = anuvada.indic_detokenizer(translation)
                     elif i['id'] == 9:   
@@ -179,16 +183,18 @@ def start(config_file,
                         i['src'],date_original,url_original = date_url_util.tag_number_date_url(i['src'])   
                         print("herere")           
                         i['src'] = str(sp.encode_line('model/sentencepiece_models/enT-210819-7k.model',i['src']))
+                        input_sw = i['src']
                         translation, scores, n_best, times = translation_server.run([i])
-                        print("translaion output, ",translation[0])
+                        output_sw = translation[0]
                         translation = sp.decode_line('model/sentencepiece_models/ta-210819-7k.model',translation[0])
-                        print("decoded: ",translation)
                         translation = date_url_util.replace_tags_with_original(translation,date_original,url_original)
                     elif i['id'] == 10:  
                         "english-gujrati"
                         i['src'],date_original,url_original,num_array = date_url_util.tag_number_date_url_1(i['src'])          
                         i['src'] = str(sp.encode_line('model/sentencepiece_models/en-2019-09-10-10k.model',i['src']))
+                        input_sw = i['src']
                         translation, scores, n_best, times = translation_server.run([i])
+                        output_sw = translation[0]
                         translation = sp.decode_line('model/sentencepiece_models/guj-2019-09-10-10k.model',translation[0])
                         logger.info("decoded gujrati: {}".format(translation))
                         translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)
@@ -196,7 +202,9 @@ def start(config_file,
                         "english-bengali"
                         i['src'],date_original,url_original,num_array = date_url_util.tag_number_date_url_1(i['src'])           
                         i['src'] = str(sp.encode_line('model/sentencepiece_models/en-2019-09-12-10k.model',i['src']))
+                        input_sw = i['src']
                         translation, scores, n_best, times = translation_server.run([i])
+                        output_sw = translation[0]
                         translation = sp.decode_line('model/sentencepiece_models/beng-2019-09-12-10k.model',translation[0])
                         logger.info("decoded bengali: {}".format(translation))
                         translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array) 
@@ -204,7 +212,9 @@ def start(config_file,
                         "english-marathi"
                         i['src'],date_original,url_original,num_array = date_url_util.tag_number_date_url_1(i['src'])             
                         i['src'] = str(sp.encode_line('model/sentencepiece_models/enMr-2019-09-14-10k.model',i['src']))
+                        input_sw = i['src']
                         translation, scores, n_best, times = translation_server.run([i])
+                        output_sw = translation[0]
                         translation = sp.decode_line('model/sentencepiece_models/marathi-2019-09-14-10k.model',translation[0])
                         logger.info("decoded marathi: {}".format(translation))
                         translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)
@@ -213,8 +223,10 @@ def start(config_file,
                         i['src'] = i['src'].lower()
                         i['src'],date_original,url_original,num_array = date_url_util.tag_number_date_url_1(i['src'])            
                         i['src'] = str(sp.encode_line('model/sentencepiece_models/en-2019-09-17-10k.model',i['src']))
+                        input_sw = i['src']
                         logger.info("encoded english: {}".format( i['src']))
                         translation, scores, n_best, times = translation_server.run([i])
+                        output_sw = translation[0]
                         translation = sp.decode_line('model/sentencepiece_models/hi-2019-09-17-10k.model',translation[0])
                         logger.info("decoded hindi: {}".format(translation))
                         translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)                   
@@ -223,7 +235,9 @@ def start(config_file,
                         "english-kannada"
                         i['src'],date_original,url_original,num_array = date_url_util.tag_number_date_url_1(i['src'])             
                         i['src'] = str(sp.encode_line('model/sentencepiece_models/enKn-2019-09-20-10k.model',i['src']))
+                        input_sw = i['src']
                         translation, scores, n_best, times = translation_server.run([i])
+                        output_sw = translation[0]
                         translation = sp.decode_line('model/sentencepiece_models/kannada-2019-09-20-10k.model',translation[0])
                         logger.info("decoded kannada: {}".format(translation))
                         translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)
@@ -231,7 +245,9 @@ def start(config_file,
                         "english-telgu"
                         i['src'],date_original,url_original,num_array = date_url_util.tag_number_date_url_1(i['src'])             
                         i['src'] = str(sp.encode_line('model/sentencepiece_models/enTe-2019-09-20-10k.model',i['src']))
+                        input_sw = i['src']
                         translation, scores, n_best, times = translation_server.run([i])
+                        output_sw = translation[0]
                         translation = sp.decode_line('model/sentencepiece_models/telgu-2019-09-20-10k.model',translation[0])
                         logger.info("decoded telgu: {}".format(translation))
                         translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)
@@ -239,7 +255,9 @@ def start(config_file,
                         "english-malayalam"
                         i['src'],date_original,url_original,num_array = date_url_util.tag_number_date_url_1(i['src'])             
                         i['src'] = str(sp.encode_line('model/sentencepiece_models/enMl-2019-09-20-10k.model',i['src']))
+                        input_sw = i['src']
                         translation, scores, n_best, times = translation_server.run([i])
+                        output_sw = translation[0]
                         translation = sp.decode_line('model/sentencepiece_models/malayalam-2019-09-20-10k.model',translation[0])
                         logger.info("decoded malayalam: {}".format(translation))
                         translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)
@@ -247,7 +265,9 @@ def start(config_file,
                         "english-punjabi"
                         i['src'],date_original,url_original,num_array = date_url_util.tag_number_date_url_1(i['src'])             
                         i['src'] = str(sp.encode_line('model/sentencepiece_models/enPu-2019-09-20-10k.model',i['src']))
+                        input_sw = i['src']
                         translation, scores, n_best, times = translation_server.run([i])
+                        output_sw = translation[0]
                         translation = sp.decode_line('model/sentencepiece_models/punjabi-2019-09-20-10k.model',translation[0])
                         logger.info("decoded punjabi: {}".format(translation))
                         translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)
@@ -260,10 +280,13 @@ def start(config_file,
                 tgt.append(translation)
                 pred_score.append(scores[0])
                 sentence_id.append(s_id[0])
+                input_subwords.append(input_sw)
+                output_subwords.append(output_sw)
 
             out['status'] = statusCode["SUCCESS"]
             out['response_body'] = [{"tgt": tgt[i],
-                     "pred_score": pred_score[i], "s_id": sentence_id[i]}
+                                     "s_id": sentence_id[i],"input_subwords": input_subwords[i], 
+                                     "output_subwords":output_subwords[i]}
                     for i in range(len(tgt))]
         except ServerModelError as e:
             out['status'] = statusCode["SEVER_MODEL_ERR"]
