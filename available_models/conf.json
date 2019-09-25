@@ -86,7 +86,7 @@
         },
         {
             "id": 7,
-            "model": "model_210819-model_step_90000.pt",
+            "model": "model_tamil_2019-09-23-model_step_100000.pt",
             "timeout": 600,
             "on_timeout": "to_cpu",
             "load": true,

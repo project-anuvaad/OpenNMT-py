@@ -179,15 +179,15 @@ def start(config_file,
                         translation, scores, n_best, times = translation_server.run([i])
                         translation = sp.decode_line('hiSC-02082019-1k.model',translation[0])
                         translation = sc_preface_handler.replace_hash_with_original_number(translation,numbers)  
-                    elif i['id'] == 7:  
-                        i['src'],date_original,url_original = date_url_util.tag_number_date_url(i['src'])   
-                        print("herere")           
-                        i['src'] = str(sp.encode_line('model/sentencepiece_models/enT-210819-7k.model',i['src']))
-                        input_sw = i['src']
-                        translation, scores, n_best, times = translation_server.run([i])
-                        output_sw = translation[0]
-                        translation = sp.decode_line('model/sentencepiece_models/ta-210819-7k.model',translation[0])
-                        translation = date_url_util.replace_tags_with_original(translation,date_original,url_original)
+                    # elif i['id'] == 7:  
+                    #     i['src'],date_original,url_original = date_url_util.tag_number_date_url(i['src'])   
+                    #     print("herere")           
+                    #     i['src'] = str(sp.encode_line('model/sentencepiece_models/enT-210819-7k.model',i['src']))
+                    #     input_sw = i['src']
+                    #     translation, scores, n_best, times = translation_server.run([i])
+                    #     output_sw = translation[0]
+                    #     translation = sp.decode_line('model/sentencepiece_models/ta-210819-7k.model',translation[0])
+                    #     translation = date_url_util.replace_tags_with_original(translation,date_original,url_original)
                     elif i['id'] == 10:  
                         "english-gujrati"
                         i['src'],date_original,url_original,num_array = date_url_util.tag_number_date_url_1(i['src'])          
@@ -271,6 +271,16 @@ def start(config_file,
                         translation = sp.decode_line('model/sentencepiece_models/punjabi-2019-09-20-10k.model',translation[0])
                         logger.info("decoded punjabi: {}".format(translation))
                         translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)
+                    elif i['id'] == 7:  
+                        "english-tamil"
+                        i['src'],date_original,url_original,num_array = date_url_util.tag_number_date_url_1(i['src'])             
+                        i['src'] = str(sp.encode_line('model/sentencepiece_models/enTa-2019-09-23-10k.model',i['src']))
+                        input_sw = i['src']
+                        translation, scores, n_best, times = translation_server.run([i])
+                        output_sw = translation[0]
+                        translation = sp.decode_line('model/sentencepiece_models/tamil-2019-09-23-10k.model',translation[0])
+                        logger.info("decoded tamil: {}".format(translation))
+                        translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)    
                     else:
                         out['status'] = statusCode["INCORRECT_ID"]
                         return jsonify(out)
