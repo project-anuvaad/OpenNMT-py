@@ -130,7 +130,7 @@ def english_hindi_experiments():
         sp.train_spm(english_tokenized_file,sp_model_prefix_english, 10000, 'bpe')
         logger.info("sentencepiece model english trained")
 
-        sp.encode_as_pieces(os.path.join(SENTENCEPIECE_MODEL_DIR, (sp_model_prefix_hindi+'.model'))hindi_tokenized_file,hindi_encoded_file)
+        sp.encode_as_pieces(os.path.join(SENTENCEPIECE_MODEL_DIR, (sp_model_prefix_hindi+'.model')),hindi_tokenized_file,hindi_encoded_file)
         sp.encode_as_pieces(os.path.join(SENTENCEPIECE_MODEL_DIR, (sp_model_prefix_hindi+'.model')),hindi_dev_tokenized_file,hindi_dev_encoded_file)
         logger.info("hindi-train file and dev encoded and final stored in data folder")
         sp.encode_as_pieces(os.path.join(SENTENCEPIECE_MODEL_DIR, (sp_model_prefix_english+'.model')),english_tokenized_file,english_encoded_file)
@@ -539,6 +539,8 @@ if __name__ == '__main__':
     elif sys.argv[1] == "english-malayalam":
         english_malayalam() 
     elif sys.argv[1] == "english-punjabi":
-        english_punjabi()                            
+        english_punjabi() 
+    elif sys.argv[1] == "english-hindi-exp":
+        english_hindi_experiments()                               
     else:
         print("invalid request", sys.argv)
