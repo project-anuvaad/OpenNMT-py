@@ -139,7 +139,7 @@ def english_hindi():
         print(e)
 
 def english_hindi_experiments():
-    "exp-1 BPE model with varying vocab size 15k for both hindi and english + tokenization"
+    "exp-1 and 2 BPE model with varying vocab size 15k for both hindi and english + tokenization"
     try:
         model_intermediate_folder = os.path.join(INTERMEDIATE_DATA_LOCATION, 'english_hindi')
         model_master_folder = os.path.join(MASTER_DATA_LOCATION, 'english_hindi')
