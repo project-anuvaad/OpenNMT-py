@@ -7,3 +7,4 @@ configargparse
 sentencepiece
 flask_mongoengine
 indic-transliteration
+kafka-python

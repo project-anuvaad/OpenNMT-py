@@ -48,6 +48,7 @@ corpus/original_data/english_malayalam/*
 !corpus/original_data/english_malayalam/.gitkeep
 corpus/original_data/english_punjabi/*
 !corpus/original_data/english_punjabi/.gitkeep
+available_models/log_file.txt
 
 
 # Byte-compiled / optimized / DLL files

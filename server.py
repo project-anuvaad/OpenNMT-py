@@ -24,6 +24,8 @@ import onmt.opts as opts
 from onmt.utils.parse import ArgumentParser
 from mongo_model import db,Benchmarks
 import datetime
+from kafka_utils.document_translator import doc_translator
+import threading
 
 STATUS_OK = "ok"
 STATUS_ERROR = "error"
@@ -53,6 +55,13 @@ def start(config_file,
     app.route = prefix_route(app.route, url_root)
     translation_server = TranslationServer()
     translation_server.start(config_file)
+
+    def kafka_function():
+        logger.info('kafka_function, in server')
+        doc_translator(translation_server)
+
+    t1 = threading.Thread(target=kafka_function)
+    t1.start()
 
     @app.route('/models', methods=['GET'])
     def get_models():

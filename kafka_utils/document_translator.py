@@ -1,0 +1,47 @@
+from kafka_utils.producer import get_producer
+from kafka_utils.consumer import get_consumer
+import json
+import anuvada
+import tools.sp_enc_dec as sp
+import ancillary_functions_anuvaad.ancillary_functions as ancillary_functions
+import ancillary_functions_anuvaad.sc_preface_handler as sc_preface_handler
+import ancillary_functions_anuvaad.handle_date_url as date_url_util
+from config.config import statusCode,benchmark_types, language_supported, file_location
+from config.kafka_topics import consumer_topics,producer_topics
+from onmt.utils.logging import init_logger,logger
+import os
+from mongo_model import db,Benchmarks
+import datetime
+from onmt.translate import ServerModelError
+import sys
+
+import translation_util.translate_util as translate_util
+
+
+def doc_translator(translation_server):
+    logger.info('doc_translator')
+    iq =0
+    out = {}
+    c = get_consumer(consumer_topics['TEST_TOPIC'])
+    p = get_producer()
+    try:
+        for msg in c:
+            iq = iq +1
+            inputs = (msg.value)
+
+            if inputs is not None and len(inputs) is not 0:
+                "add url variable????"
+                out = translate_util.from_en(inputs, translation_server)
+                
+
+            p.send(producer_topics['TEST_TOPIC'], value={'out':out})
+            p.flush()
+            
+    except ValueError:  # includes simplejson.decoder.JSONDecodeError
+        logger.info("Decoding JSON has failed in document_translator: %s"% sys.exc_info()[0])
+        doc_translator(translation_server)  
+    except Exception  as e:
+        logger.info("Unexpected error: %s"% sys.exc_info()[0])
+        logger.info("error in doc_translator: {}".format(e))
+        doc_translator(translation_server)
+     

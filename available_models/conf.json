@@ -9,7 +9,8 @@
             "load": true,
             "opt": {
                 "beam_size": 5,
-                "gpu":0
+                "log_file":"log_file.txt",
+                "log_file_level":"INFO"
             }
         },
         {
@@ -20,7 +21,8 @@
             "load": true,
             "opt": {
                 "beam_size": 5,
-                "gpu":0
+                "log_file":"log_file.txt",
+                "log_file_level":"INFO"
             }
         },
         {
@@ -31,7 +33,9 @@
             "load": true,
             "opt": {
                 "beam_size": 5,
-                "replace_unk":true
+                "replace_unk":true,
+                "log_file":"log_file.txt",
+                "log_file_level":"INFO"
             }
         },
         {
@@ -41,7 +45,9 @@
             "on_timeout": "to_cpu",
             "load": true,
             "opt": {
-                "beam_size": 5
+                "beam_size": 5,
+                "log_file":"log_file.txt",
+                "log_file_level":"INFO"
             }
         },
         {
@@ -51,7 +57,9 @@
             "on_timeout": "to_cpu",
             "load": true,
             "opt": {
-                "beam_size": 5
+                "beam_size": 5,
+                "log_file":"log_file.txt",
+                "log_file_level":"INFO"
             }
         },
         {
@@ -61,7 +69,9 @@
             "on_timeout": "to_cpu",
             "load": true,
             "opt": {
-                "beam_size":5
+                "beam_size":5,
+                "log_file":"log_file.txt",
+                "log_file_level":"INFO"
             }
         },
         {
@@ -71,7 +81,9 @@
             "on_timeout": "to_cpu",
             "load": true,
             "opt": {
-                "beam_size": 5
+                "beam_size": 5,
+                "log_file":"log_file.txt",
+                "log_file_level":"INFO"
             }
         },
         {
@@ -81,7 +93,9 @@
             "on_timeout": "to_cpu",
             "load": true,
             "opt": {
-                "beam_size": 5
+                "beam_size": 5,
+                "log_file":"log_file.txt",
+                "log_file_level":"INFO"
             }
         },
         {
@@ -92,7 +106,8 @@
             "load": true,
             "opt": {
                 "beam_size": 5,
-                "gpu":0
+                "log_file":"log_file.txt",
+                "log_file_level":"INFO"
             }
         },
         {
@@ -103,7 +118,8 @@
             "load": true,
             "opt": {
                 "beam_size": 5,
-                "gpu":0
+                "log_file":"log_file.txt",
+                "log_file_level":"INFO"
             }
         },
         {
@@ -114,7 +130,8 @@
             "load": true,
             "opt": {
                 "beam_size": 5,
-                "gpu":0
+                "log_file":"log_file.txt",
+                "log_file_level":"INFO"
             }
         },
         {
@@ -125,7 +142,8 @@
             "load": true,
             "opt": {
                 "beam_size": 5,
-                "gpu":0
+                "log_file":"log_file.txt",
+                "log_file_level":"INFO"
             }
         },
         {
@@ -136,7 +154,8 @@
             "load": true,
             "opt": {
                 "beam_size": 5,
-                "gpu":0
+                "log_file":"log_file.txt",
+                "log_file_level":"INFO"
             }
         },
         {
@@ -147,7 +166,8 @@
             "load": true,
             "opt": {
                 "beam_size": 5,
-                "gpu":0
+                "log_file":"log_file.txt",
+                "log_file_level":"INFO"
             }
         },
         {
@@ -158,7 +178,8 @@
             "load": true,
             "opt": {
                 "beam_size": 5,
-                "gpu":0
+                "log_file":"log_file.txt",
+                "log_file_level":"INFO"
             }
         },
         {
@@ -169,7 +190,8 @@
             "load": true,
             "opt": {
                 "beam_size": 5,
-                "gpu":0
+                "log_file":"log_file.txt",
+                "log_file_level":"INFO"
             }
         },
         {
@@ -180,7 +202,8 @@
             "load": true,
             "opt": {
                 "beam_size": 5,
-                "gpu":0
+                "log_file":"log_file.txt",
+                "log_file_level":"INFO"
             }
         }
     ]
