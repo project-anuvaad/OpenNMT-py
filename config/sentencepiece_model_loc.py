@@ -1,8 +1,8 @@
 english_hindi = {
-    "ENG_220519": "en-220519.model",
-    "HIN_220519": "hi-220519.model",
-    "SC_PREFACE_ENG":"enSC-02082019-2k.model",
-    "SC_PREFACE_HIN":"hiSC-02082019-1k.model",
+    "ENG_220519": "model/sentencepiece_models/en-220519.model",
+    "HIN_220519": "model/sentencepiece_models/hi-220519.model",
+    "SC_PREFACE_ENG":"model/sentencepiece_models/enSC-02082019-2k.model",
+    "SC_PREFACE_HIN":"model/sentencepiece_models/hiSC-02082019-1k.model",
     "ENG_170919": "model/sentencepiece_models/en-2019-09-17-10k.model",
     "HIN_170919": "model/sentencepiece_models/hi-2019-09-17-10k.model",
 
@@ -49,6 +49,6 @@ english_punjabi = {
 }
 
 hindi_english = {
-    "HINDI_280619": "hi-28062019-10k.model",
-    "ENGLISH_280619": "en-28062019-10k.model"
+    "HINDI_280619": "model/sentencepiece_models/hi-28062019-10k.model",
+    "ENGLISH_280619": "model/sentencepiece_models/en-28062019-10k.model"
 }

@@ -195,7 +195,7 @@ def from_hindi(inputs, translation_server):
                 if i['id'] == 2:
                     translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_hindi["HIN_220519"],sp_model.english_hindi["ENG_220519"])
                 elif i['id'] in [5,6]:
-                    translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,'hi-28062019-10k.model','en-28062019-10k.model')
+                    translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.hindi_english["HINDI_280619"],sp_model.hindi_english["ENGLISH_280619"])
                 elif i['id'] == 4:
                     i['src'] = anuvada.apply_bpe('codesSrc1005.bpe',i['src'])
                     input_sw,output_sw = i['src'],""
