@@ -14,127 +14,6 @@
             }
         },
         {
-            "id": 2,
-            "model": "model_220519-model_step_80000.pt",
-            "timeout": 600,
-            "on_timeout": "to_cpu",
-            "load": true,
-            "opt": {
-                "beam_size": 5,
-                "log_file":"log_file.txt",
-                "log_file_level":"INFO"
-            }
-        },
-        {
-            "id": 3,
-            "model": "demo_180104-model_step_100000.pt",
-            "timeout": 600,
-            "on_timeout": "to_cpu",
-            "load": true,
-            "opt": {
-                "beam_size": 5,
-                "replace_unk":true,
-                "log_file":"log_file.txt",
-                "log_file_level":"INFO"
-            }
-        },
-        {
-            "id": 4,
-            "model": "model_100105-model_step_90000.pt",
-            "timeout": 600,
-            "on_timeout": "to_cpu",
-            "load": true,
-            "opt": {
-                "beam_size": 5,
-                "log_file":"log_file.txt",
-                "log_file_level":"INFO"
-            }
-        },
-        {
-            "id": 5,
-            "model": "model_28062019-model_step_160000.pt",
-            "timeout": 600,
-            "on_timeout": "to_cpu",
-            "load": true,
-            "opt": {
-                "beam_size": 5,
-                "log_file":"log_file.txt",
-                "log_file_level":"INFO"
-            }
-        },
-        {
-            "id": 6,
-            "model": "model_28062019-model_step_80000.pt",
-            "timeout": 600,
-            "on_timeout": "to_cpu",
-            "load": true,
-            "opt": {
-                "beam_size":5,
-                "log_file":"log_file.txt",
-                "log_file_level":"INFO"
-            }
-        },
-        {
-            "id": 8,
-            "model": "model_020819-model_step_5000.pt",
-            "timeout": 600,
-            "on_timeout": "to_cpu",
-            "load": true,
-            "opt": {
-                "beam_size": 5,
-                "log_file":"log_file.txt",
-                "log_file_level":"INFO"
-            }
-        },
-        {
-            "id": 7,
-            "model": "model_tamil_2019-09-23-model_step_100000.pt",
-            "timeout": 600,
-            "on_timeout": "to_cpu",
-            "load": true,
-            "opt": {
-                "beam_size": 5,
-                "log_file":"log_file.txt",
-                "log_file_level":"INFO"
-            }
-        },
-        {
-            "id": 10,
-            "model": "model_2019-09-10-model_step_90000.pt",
-            "timeout": 600,
-            "on_timeout": "to_cpu",
-            "load": true,
-            "opt": {
-                "beam_size": 5,
-                "log_file":"log_file.txt",
-                "log_file_level":"INFO"
-            }
-        },
-        {
-            "id": 11,
-            "model": "model_2019-09-12-model_step_100000.pt",
-            "timeout": 600,
-            "on_timeout": "to_cpu",
-            "load": true,
-            "opt": {
-                "beam_size": 5,
-                "log_file":"log_file.txt",
-                "log_file_level":"INFO"
-            }
-        },
-        {
-            "id": 12,
-            "model": "model_2019-09-14-model_step_100000.pt",
-            "timeout": 600,
-            "on_timeout": "to_cpu",
-            "load": true,
-            "opt": {
-                "beam_size": 5,
-                "log_file":"log_file.txt",
-                "log_file_level":"INFO"
-            }
-        },
-        {
             "id": 13,
             "model": "model_2019-09-17-model_step_100000.pt",
             "timeout": 600,
@@ -147,8 +26,8 @@
             }
         },
         {
-            "id": 15,
-            "model": "model_kannada_2019-09-20-model_step_100000.pt",
+            "id": 22,
+            "model": "model_en-hi_exp-2_2019-09-30-model_step_100000.pt",
             "timeout": 600,
             "on_timeout": "to_cpu",
             "load": true,
@@ -159,32 +38,8 @@
             }
         },
         {
-            "id": 16,
-            "model": "model_telgu_2019-09-20-model_step_100000.pt",
-            "timeout": 600,
-            "on_timeout": "to_cpu",
-            "load": true,
-            "opt": {
-                "beam_size": 5,
-                "log_file":"log_file.txt",
-                "log_file_level":"INFO"
-            }
-        },
-        {
-            "id": 17,
-            "model": "model_malayalam_2019-09-20-model_step_90000.pt",
-            "timeout": 600,
-            "on_timeout": "to_cpu",
-            "load": true,
-            "opt": {
-                "beam_size": 5,
-                "log_file":"log_file.txt",
-                "log_file_level":"INFO"
-            }
-        },
-        {
-            "id": 18,
-            "model": "model_punjabi_2019-09-20-model_step_80000.pt",
+            "id": 23,
+            "model": "model_en-hi_exp-3_2019-09-30-model_step_100000.pt",
             "timeout": 600,
             "on_timeout": "to_cpu",
             "load": true,
