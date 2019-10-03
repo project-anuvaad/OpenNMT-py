@@ -146,7 +146,7 @@ def handle_special_cases(text,model_id):
             hindi_months = ['जनवरी', 'फ़रवरी', 'मार्च', 'अप्रैल','मई','जून','जुलाई','अगस्त','सितंबर','अक्टूबर','नवंबर','दिसंबर']
             tamil_months = ['ஜனவரி', 'பிப்ரவரி', 'மார்ச்', 'ஏப்ரல்','மே','ஜூன்','ஜூலை','ஆகஸ்ட்','செப்டம்பர்','அக்டோபர்','நவம்பர்','டிசம்பர்']
             eng_months = ['january','february','march','april','may','june','july','august','september','october','november','december'] 
-            if model_id == 1:
+            if model_id in [1,13]:
                 "english to hindi"
                 for i in eng_months : 
                     text = text.casefold().replace(i.casefold(),hindi_months[eng_months.index(i)]) 
