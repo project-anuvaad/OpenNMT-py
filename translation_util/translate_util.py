@@ -53,8 +53,10 @@ def from_en(inputs, translation_server):
 
                 if  any(v not in i for v in ['src','id']):
                     out['status'] = statusCode["ID_OR_SRC_MISSING"]
+                    logger.info("either id or src missing in some input")
                     return out
 
+                logger.info("input sentences:{}".format(i['src']))
                 i['src'] = i['src'].strip()
                 if ancillary_functions.special_case_fits(i['src']):
                     logger.info("sentence fits in special case, returning accordingly and not going to model")
@@ -69,11 +71,13 @@ def from_en(inputs, translation_server):
                         i['src'] = anuvada.moses_tokenizer(i['src'])
                         translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_hindi["ENG_220519"],sp_model.english_hindi["HIN_220519"])
                         translation = anuvada.indic_detokenizer(translation)
+                        logger.info("final output from model-1: {}".format(translation))
                     elif i['id'] == 8:
                         numbers = sc_preface_handler.get_numbers(i['src'])
                         i['src'] = sc_preface_handler.replace_numbers_with_hash(i['src'])
                         translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_hindi["SC_PREFACE_ENG"],sp_model.english_hindi["SC_PREFACE_HIN"])
-                        translation = sc_preface_handler.replace_hash_with_original_number(translation,numbers)  
+                        translation = sc_preface_handler.replace_hash_with_original_number(translation,numbers) 
+                        logger.info("final output from chota model-8: {}".format(translation)) 
                     elif i['id'] == 7:  
                         "english-tamil"
                         i['src'],date_original,url_original,num_array = date_url_util.tag_number_date_url_1(i['src'])
@@ -181,7 +185,10 @@ def from_hindi(inputs, translation_server):
                 
             if  any(v not in i for v in ['src','id']):
                 out['status'] = statusCode["ID_OR_SRC_MISSING"]
+                logger.info("either id or src missing in some input")
                 return (out) 
+
+            logger.info("input sentences:{}".format(i['src']))    
             i['src'] = i['src'].strip()    
             if i['id'] == 3:
                 logger.info("translating using the first model")

@@ -32,9 +32,11 @@ def doc_translator(translation_server):
             if inputs is not None and len(inputs) is not 0:
                 if inputs['url_end_point'] == 'translation_en':
                     logger.info("Running kafka on  {}".format(inputs['url_end_point']))
+                    logger.info("Running kafka-translation on  {}".format(inputs['message']))
                     out = translate_util.from_en(inputs['message'], translation_server)
                 elif inputs['url_end_point'] == 'translation_hi':
                     logger.info("Running kafka on  {}".format(inputs['url_end_point']))
+                    logger.info("Running kafka-translation on  {}".format(inputs['message']))
                     out = translate_util.from_hindi(inputs['message'], translation_server)  
                 else:
                     logger.info("Incorrect url_end_point for KAFKA")

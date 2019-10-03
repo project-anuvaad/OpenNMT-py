@@ -1,5 +1,6 @@
 import re
 import ancillary_functions_anuvaad.common_util_functions as common_utils
+from onmt.utils.logging import logger
 
 
 def tag_number_date_url(text):
@@ -94,7 +95,7 @@ def tag_number_date_url_1(text):
         print("count exceeding 30")
         count_number = 30
 
-    print("number tagging done")
+    logger.info("Number tagging done")
     for word in text.split():
         # if len(word)>4 and len(word)<12 and token_is_date(word):
         try:
@@ -119,18 +120,18 @@ def tag_number_date_url_1(text):
             count_url +=1
         except Exception as e:
           print(e)
-          print("in exception,",word)
+          logger.error("In handle_date_url:tag_num function:{}".format(e))
           word = word
         
 
         resultant_str.append(word)   
         s = [str(i) for i in resultant_str] 
-        res = str(" ".join(s))  
-    print("res",res,date_original,url_original,num_array)    
+        res = str(" ".join(s))   
+    logger.info("tagged response:{} and date:{} and url:{}".format(res,date_original,url_original))   
 
     return res,date_original,url_original,num_array 
   except Exception as e:
-    print(e)   
+    logger.error("In handle_date_url:tag_num function parent except block:{}".format(e))   
 
 def replace_tags_with_original_1(text,date_original,url_original,num_array):
   try:
@@ -142,18 +143,16 @@ def replace_tags_with_original_1(text,date_original,url_original,num_array):
     for word in text.split():
       if word[:-1] == 'DdAaTtEe' and len(date_original) > 0:
         word = date_original[int(word[-1])]
-        print(word,"date")
       elif word[:-1] == 'UuRrLl' and len(url_original)> 0 :
-        word = url_original[int(word[-1])]  
-        print("url",word)        
+        word = url_original[int(word[-1])]          
 
       resultant_str.append(word)
       s = [str(i) for i in resultant_str] 
       res = str(" ".join(s))
 
-    print("response after url and date replacemnt",res)
-    array = re.findall(r'NnUuMm..|NnUuMm.', res) 
-    print("NnUuMm array after translation",array)  
+    logger.info("response after url and date replacemnt:{}".format(res))
+    array = re.findall(r'NnUuMm..|NnUuMm.', res)   
+    logger.info("NnUuMm array after translation:{}".format(array))
     for j in array:
       try:
         if j[-2:] in hindi_numbers:
@@ -171,8 +170,8 @@ def replace_tags_with_original_1(text,date_original,url_original,num_array):
           res = res.replace(j,str(num_array[index]),1)
       
       except Exception as e:
-          print("inside str.replace error,but handling it:",e)
-          res = res.replace(j,"",1)
+        logger.error("inside str.replace error,but handling it:{}".format(e))
+        res = res.replace(j,"",1)
         
     # for word in text.split():
     #   if word[:-1] == 'DdAaTtEe':
@@ -186,7 +185,7 @@ def replace_tags_with_original_1(text,date_original,url_original,num_array):
     #   s = [str(i) for i in resultant_str] 
     #   res = str(" ".join(s))
 
-    print("response after tags replacement",res)
+    logger.info("response after tags replacement:{}".format(res))
     return res    
   except Exception as e:
-    print("errror:",e)
+    logger.error("in parent except block of replace tag function:{}".format(e))
