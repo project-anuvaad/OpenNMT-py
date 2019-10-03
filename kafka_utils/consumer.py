@@ -3,9 +3,9 @@ from onmt.utils.logging import init_logger,logger
 import json
 import os
 
-kafka_ip_host = 'kafka_ip_host'
+KAFKA_IP_HOST = 'KAFKA_IP_HOST'
 default_value = 'localhost:9092'
-bootstrap_server = os.environ.get(kafka_ip_host, default_value)
+bootstrap_server = os.environ.get(KAFKA_IP_HOST, default_value)
 
 
 def get_consumer(topic):

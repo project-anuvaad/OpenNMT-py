@@ -33,9 +33,9 @@ STATUS_ERROR = "error"
 
 API_FILE_DIRECTORY = "src_tgt_api_files/"
 mongo_config_dir = "config/mongo_config.py"
-is_run_kafka = 'is_run_kafka'
-is_run_kafka_default_value = False
-bootstrap_server_boolean = os.environ.get(is_run_kafka, is_run_kafka_default_value)
+IS_RUN_KAFKA = 'IS_RUN_KAFKA'
+IS_RUN_KAFKA_DEFAULT_VALUE = False
+bootstrap_server_boolean = os.environ.get(IS_RUN_KAFKA, IS_RUN_KAFKA_DEFAULT_VALUE)
 
 if not os.path.exists(API_FILE_DIRECTORY):
     os.makedirs(os.path.join(API_FILE_DIRECTORY,'source_files/'))
