@@ -47,3 +47,8 @@ english_punjabi = {
     "ENG_200919": "model/sentencepiece_models/enPu-2019-09-20-10k.model",
     "PUNJABI_200919": "model/sentencepiece_models/punjabi-2019-09-20-10k.model"
 }
+
+hindi_english = {
+    "HINDI_280619": "hi-28062019-10k.model",
+    "ENGLISH_280619": "en-28062019-10k.model"
+}

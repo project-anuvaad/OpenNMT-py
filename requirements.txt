@@ -8,3 +8,5 @@ sentencepiece
 flask_mongoengine
 indic-transliteration
 kafka-python
+python-dateutil
+Flask-Cors

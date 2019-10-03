@@ -26,12 +26,16 @@ from mongo_model import db,Benchmarks
 import datetime
 from kafka_utils.document_translator import doc_translator
 import threading
+import translation_util.translate_util as translate_util
 
 STATUS_OK = "ok"
 STATUS_ERROR = "error"
 
 API_FILE_DIRECTORY = "src_tgt_api_files/"
 mongo_config_dir = "config/mongo_config.py"
+is_run_kafka = 'is_run_kafka'
+is_run_kafka_default_value = False
+bootstrap_server_boolean = os.environ.get(is_run_kafka, is_run_kafka_default_value)
 
 if not os.path.exists(API_FILE_DIRECTORY):
     os.makedirs(os.path.join(API_FILE_DIRECTORY,'source_files/'))
@@ -57,11 +61,12 @@ def start(config_file,
     translation_server.start(config_file)
 
     def kafka_function():
-        logger.info('kafka_function, in server')
+        logger.info('starting kafka from nmt-server')
         doc_translator(translation_server)
 
-    t1 = threading.Thread(target=kafka_function)
-    t1.start()
+    if bootstrap_server_boolean:
+        t1 = threading.Thread(target=kafka_function)
+        t1.start()
 
     @app.route('/models', methods=['GET'])
     def get_models():
@@ -133,249 +138,26 @@ def start(config_file,
     @app.route('/translation_en', methods=['POST'])
     def translation_en():
         inputs = request.get_json(force=True)
-        out = {}
-        tgt = list()
-        pred_score = list()
-        sentence_id = list()
-        input_subwords = list()
-        output_subwords = list()
-        try:
-            for i in inputs:
-                if 's_id'in i:
-                    s_id = [i['s_id']]
-                else:
-                    s_id = [0000]    
-                if  any(v not in i for v in ['src','id']):
-                    out['status'] = statusCode["ID_OR_SRC_MISSING"]
-                    return jsonify(out)
-
-                # if len(i['src'].split()) == 1 and i['src'].isalpha()== False:
-                #     logger.info("handling single token")
-                #     translation = ancillary_functions.handle_single_token(i['src'])
-                #     scores = [1]
-                # if len(i['src'].split()) == 1 and i['src'].isalpha() and len(i['src'])==1:
-                #     logger.info("returning single character as it is:%s"%i['src'])
-                #     translation = i['src']
-                #     scores = [1]
-                i['src'] = i['src'].strip()
-                if ancillary_functions.special_case_fits(i['src']):
-                    logger.info("sentence fits in special case, returning accordingly and not going to model")
-                    translation = ancillary_functions.handle_special_cases(i['src'],i['id'])
-                    scores = [1]      
-                else:
-                    logger.info("translating using NMT-models")
-                    # prefix,suffix, i['src'] = ancillary_functions.separate_alphanumeric_and_symbol(i['src'])
-                    # print("prefix :{},suffix :{},i[src] :{}".format(prefix,suffix,i['src']))
-                    # i['src'] = anuvada.moses_tokenizer(i['src'])
-                    # i['src'] = anuvada.truecaser(i['src'])  
-                    if i['id'] == 1:
-                        i['src'] = anuvada.moses_tokenizer(i['src'])                   
-                        i['src'] = str(sp.encode_line('en-220519.model',i['src']))
-                        input_sw = i['src']
-                        translation, scores, n_best, times = translation_server.run([i])
-                        output_sw = translation[0]
-                        translation = sp.decode_line('hi-220519.model',translation[0])
-                        translation = anuvada.indic_detokenizer(translation)
-                    elif i['id'] == 9:   
-                        i['src'] = anuvada.moses_tokenizer(i['src'])                
-                        i['src'] = str(sp.encode_line('enT-08072019-10k.model',i['src']))
-                        translation, scores, n_best, times = translation_server.run([i])
-                        translation = sp.decode_line('ta-08072019-10k.model',translation[0])
-                    elif i['id'] == 8:
-                        numbers = sc_preface_handler.get_numbers(i['src'])
-                        i['src'] = sc_preface_handler.replace_numbers_with_hash(i['src'])
-                        i['src'] = str(sp.encode_line('enSC-02082019-2k.model',i['src']))
-                        translation, scores, n_best, times = translation_server.run([i])
-                        translation = sp.decode_line('hiSC-02082019-1k.model',translation[0])
-                        translation = sc_preface_handler.replace_hash_with_original_number(translation,numbers)  
-                    # elif i['id'] == 7:  
-                    #     i['src'],date_original,url_original = date_url_util.tag_number_date_url(i['src'])   
-                    #     print("herere")           
-                    #     i['src'] = str(sp.encode_line('model/sentencepiece_models/enT-210819-7k.model',i['src']))
-                    #     input_sw = i['src']
-                    #     translation, scores, n_best, times = translation_server.run([i])
-                    #     output_sw = translation[0]
-                    #     translation = sp.decode_line('model/sentencepiece_models/ta-210819-7k.model',translation[0])
-                    #     translation = date_url_util.replace_tags_with_original(translation,date_original,url_original)
-                    elif i['id'] == 10:  
-                        "english-gujrati"
-                        i['src'],date_original,url_original,num_array = date_url_util.tag_number_date_url_1(i['src'])          
-                        i['src'] = str(sp.encode_line('model/sentencepiece_models/en-2019-09-10-10k.model',i['src']))
-                        input_sw = i['src']
-                        translation, scores, n_best, times = translation_server.run([i])
-                        output_sw = translation[0]
-                        translation = sp.decode_line('model/sentencepiece_models/guj-2019-09-10-10k.model',translation[0])
-                        logger.info("decoded gujrati: {}".format(translation))
-                        translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)
-                    elif i['id'] == 11:  
-                        "english-bengali"
-                        i['src'],date_original,url_original,num_array = date_url_util.tag_number_date_url_1(i['src'])           
-                        i['src'] = str(sp.encode_line('model/sentencepiece_models/en-2019-09-12-10k.model',i['src']))
-                        input_sw = i['src']
-                        translation, scores, n_best, times = translation_server.run([i])
-                        output_sw = translation[0]
-                        translation = sp.decode_line('model/sentencepiece_models/beng-2019-09-12-10k.model',translation[0])
-                        logger.info("decoded bengali: {}".format(translation))
-                        translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array) 
-                    elif i['id'] == 12:  
-                        "english-marathi"
-                        i['src'],date_original,url_original,num_array = date_url_util.tag_number_date_url_1(i['src'])             
-                        i['src'] = str(sp.encode_line('model/sentencepiece_models/enMr-2019-09-14-10k.model',i['src']))
-                        input_sw = i['src']
-                        translation, scores, n_best, times = translation_server.run([i])
-                        output_sw = translation[0]
-                        translation = sp.decode_line('model/sentencepiece_models/marathi-2019-09-14-10k.model',translation[0])
-                        logger.info("decoded marathi: {}".format(translation))
-                        translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)
-                    elif i['id'] in [13,14]:  
-                        "170919 eng-hin"
-                        i['src'] = i['src'].lower()
-                        i['src'],date_original,url_original,num_array = date_url_util.tag_number_date_url_1(i['src'])            
-                        i['src'] = str(sp.encode_line('model/sentencepiece_models/en-2019-09-17-10k.model',i['src']))
-                        input_sw = i['src']
-                        logger.info("encoded english: {}".format( i['src']))
-                        translation, scores, n_best, times = translation_server.run([i])
-                        output_sw = translation[0]
-                        translation = sp.decode_line('model/sentencepiece_models/hi-2019-09-17-10k.model',translation[0])
-                        logger.info("decoded hindi: {}".format(translation))
-                        translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)                   
-
-                    elif i['id'] == 15:  
-                        "english-kannada"
-                        i['src'],date_original,url_original,num_array = date_url_util.tag_number_date_url_1(i['src'])             
-                        i['src'] = str(sp.encode_line('model/sentencepiece_models/enKn-2019-09-20-10k.model',i['src']))
-                        input_sw = i['src']
-                        translation, scores, n_best, times = translation_server.run([i])
-                        output_sw = translation[0]
-                        translation = sp.decode_line('model/sentencepiece_models/kannada-2019-09-20-10k.model',translation[0])
-                        logger.info("decoded kannada: {}".format(translation))
-                        translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)
-                    elif i['id'] == 16:  
-                        "english-telgu"
-                        i['src'],date_original,url_original,num_array = date_url_util.tag_number_date_url_1(i['src'])             
-                        i['src'] = str(sp.encode_line('model/sentencepiece_models/enTe-2019-09-20-10k.model',i['src']))
-                        input_sw = i['src']
-                        translation, scores, n_best, times = translation_server.run([i])
-                        output_sw = translation[0]
-                        translation = sp.decode_line('model/sentencepiece_models/telgu-2019-09-20-10k.model',translation[0])
-                        logger.info("decoded telgu: {}".format(translation))
-                        translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)
-                    elif i['id'] == 17:  
-                        "english-malayalam"
-                        i['src'],date_original,url_original,num_array = date_url_util.tag_number_date_url_1(i['src'])             
-                        i['src'] = str(sp.encode_line('model/sentencepiece_models/enMl-2019-09-20-10k.model',i['src']))
-                        input_sw = i['src']
-                        translation, scores, n_best, times = translation_server.run([i])
-                        output_sw = translation[0]
-                        translation = sp.decode_line('model/sentencepiece_models/malayalam-2019-09-20-10k.model',translation[0])
-                        logger.info("decoded malayalam: {}".format(translation))
-                        translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)
-                    elif i['id'] == 18:  
-                        "english-punjabi"
-                        i['src'],date_original,url_original,num_array = date_url_util.tag_number_date_url_1(i['src'])             
-                        i['src'] = str(sp.encode_line('model/sentencepiece_models/enPu-2019-09-20-10k.model',i['src']))
-                        input_sw = i['src']
-                        translation, scores, n_best, times = translation_server.run([i])
-                        output_sw = translation[0]
-                        translation = sp.decode_line('model/sentencepiece_models/punjabi-2019-09-20-10k.model',translation[0])
-                        logger.info("decoded punjabi: {}".format(translation))
-                        translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)
-                    elif i['id'] == 7:  
-                        "english-tamil"
-                        i['src'],date_original,url_original,num_array = date_url_util.tag_number_date_url_1(i['src'])             
-                        i['src'] = str(sp.encode_line('model/sentencepiece_models/enTa-2019-09-23-10k.model',i['src']))
-                        input_sw = i['src']
-                        translation, scores, n_best, times = translation_server.run([i])
-                        output_sw = translation[0]
-                        translation = sp.decode_line('model/sentencepiece_models/tamil-2019-09-23-10k.model',translation[0])
-                        logger.info("decoded tamil: {}".format(translation))
-                        translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)    
-                    else:
-                        out['status'] = statusCode["INCORRECT_ID"]
-                        return jsonify(out)
-                    
-                    # translation = (prefix+" "+translation+" "+suffix).strip()
-                translation = ancillary_functions.replace_hindi_numbers(translation)
-                tgt.append(translation)
-                pred_score.append(scores[0])
-                sentence_id.append(s_id[0])
-                input_subwords.append(input_sw)
-                output_subwords.append(output_sw)
-
-            out['status'] = statusCode["SUCCESS"]
-            out['response_body'] = [{"tgt": tgt[i],
-                                     "s_id": sentence_id[i],"input_subwords": input_subwords[i], 
-                                     "output_subwords":output_subwords[i]}
-                    for i in range(len(tgt))]
-        except ServerModelError as e:
-            out['status'] = statusCode["SEVER_MODEL_ERR"]
-            out['status']['errObj'] = str(e)
-        except Exception as e:
-            out['status'] = statusCode["SYSTEM_ERR"]
-            print("error: {}".format(e))
-            logger.info("Unexpected error: %s"% sys.exc_info()[0])    
-
-        return jsonify(out)        
+        if len(inputs)>0:
+            logger.info("Making translation_en API call")
+            out = translate_util.from_en(inputs, translation_server)
+            logger.info("out from english-trans_util done{}".format(out))
+            return jsonify(out)  
+        else:
+            logger.info("null inputs in request in translation_en API")
+            return jsonify({'status':statusCode["INVALID_API_REQUEST"]})       
 
     @app.route('/translation_hi', methods=['POST'])
     def translation_hi():
         inputs = request.get_json(force=True)
-        out = {}
-        tgt = list()
-        pred_score = list()
-        sentence_id = list()
-        try:
-            for i in inputs:
-                if 's_id'in i:
-                    s_id = [i['s_id']]
-                else:
-                    s_id = [0000]   
-                if  any(v not in i for v in ['src','id']):
-                    out['status'] = statusCode["ID_OR_SRC_MISSING"]
-                    return jsonify(out) 
-                if i['id'] == 3:
-                    logger.info("translating using the first model")
-                    translation, scores, n_best, times = translation_server.run([i])
-                    translation = translation[0]   
-
-                else:
-                    i['src'] = anuvada.indic_tokenizer(i['src']) 
-
-                    if i['id'] == 2:
-                        i['src'] = str(sp.encode_line('hi-220519.model',i['src']))
-                        translation, scores, n_best, times = translation_server.run([i])
-                        translation = sp.decode_line('en-220519.model',translation[0])
-                    elif i['id'] in [5,6]:
-                        i['src'] = str(sp.encode_line('hi-28062019-10k.model',i['src']))
-                        translation, scores, n_best, times = translation_server.run([i])
-                        translation = sp.decode_line('en-28062019-10k.model',translation[0])
-                    elif i['id'] == 4:
-                        i['src'] = anuvada.apply_bpe('codesSrc1005.bpe',i['src'])
-                        translation, scores, n_best, times = translation_server.run([i])
-                        translation = anuvada.decode_bpe(translation[0])
-                    else:
-                        out['status'] = statusCode["INCORRECT_ID"]
-                        return jsonify(out)      
-                    translation = anuvada.moses_detokenizer(translation)
-                    translation = anuvada.detruecaser(translation)
-                
-                tgt.append(translation)
-                pred_score.append(scores[0])
-                sentence_id.append(s_id[0])
-
-            out['status'] = statusCode["SUCCESS"]
-            out['response_body'] = [{"tgt": tgt[i],
-                     "pred_score": pred_score[i], "s_id": sentence_id[i]}
-                    for i in range(len(tgt))]
-        except ServerModelError as e:
-            out['status'] = statusCode["SEVER_MODEL_ERR"]
-            out['status']['errObj'] = str(e)
-        except Exception as e:
-            out['status'] = statusCode["SYSTEM_ERR"]
-            out['status']['errObj'] = str(e)
-            logger.info("Unexpected error: %s"% sys.exc_info()[0])   
-
-        return jsonify(out)
+        if len(inputs)>0:
+            logger.info("Making translation_hi API call")
+            out = translate_util.from_hindi(inputs, translation_server)
+            logger.info("out from hindi-trans_util done{}".format(out))
+            return jsonify(out)
+        else:
+            logger.info("null inputs in request in translation_hi API")
+            return jsonify({'status':statusCode["INVALID_API_REQUEST"]})  
 
     @app.route('/save_benchmark', methods=['POST'])
     def save_benchmark():

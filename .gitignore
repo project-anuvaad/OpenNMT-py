@@ -20,9 +20,6 @@ bleu_out.txt
 bleu-detok.txt
 intermediate_data/*
 !intermediate_data/.gitkeep
-*.model
-*.vocab
-*.bpe
 *truecaseModel_en100919
 /corpus/IITB_splitted_data/*
 !corpus/IITB_splitted_data/.gitkeep
@@ -49,6 +46,7 @@ corpus/original_data/english_malayalam/*
 corpus/original_data/english_punjabi/*
 !corpus/original_data/english_punjabi/.gitkeep
 available_models/log_file.txt
+!model/sentencepiece_models
 
 
 # Byte-compiled / optimized / DLL files
