@@ -61,7 +61,8 @@ def from_en(inputs, translation_server):
                 if ancillary_functions.special_case_fits(i['src']):
                     logger.info("sentence fits in special case, returning accordingly and not going to model")
                     translation = ancillary_functions.handle_special_cases(i['src'],i['id'])
-                    scores = [1]      
+                    scores = [1] 
+                    input_sw,output_sw = "",""     
                 else:
                     logger.info("translating using NMT-model:{}".format(i['id']))
                     logger.info("translating this sentences:{}".format(i['src']))
@@ -236,6 +237,6 @@ def from_hindi(inputs, translation_server):
     except Exception as e:
         out['status'] = statusCode["SYSTEM_ERR"]
         out['status']['errObj'] = str(e)
-        logger.info("Unexpected error:%s and %s"% (e,sys.exc_info()[0]))   
+        logger.error("Unexpected error:%s and %s"% (e,sys.exc_info()[0]))   
 
     return (out)
