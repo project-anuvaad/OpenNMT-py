@@ -13,7 +13,8 @@ statusCode = {
   "No_File_DB": { "ok": "false",  "statusCode": 401 , "why": "no file found in the db for the given id" },
   "ID_OR_SRC_MISSING": { "ok": "false",  "statusCode": 401 , "why": "either id or src missing in some input" },
   "INCORRECT_ID": { "ok": "false",  "statusCode": 401 , "why": "wrong model id for some input" },
-  "INVALID_API_REQUEST": {"ok": "false",  "statusCode": 401 , "why": "invalid api request,either incorrect format or empty request"}
+  "INVALID_API_REQUEST": {"ok": "false",  "statusCode": 401 , "why": "invalid api request,either incorrect format or empty request"},
+  "KAFKA_INVALID_REQUEST": {"ok": "false",  "statusCode": 401 , "why": "incorrect url_end_point for KAFKA"}
 
 }
 

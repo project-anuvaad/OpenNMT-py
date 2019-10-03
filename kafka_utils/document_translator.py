@@ -22,7 +22,7 @@ def doc_translator(translation_server):
     logger.info('doc_translator')
     iq =0
     out = {}
-    c = get_consumer(consumer_topics['TEST_TOPIC'])
+    c = get_consumer(consumer_topics['DOCUMENT_REQ'])
     p = get_producer()
     try:
         for msg in c:
@@ -30,18 +30,26 @@ def doc_translator(translation_server):
             inputs = (msg.value)
 
             if inputs is not None and len(inputs) is not 0:
-                "add url variable????"
-                out = translate_util.from_en(inputs, translation_server)
-                
+                if inputs['url_end_point'] == 'translation_en':
+                    logger.info("Running kafka on  {}".format(inputs['url_end_point']))
+                    out = translate_util.from_en(inputs['message'], translation_server)
+                elif inputs['url_end_point'] == 'translation_hi':
+                    logger.info("Running kafka on  {}".format(inputs['url_end_point']))
+                    out = translate_util.from_hindi(inputs['message'], translation_server)  
+                else:
+                    logger.info("Incorrect url_end_point for KAFKA")
+                    out['status'] = statusCode["KAFKA_INVALID_REQUEST"]
+                    out['response_body'] = []
 
-            p.send(producer_topics['TEST_TOPIC'], value={'out':out})
+                
+            p.send(producer_topics['TO_DOCUMENT'], value={'out':out})
             p.flush()
             
     except ValueError:  # includes simplejson.decoder.JSONDecodeError
-        logger.info("Decoding JSON has failed in document_translator: %s"% sys.exc_info()[0])
+        logger.error("Decoding JSON has failed in document_translator: %s"% sys.exc_info()[0])
         doc_translator(translation_server)  
     except Exception  as e:
-        logger.info("Unexpected error: %s"% sys.exc_info()[0])
-        logger.info("error in doc_translator: {}".format(e))
+        logger.error("Unexpected error: %s"% sys.exc_info()[0])
+        logger.error("error in doc_translator: {}".format(e))
         doc_translator(translation_server)
      

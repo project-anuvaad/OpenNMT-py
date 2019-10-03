@@ -62,6 +62,7 @@ def from_en(inputs, translation_server):
                     scores = [1]      
                 else:
                     logger.info("translating using NMT-model:{}".format(i['id']))
+                    logger.info("translating this sentences:{}".format(i['src']))
                     # prefix,suffix, i['src'] = ancillary_functions.separate_alphanumeric_and_symbol(i['src'])
                     # print("prefix :{},suffix :{},i[src] :{}".format(prefix,suffix,i['src']))
                     if i['id'] == 1:
@@ -128,7 +129,7 @@ def from_en(inputs, translation_server):
                         i['src'],date_original,url_original,num_array = date_url_util.tag_number_date_url_1(i['src']) 
                         translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_punjabi["ENG_200919"],sp_model.english_punjabi["PUNJABI_200919"])                       
                         translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)
-                        logger.info("decoded punjabi: {}".format(translation))
+                        logger.info("final output punjabi: {}".format(translation))
                     else:
                         logger.info("unsupported model id: {} for given english translation".format(i['id']))
                         logger.error("unsupported model id: {} for given english translation".format(i['id']))
