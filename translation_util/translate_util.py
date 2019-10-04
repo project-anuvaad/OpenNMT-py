@@ -135,6 +135,12 @@ def from_en(inputs, translation_server):
                         translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_punjabi["ENG_200919"],sp_model.english_punjabi["PUNJABI_200919"])                       
                         translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)
                         logger.info("final output punjabi: {}".format(translation))
+                    elif i['id'] == 20:  
+                        "180919 model, no tokenization,handling num,date,url+augmented data"                        
+                        i['src'],date_original,url_original,num_array = date_url_util.tag_number_date_url_1(i['src'])
+                        translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_hindi["ENG_180919"],sp_model.english_hindi["HIN_180919"])                      
+                        translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)  
+                        logger.info("180919 model output: {}".format(translation))
                     elif i['id'] == 22:  
                         "experiment-2-Unigram model on existing corpus, and same params 10k +tokenization,4096"                        
                         i['src'],date_original,url_original,num_array = date_url_util.tag_number_date_url_1(i['src'])
@@ -142,7 +148,7 @@ def from_en(inputs, translation_server):
                         translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_hindi["ENG_EXP_2"],sp_model.english_hindi["HIN_EXP_2"])                      
                         translation = anuvada.indic_detokenizer(translation)
                         translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)  
-                        logger.info("experiment-2: {}".format(translation)) 
+                        logger.info("experiment-2 output: {}".format(translation)) 
                     elif i['id'] == 23:  
                         "experiment-3-BPE model, lowercasing all input while training and also during translation +tokenization, 4096"
                         i['src'] = i['src'].lower()
@@ -151,7 +157,7 @@ def from_en(inputs, translation_server):
                         translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_hindi["ENG_EXP_3"],sp_model.english_hindi["HIN_EXP_3"])                      
                         translation = anuvada.indic_detokenizer(translation)
                         translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)  
-                        logger.info("experiment-2: {}".format(translation))       
+                        logger.info("experiment-3 output: {}".format(translation))       
                     else:
                         logger.info("unsupported model id: {} for given english translation".format(i['id']))
                         logger.error("unsupported model id: {} for given english translation".format(i['id']))
