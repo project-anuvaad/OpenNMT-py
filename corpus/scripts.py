@@ -139,7 +139,7 @@ def english_hindi():
         print(e)
 
 def english_hindi_experiments():
-    "exp-4 Word based model + tokenization +4096 on 2gpu +all lowercasing"
+    "exp-4 Word based model + tokenization +6000 on 1gpu +all lowercasing"
     try:
         model_intermediate_folder = os.path.join(INTERMEDIATE_DATA_LOCATION, 'english_hindi')
         model_master_folder = os.path.join(MASTER_DATA_LOCATION, 'english_hindi')
