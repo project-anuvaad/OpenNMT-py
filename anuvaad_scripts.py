@@ -153,7 +153,7 @@ def english_hindi_experiments():
 
 def english_hindi_experiments_word_based():
 
-    "exp-4.Word based model + tokenization +4096 on 2gpu +all lowercasing"
+    "exp-4.Word based model + tokenization +6000 on 1gpu +all lowercasing"
     "steps:1.tokenize hindi using indicnlp, english using moses"
     "      3.preprocess nmt and embeddings"
     "      4.nmt-train, change hyperparamter manually, these are hardcoded for now"        
