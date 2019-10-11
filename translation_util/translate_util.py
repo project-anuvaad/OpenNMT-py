@@ -166,6 +166,16 @@ def from_en(inputs, translation_server):
                         translation = anuvada.indic_detokenizer(translation)
                         translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)  
                         logger.info("experiment-3 output: {}".format(translation)) 
+                    elif i['id'] == 24:  
+                        "experiment-4-Word based model + tokenization +6000 on 1gpu +all lowercasing"
+                        i['src'] = i['src'].lower()
+                        i['src'],date_original,url_original,num_array = date_url_util.tag_number_date_url_1(i['src'])
+                        i['src'] = anuvada.moses_tokenizer(i['src'])
+                        translation, scores, n_best, times = translation_server.run([i])
+                        translation = anuvada.indic_detokenizer(translation[0])
+                        translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)  
+                        logger.info("experiment-4 output: {}".format(translation)) 
+                        input_sw,output_sw = "",""
                     elif i['id'] == 26:  
                         "experiment-6 Unigram-10k +tok+ all lowercaseing +2*4096"
                         i['src'] = i['src'].lower()
