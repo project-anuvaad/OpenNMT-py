@@ -83,18 +83,18 @@ def english_hindi():
 
 def english_hindi_experiments():
 
-    "exp-7 IITB(original)+all existing corpus +bpe-24k +tokenization +1*6000, nolowercasing 1*6000"
+    "Exp-8: Unigram(15k)+pre-tokenization ,IITB original new 1 gpu machine"
     "steps:1.tokenize hindi using indicnlp, english using moses"
     "      2.train sp models for hindi and english and then encode train, dev, test files "
     "      3.preprocess nmt and embeddings"
     "      4.nmt-train, change hyperparamter manually, these are hardcoded for now"        
     "Note: SP model prefix is date wise, If training more than one DIFFERENT model in a single day, kindly keep this factor in mind and change prefix accordingly similarly nmt model and preprocess.py"
     try:
-        sp_model_prefix_hindi = 'hi_exp-7-{}-24k'.format(date_now)
-        sp_model_prefix_english = 'en_exp-7-{}-24k'.format(date_now)
+        sp_model_prefix_hindi = 'hi_exp-8-{}-15k'.format(date_now)
+        sp_model_prefix_english = 'en_exp-8-{}-15k'.format(date_now)
         model_intermediate_folder = os.path.join(INTERMEDIATE_DATA_LOCATION, 'english_hindi')
         model_master_train_folder = os.path.join(TRAIN_DEV_TEST_DATA_LOCATION, 'english_hindi')
-        nmt_model_path = os.path.join(NMT_MODEL_DIR, 'english_hindi','model_en-hi_exp-7_{}-model'.format(date_now))
+        nmt_model_path = os.path.join(NMT_MODEL_DIR, 'english_hindi','model_en-hi_exp-8_{}-model'.format(date_now))
         if not any([os.path.exists(model_intermediate_folder),os.path.exists(model_master_train_folder),os.path.exists(os.path.join(NMT_MODEL_DIR, 'english_hindi'))]):
             os.makedirs(model_intermediate_folder)
             os.makedirs(model_master_train_folder)
@@ -114,8 +114,9 @@ def english_hindi_experiments():
         english_test_Gen_encoded_file = os.path.join(model_master_train_folder, 'english_test_Gen_final.txt')
         english_test_LC_encoded_file = os.path.join(model_master_train_folder, 'english_test_LC_final.txt')
         english_test_TB_encoded_file = os.path.join(model_master_train_folder, 'english_test_TB_final.txt')
-        nmt_processed_data = os.path.join(model_master_train_folder, 'processed_data_exp-7_{}'.format(date_now))
+        nmt_processed_data = os.path.join(model_master_train_folder, 'processed_data_exp-8_{}'.format(date_now))
 
+        print("Exp-8 training")
         os.system('python ./tools/indic_tokenize.py {0} {1} hi'.format(mcl.english_hindi['HINDI_TRAIN_FILE'], hindi_tokenized_file))
         os.system('python ./tools/indic_tokenize.py {0} {1} hi'.format(mcl.english_hindi['DEV_HINDI'], hindi_dev_tokenized_file))
         logger.info("english-hindi, hindi train and dev corpus tokenized")
@@ -125,9 +126,9 @@ def english_hindi_experiments():
         os.system('perl ./tools/tokenizer.perl <{0}> {1}'.format(mcl.english_hindi['TEST_ENGLISH_LC'], english_test_LC_tokenized_file))
         os.system('perl ./tools/tokenizer.perl <{0}> {1}'.format(mcl.english_hindi['TEST_ENGLISH_TB'], english_test_TB_tokenized_file))
         logger.info("english-hindi, english train, dev,test corpus tokenized")
-        sp.train_spm(hindi_tokenized_file,sp_model_prefix_hindi, 24000, 'bpe')
+        sp.train_spm(hindi_tokenized_file,sp_model_prefix_hindi, 15000, 'unigram')
         logger.info("sentencepiece model hindi trained")
-        sp.train_spm(english_tokenized_file,sp_model_prefix_english, 24000, 'bpe')
+        sp.train_spm(english_tokenized_file,sp_model_prefix_english, 15000, 'unigram')
         logger.info("sentencepiece model english trained")
 
         sp.encode_as_pieces(os.path.join(SENTENCEPIECE_MODEL_DIR, (sp_model_prefix_hindi+'.model')),hindi_tokenized_file,hindi_encoded_file)
@@ -141,7 +142,7 @@ def english_hindi_experiments():
         logger.info("english-train,dev,test file encoded and final stored in data folder")
         print("english-train,dev,test file encoded and final stored in data folder")
 
-        os.system('python preprocess.py -train_src {0} -train_tgt {1} -valid_src {2} -valid_tgt {3} -src_seq_length 150 -tgt_seq_length 150 -src_vocab_size 70000 -tgt_vocab_size 70000 -save_data {4}'.format(english_encoded_file,hindi_encoded_file,english_dev_encoded_file,hindi_dev_encoded_file,nmt_processed_data))
+        os.system('python preprocess.py -train_src {0} -train_tgt {1} -valid_src {2} -valid_tgt {3} -src_seq_length 150 -tgt_seq_length 150 -save_data {4}'.format(english_encoded_file,hindi_encoded_file,english_dev_encoded_file,hindi_dev_encoded_file,nmt_processed_data))
         print("preprocessing done")
         os.system('python ./embeddings_to_torch.py -emb_file_enc ~/glove/glove.6B.300d.txt -emb_file_dec ~/glove/cc.hi.300.vec -dict_file {0} -output_file {1}'.format(nmt_processed_data+'.vocab.pt',os.path.join(model_master_train_folder,'embeddings_eng_hin')))
         print("glove embedding done")

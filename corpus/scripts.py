@@ -139,7 +139,7 @@ def english_hindi():
         print(e)
 
 def english_hindi_experiments():
-    "exp-7 IITB(original)+all existing corpus +bpe-24k +tokenization +1*6000, nolowercasing"
+    "Exp-8: Unigram(15k)+pre-tokenization ,IITB original new 1 gpu machine"
     try:
         model_intermediate_folder = os.path.join(INTERMEDIATE_DATA_LOCATION, 'english_hindi')
         model_master_folder = os.path.join(MASTER_DATA_LOCATION, 'english_hindi')
