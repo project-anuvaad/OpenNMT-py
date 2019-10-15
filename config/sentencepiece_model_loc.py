@@ -5,6 +5,16 @@ english_hindi = {
     "SC_PREFACE_HIN":"model/sentencepiece_models/hiSC-02082019-1k.model",
     "ENG_170919": "model/sentencepiece_models/en-2019-09-17-10k.model",
     "HIN_170919": "model/sentencepiece_models/hi-2019-09-17-10k.model",
+    "ENG_180919": "model/sentencepiece_models/en-2019-09-18-10k.model",
+    "HIN_180919": "model/sentencepiece_models/hi-2019-09-18-10k.model",
+    "ENG_EXP_1": "model/sentencepiece_models/en_exp-1-2019-10-01-15k.model",
+    "HIN_EXP_1": "model/sentencepiece_models/hi_exp-1-2019-10-01-15k.model",
+    "ENG_EXP_2": "model/sentencepiece_models/en_exp-2-2019-09-30-10k.model",
+    "HIN_EXP_2": "model/sentencepiece_models/hi_exp-2-2019-09-30-10k.model",
+    "ENG_EXP_3": "model/sentencepiece_models/en_exp-3-2019-09-30-10k.model",
+    "HIN_EXP_3": "model/sentencepiece_models/hi_exp-3-2019-09-30-10k.model",
+    "ENG_EXP_6": "model/sentencepiece_models/en_exp-6-2019-10-04-10k.model",
+    "HIN_EXP_6": "model/sentencepiece_models/hi_exp-6-2019-10-04-10k.model",
 
 }
 
