@@ -195,68 +195,8 @@
             }
         },
         {
-            "id": 20,
-            "model": "model_2019-09-18-model_step_90000.pt",
-            "timeout": 600,
-            "on_timeout": "to_cpu",
-            "load": true,
-            "opt": {
-                "beam_size": 5,
-                "log_file":"log_file.txt",
-                "log_file_level":"INFO"
-            }
-        },
-        {
             "id": 21,
             "model": "model_en-hi_exp-1_2019-10-01-model_step_110000.pt",
-            "timeout": 600,
-            "on_timeout": "to_cpu",
-            "load": true,
-            "opt": {
-                "beam_size": 5,
-                "log_file":"log_file.txt",
-                "log_file_level":"INFO"
-            }
-        },
-        {
-            "id": 22,
-            "model": "model_en-hi_exp-2_2019-09-30-model_step_100000.pt",
-            "timeout": 600,
-            "on_timeout": "to_cpu",
-            "load": true,
-            "opt": {
-                "beam_size": 5,
-                "log_file":"log_file.txt",
-                "log_file_level":"INFO"
-            }
-        },
-        {
-            "id": 23,
-            "model": "model_en-hi_exp-3_2019-09-30-model_step_100000.pt",
-            "timeout": 600,
-            "on_timeout": "to_cpu",
-            "load": true,
-            "opt": {
-                "beam_size": 5,
-                "log_file":"log_file.txt",
-                "log_file_level":"INFO"
-            }
-        },
-        {
-            "id": 24,
-            "model": "model_en-hi_exp-4_2019-10-05-model_step_130000.pt",
-            "timeout": 600,
-            "on_timeout": "to_cpu",
-            "load": true,
-            "opt": {
-                "beam_size": 5,
-                "log_file":"log_file.txt",
-                "log_file_level":"INFO"
-            }
-        },
-        {
-            "id": 26,
-            "model": "model_en-hi_exp-6_2019-10-04-model_step_110000.pt",
             "timeout": 600,
             "on_timeout": "to_cpu",
             "load": true,
