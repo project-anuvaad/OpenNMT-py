@@ -192,7 +192,15 @@ def from_en(inputs, translation_server):
                         translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_hindi["ENG_EXP_7"],sp_model.english_hindi["HIN_EXP_7"])                      
                         translation = anuvada.indic_detokenizer(translation)
                         translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)  
-                        logger.info("experiment-7 output: {}".format(translation))             
+                        logger.info("experiment-7 output: {}".format(translation))  
+                    elif i['id'] in [28,19]:
+                        "Exp-8: Unigram(15k)+pre-tokenization ,IITB original(b+lc+etc.) new 1 gpu machine 12/10/19"                        
+                        i['src'],date_original,url_original,num_array = date_url_util.tag_number_date_url_1(i['src'])
+                        i['src'] = anuvada.moses_tokenizer(i['src'])
+                        translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_hindi["ENG_EXP_8"],sp_model.english_hindi["HIN_EXP_8"])                      
+                        translation = anuvada.indic_detokenizer(translation)
+                        translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)  
+                        logger.info("experiment-8 output: {}".format(translation))                
                     else:
                         logger.info("unsupported model id: {} for given english translation".format(i['id']))
                         logger.error("unsupported model id: {} for given english translation".format(i['id']))
