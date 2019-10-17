@@ -184,7 +184,15 @@ def from_en(inputs, translation_server):
                         translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_hindi["ENG_EXP_6"],sp_model.english_hindi["HIN_EXP_6"])                      
                         translation = anuvada.indic_detokenizer(translation)
                         translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)  
-                        logger.info("experiment-6 output: {}".format(translation))          
+                        logger.info("experiment-6 output: {}".format(translation)) 
+                    elif i['id'] == 27:
+                        "exp-7 bpe-24k iit b+lc+etc. +pre-tokenisation 1*6000 my 1 gpu machine  12/10/19"                        
+                        i['src'],date_original,url_original,num_array = date_url_util.tag_number_date_url_1(i['src'])
+                        i['src'] = anuvada.moses_tokenizer(i['src'])
+                        translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_hindi["ENG_EXP_7"],sp_model.english_hindi["HIN_EXP_7"])                      
+                        translation = anuvada.indic_detokenizer(translation)
+                        translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)  
+                        logger.info("experiment-7 output: {}".format(translation))             
                     else:
                         logger.info("unsupported model id: {} for given english translation".format(i['id']))
                         logger.error("unsupported model id: {} for given english translation".format(i['id']))
@@ -208,7 +216,7 @@ def from_en(inputs, translation_server):
         except ServerModelError as e:
             out['status'] = statusCode["SEVER_MODEL_ERR"]
             out['status']['errObj'] = str(e)
-            logger.error("ServerModelError error in TRANSLATE_UTIL-FROM_HINDI: {} and {}".format(e,sys.exc_info()[0]))
+            logger.error("ServerModelError error in TRANSLATE_UTIL-FROM_ENGLISH: {} and {}".format(e,sys.exc_info()[0]))
         except Exception as e:
             out['status'] = statusCode["SYSTEM_ERR"]
             logger.error("Unexpected error in translate_util from_eng function: %s and %s"% (e,sys.exc_info()[0]))    
