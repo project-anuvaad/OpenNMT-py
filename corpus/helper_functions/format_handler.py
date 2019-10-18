@@ -13,6 +13,7 @@
 import re
 import sys
 from dateutil.parser import parse
+import random
 
 "below is for replacing numbers with #" "not using now"
 def replace_number_with_hash(in_file,out_file):
@@ -175,6 +176,18 @@ def token_with_numbers(token):
   except Exception as e:
     print(e)
     return False
+
+def shuffle_file(in_file,out_file):
+  "for shuffling a single file. Current use case is to shuffle tab sep file in scripts"
+  try:
+    lines = open(in_file).readlines()
+    random.shuffle(lines)
+    open(out_file, 'w').writelines(lines)
+    print("shuffling successful")
+    
+  except Exception as e:
+    print("Error: while shuffling file,in format_handler",e)
+
 
 # tag_number_date_url('corpus/original_data/SC_specific_eng_020819.txt','corpus/test3.txt')
 

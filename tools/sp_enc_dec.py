@@ -91,10 +91,12 @@ def decode_line(load_model,line):
         line = line[0]+line[1:-1].replace('[',"")+line[-1] 
         line = line[0]+line[1:-1].replace(']',"")+line[-1]  
         logger.info("decoding using sp model {}".format(load_model))
+        if "<unk>" in line:
+            line = line.replace("<unk>","'<unk>'")
         return sp.DecodePieces(eval(line))
-    except:
-        logger.info("something went wrong!")
-        logger.info("Unexpected error: %s"% sys.exc_info()[0])
+    except Exception as e:
+        logger.error("something went wrong! {}".format(e))
+        logger.error("Unexpected error: %s"% sys.exc_info()[0])
         return ""
 
   

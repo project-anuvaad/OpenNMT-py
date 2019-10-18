@@ -47,8 +47,10 @@ corpus/original_data/english_punjabi/*
 !corpus/original_data/english_punjabi/.gitkeep
 available_models/log_file.txt
 !model/sentencepiece_models
-corpus/original_data/english_hindi/eng_inkan_061019.txt
-corpus/original_data/english_hindi/hin_inkan_061019.txt
+corpus/original_data/english_hindi/corpus_with_name_18-10-19/*
+!corpus/original_data/english_hindi/corpus_with_name_18-10-19/.gitkeep
+corpus/original_data/english_hindi/dict_18-10-19/*
+!corpus/original_data/english_hindi/dict_18-10-19/.gitkeep
 
 
 # Byte-compiled / optimized / DLL files

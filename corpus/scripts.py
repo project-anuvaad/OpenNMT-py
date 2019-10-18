@@ -139,8 +139,9 @@ def english_hindi():
         print(e)
 
 def english_hindi_experiments():
-    "Exp-8: Unigram(15k)+pre-tokenization ,IITB original new 1 gpu machine"
+    "18/10/19 Exp -5.1 -old data+ india kanoon 800k(including 1.5 lakhs names)+74k shabkosh, BPE 24k, nolowercasing"
     try:
+        print("In english_hindi_experiments,scripts")
         model_intermediate_folder = os.path.join(INTERMEDIATE_DATA_LOCATION, 'english_hindi')
         model_master_folder = os.path.join(MASTER_DATA_LOCATION, 'english_hindi')
         english_merged_file_name = os.path.join(model_intermediate_folder, 'english_merged_original.txt')
@@ -148,6 +149,7 @@ def english_hindi_experiments():
         hindi_merged_file_name = os.path.join(model_intermediate_folder, 'hindi_merged_original.txt')
         tab_sep_out_file = os.path.join(model_intermediate_folder, 'tab_sep_corpus.txt')
         tab_sep_out_file_no_duplicate = os.path.join(model_intermediate_folder, 'tab_sep_corpus_no_duplicate.txt')
+        shuffled_tab_sep_file = os.path.join(model_intermediate_folder, 'shuffled_tab_sep_file.txt')
         replaced_hindi_number_file_name = os.path.join(model_intermediate_folder, 'corpus_no_hindi_num.txt')
         eng_separated = os.path.join(model_intermediate_folder, 'eng_train_separated.txt')
         hindi_separated = os.path.join(model_intermediate_folder, 'hindi_train_separated.txt')
@@ -184,7 +186,10 @@ def english_hindi_experiments():
         fc.drop_duplicate(tab_sep_out_file, tab_sep_out_file_no_duplicate)
         print("duplicates removed from combined corpus")
 
-        format_handler.replace_hindi_numbers(tab_sep_out_file_no_duplicate,replaced_hindi_number_file_name)
+        format_handler.shuffle_file(tab_sep_out_file_no_duplicate,shuffled_tab_sep_file)
+        print("tab_sep_file_shuffled_successfully!")
+
+        format_handler.replace_hindi_numbers(shuffled_tab_sep_file,replaced_hindi_number_file_name)
         print("hindi number replaced")
 
         fc.separate_corpus(0, replaced_hindi_number_file_name, eng_separated)
