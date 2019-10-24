@@ -201,7 +201,7 @@ def from_en(inputs, translation_server):
                         translation = anuvada.indic_detokenizer(translation)
                         translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)  
                         logger.info("experiment-8 output: {}".format(translation))   
-                    elif i['id'] in [25,52,52]:
+                    elif i['id'] in [25,52,53]:
                         "18/10/19 Exp -5.1 and 5.2 -old data+ india kanoon 854517k(including 1.5 lakhs names)+72192k shabkosh, BPE 24k, nolowercasing,pretok,shuffling"                        
                         i['src'],date_original,url_original,num_array = date_url_util.tag_number_date_url_1(i['src'])
                         i['src'] = anuvada.moses_tokenizer(i['src'])
