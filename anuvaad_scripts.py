@@ -83,18 +83,18 @@ def english_hindi():
 
 def english_hindi_experiments():
 
-    "21/10/19 Exp -5.2 -old data+ india kanoon 800k(including 1.5 lakhs names)+74k shabkosh, BPE 24k, nolowercasing on 4gpu machine"
+    "25/10/2019 experiment 10, Old data + dictionary,BPE, nolowercasing,pretok,shuffling,1gpu-16gb"
     "steps:1.tokenize hindi using indicnlp, english using moses"
     "      2.train sp models for hindi and english and then encode train, dev, test files "
     "      3.preprocess nmt and embeddings"
     "      4.nmt-train, change hyperparamter manually, these are hardcoded for now"        
     "Note: SP model prefix is date wise, If training more than one DIFFERENT model in a single day, kindly keep this factor in mind and change prefix accordingly similarly nmt model and preprocess.py"
     try:
-        sp_model_prefix_hindi = 'hi_exp-5.2-{}-24k'.format(date_now)
-        sp_model_prefix_english = 'en_exp-5.2-{}-24k'.format(date_now)
+        sp_model_prefix_hindi = 'hi_exp-10-{}-24k'.format(date_now)
+        sp_model_prefix_english = 'en_exp-10-{}-24k'.format(date_now)
         model_intermediate_folder = os.path.join(INTERMEDIATE_DATA_LOCATION, 'english_hindi')
         model_master_train_folder = os.path.join(TRAIN_DEV_TEST_DATA_LOCATION, 'english_hindi')
-        nmt_model_path = os.path.join(NMT_MODEL_DIR, 'english_hindi','model_en-hi_exp-5.2_{}-model'.format(date_now))
+        nmt_model_path = os.path.join(NMT_MODEL_DIR, 'english_hindi','model_en-hi_exp-10_{}-model'.format(date_now))
         if not any([os.path.exists(model_intermediate_folder),os.path.exists(model_master_train_folder),os.path.exists(os.path.join(NMT_MODEL_DIR, 'english_hindi'))]):
             os.makedirs(model_intermediate_folder)
             os.makedirs(model_master_train_folder)
@@ -114,9 +114,9 @@ def english_hindi_experiments():
         english_test_Gen_encoded_file = os.path.join(model_master_train_folder, 'english_test_Gen_final.txt')
         english_test_LC_encoded_file = os.path.join(model_master_train_folder, 'english_test_LC_final.txt')
         english_test_TB_encoded_file = os.path.join(model_master_train_folder, 'english_test_TB_final.txt')
-        nmt_processed_data = os.path.join(model_master_train_folder, 'processed_data_exp-5.2_{}'.format(date_now))
+        nmt_processed_data = os.path.join(model_master_train_folder, 'processed_data_exp-10_{}'.format(date_now))
 
-        print("Exp-5.2 training")
+        print("Exp-10 training")
         os.system('python ./tools/indic_tokenize.py {0} {1} hi'.format(mcl.english_hindi['HINDI_TRAIN_FILE'], hindi_tokenized_file))
         os.system('python ./tools/indic_tokenize.py {0} {1} hi'.format(mcl.english_hindi['DEV_HINDI'], hindi_dev_tokenized_file))
         logger.info("english-hindi, hindi train and dev corpus tokenized")
@@ -146,7 +146,7 @@ def english_hindi_experiments():
         print("preprocessing done")
         os.system('python ./embeddings_to_torch.py -emb_file_enc ~/glove/glove.6B.300d.txt -emb_file_dec ~/glove/cc.hi.300.vec -dict_file {0} -output_file {1}'.format(nmt_processed_data+'.vocab.pt',os.path.join(model_master_train_folder,'embeddings_eng_hin')))
         print("glove embedding done")
-        os.system('nohup python train.py -data {0} -save_model {1} -layers 6 -rnn_size 512 -word_vec_size 512 -pre_word_vecs_enc {2} -pre_word_vecs_dec {3} -transformer_ff 2048 -heads 8  -encoder_type transformer -decoder_type transformer -position_encoding -train_steps 150000  -max_generator_batches 2 -dropout 0.1 -batch_size 6000 -batch_type tokens -normalization tokens  -accum_count 2 -optim adam -adam_beta2 0.998 -decay_method noam -warmup_steps 8000 -learning_rate 0.25 -max_grad_norm 0 -param_init 0  -param_init_glorot  -label_smoothing 0.1 -valid_steps 10000 -save_checkpoint_steps 10000 -world_size 4 -gpu_ranks 0 1 2 3'.format(nmt_processed_data,nmt_model_path,os.path.join(model_master_train_folder,'embeddings_eng_hin.enc.pt'),os.path.join(model_master_train_folder,'embeddings_eng_hin.dec.pt')))
+        os.system('nohup python train.py -data {0} -save_model {1} -layers 6 -rnn_size 512 -word_vec_size 512 -pre_word_vecs_enc {2} -pre_word_vecs_dec {3} -transformer_ff 2048 -heads 8  -encoder_type transformer -decoder_type transformer -position_encoding -train_steps 200000  -max_generator_batches 2 -dropout 0.1 -batch_size 6000 -batch_type tokens -normalization tokens  -accum_count 2 -optim adam -adam_beta2 0.998 -decay_method noam -warmup_steps 8000 -learning_rate 0.25 -max_grad_norm 0 -param_init 0  -param_init_glorot  -label_smoothing 0.1 -valid_steps 10000 -save_checkpoint_steps 10000 -world_size 1 -gpu_ranks 0'.format(nmt_processed_data,nmt_model_path,os.path.join(model_master_train_folder,'embeddings_eng_hin.enc.pt'),os.path.join(model_master_train_folder,'embeddings_eng_hin.dec.pt')))
 
     except Exception as e:
         print(e)

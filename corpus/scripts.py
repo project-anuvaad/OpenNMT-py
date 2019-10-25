@@ -139,9 +139,9 @@ def english_hindi():
         print(e)
 
 def english_hindi_experiments():
-    "21/10/19 Exp -5.2 -old data+ india kanoon 800k(including 1.5 lakhs names)+74k shabkosh, BPE 24k, nolowercasing on 4gpu machine"
+    "25/10/2019 experiment 10, Old data + dictionary,BPE, nolowercasing,pretok,shuffling"
     try:
-        print("In english_hindi_experiments,scripts,Exp -5.2")
+        print("In english_hindi_experiments,scripts,Exp -10")
         model_intermediate_folder = os.path.join(INTERMEDIATE_DATA_LOCATION, 'english_hindi')
         model_master_folder = os.path.join(MASTER_DATA_LOCATION, 'english_hindi')
         english_merged_file_name = os.path.join(model_intermediate_folder, 'english_merged_original.txt')
