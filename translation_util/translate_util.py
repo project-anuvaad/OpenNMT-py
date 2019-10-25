@@ -213,7 +213,7 @@ def from_en(inputs, translation_server):
                         "18/10/19 Exp -9 old data + india kanoon 800k(including 1.5 lakhs names)+74k shabkosh, unigram 24k, nolowercasing,pretok,shuffling,50k"                        
                         i['src'],date_original,url_original,num_array = date_url_util.tag_number_date_url_1(i['src'])
                         i['src'] = anuvada.moses_tokenizer(i['src'])
-                        translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_hindi["ENG_EXP_8"],sp_model.english_hindi["HIN_EXP_8"])                      
+                        translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_hindi["ENG_EXP_9"],sp_model.english_hindi["HIN_EXP_9"])                      
                         translation = anuvada.indic_detokenizer(translation)
                         translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)  
                         logger.info("experiment-9 output: {}".format(translation))                       
