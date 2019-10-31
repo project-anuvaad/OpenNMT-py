@@ -52,24 +52,12 @@
         },
         {
             "id": 5,
-            "model": "model_28062019-model_step_160000.pt",
+            "model": "",
             "timeout": 600,
             "on_timeout": "to_cpu",
             "load": true,
             "opt": {
                 "beam_size": 5,
-                "log_file":"log_file.txt",
-                "log_file_level":"INFO"
-            }
-        },
-        {
-            "id": 6,
-            "model": "model_28062019-model_step_80000.pt",
-            "timeout": 600,
-            "on_timeout": "to_cpu",
-            "load": true,
-            "opt": {
-                "beam_size":5,
                 "log_file":"log_file.txt",
                 "log_file_level":"INFO"
             }
