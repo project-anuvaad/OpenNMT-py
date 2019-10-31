@@ -232,7 +232,23 @@ def from_en(inputs, translation_server):
                         translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_hindi["ENG_EXP_11"],sp_model.english_hindi["HIN_EXP_11"])                      
                         translation = anuvada.indic_detokenizer(translation)
                         translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)  
-                        logger.info("experiment-{} output: {}".format(i['id'],translation))                            
+                        logger.info("experiment-{} output: {}".format(i['id'],translation))  
+                    elif i['id'] == 32:
+                        "29/10/2019 Exp-12: old_data_original+lc_cleaned+ ik names translated from google(100k)+shabdkosh(appended 29k new),BPE-24K,50knmt,shuff,pretok"                        
+                        i['src'],date_original,url_original,num_array = date_url_util.tag_number_date_url_1(i['src'])
+                        i['src'] = anuvada.moses_tokenizer(i['src'])
+                        translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_hindi["ENG_EXP_12"],sp_model.english_hindi["HIN_EXP_12"])                      
+                        translation = anuvada.indic_detokenizer(translation)
+                        translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)  
+                        logger.info("experiment-{} output: {}".format(i['id'],translation)) 
+                    elif i['id'] == 54:
+                        "29-30/10/19Exp-5.4: -data same as 5.1 exp...old data+ india kanoon 830k(including 1.5 lakhs names n no learned counsel)+72192k shabkosh, BPE 24k, nolowercasing,pretok,shuffling"                        
+                        i['src'],date_original,url_original,num_array = date_url_util.tag_number_date_url_1(i['src'])
+                        i['src'] = anuvada.moses_tokenizer(i['src'])
+                        translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_hindi["ENG_EXP_5.4"],sp_model.english_hindi["HIN_EXP_5.4"])                      
+                        translation = anuvada.indic_detokenizer(translation)
+                        translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)  
+                        logger.info("experiment-{} output: {}".format(i['id'],translation))                                 
                     else:
                         logger.info("unsupported model id: {} for given english translation".format(i['id']))
                         logger.error("unsupported model id: {} for given english translation".format(i['id']))
@@ -296,25 +312,31 @@ def from_hindi(inputs, translation_server):
                 input_sw,output_sw = "",""   
 
             else:
-                i['src'] = anuvada.indic_tokenizer(i['src']) 
-
                 if i['id'] == 2:
+                    i['src'] = anuvada.indic_tokenizer(i['src'])
                     translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_hindi["HIN_220519"],sp_model.english_hindi["ENG_220519"])
-                elif i['id'] in [5,6]:
-                    translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.hindi_english["HINDI_280619"],sp_model.hindi_english["ENGLISH_280619"])
+                    translation = anuvada.moses_detokenizer(translation)
+                    translation = anuvada.detruecaser(translation)
+                elif i['id'] == 5:
+                    i['src'],date_original,url_original,num_array = date_url_util.tag_number_date_url_1(i['src'])
+                    i['src'] = anuvada.indic_tokenizer(i['src'])
+                    translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.hindi_english["HIN_EXP_1_291019"],sp_model.hindi_english["ENG_EXP_1_291019"])
+                    translation = anuvada.moses_detokenizer(translation)
+                    translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)  
+                    logger.info("experiment-{} output: {}".format(i['id'],translation)) 
                 elif i['id'] == 4:
+                    i['src'] = anuvada.indic_tokenizer(i['src'])
                     i['src'] = anuvada.apply_bpe('codesSrc1005.bpe',i['src'])
                     input_sw,output_sw = i['src'],""
                     translation, scores, n_best, times = translation_server.run([i])
                     translation = anuvada.decode_bpe(translation[0])
+                    translation = anuvada.moses_detokenizer(translation)
+                    translation = anuvada.detruecaser(translation)
                 else:
                     logger.info("unsupported model id: {} for given hindi input for translation".format(i['id']))
                     translation = ""
                     input_sw,output_sw = "",""
-                    scores = [0]      
-                
-                translation = anuvada.moses_detokenizer(translation)
-                translation = anuvada.detruecaser(translation)
+                    scores = [0]         
                 
             tgt.append(translation)
             pred_score.append(scores[0])

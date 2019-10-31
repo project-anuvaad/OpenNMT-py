@@ -51,18 +51,6 @@
             }
         },
         {
-            "id": 5,
-            "model": "",
-            "timeout": 600,
-            "on_timeout": "to_cpu",
-            "load": true,
-            "opt": {
-                "beam_size": 5,
-                "log_file":"log_file.txt",
-                "log_file_level":"INFO"
-            }
-        },
-        {
             "id": 8,
             "model": "model_020819-model_step_5000.pt",
             "timeout": 600,
@@ -353,6 +341,18 @@
         {
             "id": 31,
             "model": "model_en-hi_exp-11_2019-10-25-model_step_190000.pt",
+            "timeout": 600,
+            "on_timeout": "to_cpu",
+            "load": true,
+            "opt": {
+                "beam_size": 5,
+                "log_file":"log_file.txt",
+                "log_file_level":"INFO"
+            }
+        },
+        {
+            "id": 54,
+            "model": "model_en-hi_exp-5.4_2019-10-29-model_step_210000.pt",
             "timeout": 600,
             "on_timeout": "to_cpu",
             "load": true,
