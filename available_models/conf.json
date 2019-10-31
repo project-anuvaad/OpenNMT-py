@@ -52,7 +52,7 @@
         },
         {
             "id": 5,
-            "model": "model_hi-en_exp_h-1_2019-10-29-model_step_170000.pt",
+            "model": "model_hi-en_exp_h-1_2019-10-29-model_step_180000.pt",
             "timeout": 600,
             "on_timeout": "to_cpu",
             "load": true,
