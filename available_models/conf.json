@@ -364,7 +364,7 @@
         },
         {
             "id": 54,
-            "model": "model_en-hi_exp-5.4_2019-10-29-model_step_210000.pt",
+            "model": "model_en-hi_exp-5.4_2019-10-29-model_step_230000.pt",
             "timeout": 600,
             "on_timeout": "to_cpu",
             "load": true,
