@@ -47,8 +47,13 @@ corpus/original_data/english_punjabi/*
 !corpus/original_data/english_punjabi/.gitkeep
 available_models/log_file.txt
 !model/sentencepiece_models
-corpus/original_data/english_hindi/eng_inkan_061019.txt
-corpus/original_data/english_hindi/hin_inkan_061019.txt
+corpus/original_data/english_hindi/corpus_with_name_18-10-19/*
+!corpus/original_data/english_hindi/corpus_with_name_18-10-19/.gitkeep
+corpus/original_data/english_hindi/dict_18-10-19/*
+!corpus/original_data/english_hindi/dict_18-10-19/.gitkeep
+corpus/original_data/english_hindi/exp-10_and_exp-11
+corpus/original_data/english_hindi/exp-12_13_14
+corpus/original_data/english_hindi/exp_5.4_ik_no_learned_counsel
 
 
 # Byte-compiled / optimized / DLL files

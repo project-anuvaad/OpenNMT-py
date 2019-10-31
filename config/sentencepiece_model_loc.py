@@ -15,6 +15,22 @@ english_hindi = {
     "HIN_EXP_3": "model/sentencepiece_models/hi_exp-3-2019-09-30-10k.model",
     "ENG_EXP_6": "model/sentencepiece_models/en_exp-6-2019-10-04-10k.model",
     "HIN_EXP_6": "model/sentencepiece_models/hi_exp-6-2019-10-04-10k.model",
+    "ENG_EXP_7": "model/sentencepiece_models/en_exp-7-2019-10-12-24k.model",
+    "HIN_EXP_7": "model/sentencepiece_models/hi_exp-7-2019-10-12-24k.model",
+    "ENG_EXP_8": "model/sentencepiece_models/en_exp-8-2019-10-12-15k.model",
+    "HIN_EXP_8": "model/sentencepiece_models/hi_exp-8-2019-10-12-15k.model",
+    "ENG_EXP_5": "model/sentencepiece_models/en_exp-5.1-2019-10-18-24k.model",
+    "HIN_EXP_5": "model/sentencepiece_models/hi_exp-5.1-2019-10-18-24k.model",
+    "ENG_EXP_9": "model/sentencepiece_models/en_exp-9-2019-10-18-24k.model",
+    "HIN_EXP_9": "model/sentencepiece_models/hi_exp-9-2019-10-18-24k.model",
+    "ENG_EXP_10": "model/sentencepiece_models/en_exp-10-2019-10-25-24k.model",
+    "HIN_EXP_10": "model/sentencepiece_models/hi_exp-10-2019-10-25-24k.model",
+    "ENG_EXP_11": "model/sentencepiece_models/en_exp-11-2019-10-25-24k.model",
+    "HIN_EXP_11": "model/sentencepiece_models/hi_exp-11-2019-10-25-24k.model",
+    "ENG_EXP_12": "model/sentencepiece_models/en_exp-12-2019-10-29-24k.model",
+    "HIN_EXP_12": "model/sentencepiece_models/hi_exp-12-2019-10-29-24k.model",
+    "ENG_EXP_5.4": "model/sentencepiece_models/en_exp-5.4-2019-10-29-24k.model",
+    "HIN_EXP_5.4": "model/sentencepiece_models/hi_exp-5.4-2019-10-29-24k.model"
 
 }
 
@@ -60,5 +76,7 @@ english_punjabi = {
 
 hindi_english = {
     "HINDI_280619": "model/sentencepiece_models/hi-28062019-10k.model",
-    "ENGLISH_280619": "model/sentencepiece_models/en-28062019-10k.model"
+    "ENGLISH_280619": "model/sentencepiece_models/en-28062019-10k.model",
+    "HIN_EXP_1_291019":"model/sentencepiece_models/hi_exp_h-1-2019-10-29-24k.model",
+    "ENG_EXP_1_291019":"model/sentencepiece_models/en_exp_h-1-2019-10-29-24k.model",
 }
