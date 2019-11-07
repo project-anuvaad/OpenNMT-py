@@ -50,8 +50,8 @@ english_bengali = {
 }
 
 english_marathi = {
-    "FILE_NAMES_ENGLISH": ['corpus/original_data/english_marathi/final_source_mt.txt'],
-    "FILE_NAMES_MARATHI": ['corpus/original_data/english_marathi/final_target_mt.txt'],
+    "FILE_NAMES_ENGLISH": ['corpus/original_data/english_marathi/exp-2/marathi_corpus_7_nov/corpus/source_en_upd.txt','corpus/original_data/english_marathi/exp-2/marathi_corpus_7_nov/order_arg_mr/source_en.txt','corpus/original_data/english_marathi/exp-2/marathi_corpus_7_nov/shabdkosh/sb_source_en_upd.txt'],
+    "FILE_NAMES_MARATHI": ['corpus/original_data/english_marathi/exp-2/marathi_corpus_7_nov/corpus/target_mr_upd.txt','corpus/original_data/english_marathi/exp-2/marathi_corpus_7_nov/order_arg_mr/target_mr.txt','corpus/original_data/english_marathi/exp-2/marathi_corpus_7_nov/shabdkosh/sb_target_mr_upd.txt'],
     "DEV_ENGLISH": "corpus/original_data/english_marathi/dev2k_eng.txt",
     "DEV_MARATHI": "corpus/original_data/english_marathi/dev2k_marathi.txt",
     "TEST_ENGLISH": "corpus/original_data/english_marathi/test8k.txt"
