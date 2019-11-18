@@ -331,6 +331,7 @@ def english_marathi():
         marathi_merged_file_name = os.path.join(model_intermediate_folder, 'marathi_merged_original.txt')
         tab_sep_out_file = os.path.join(model_intermediate_folder, 'tab_sep_corpus.txt')
         tab_sep_out_file_no_duplicate = os.path.join(model_intermediate_folder, 'tab_sep_corpus_no_duplicate.txt')
+        shuffled_tab_sep_file = os.path.join(model_intermediate_folder, 'shuffled_tab_sep_file.txt')
         replaced_hindi_number_file_name = os.path.join(model_intermediate_folder, 'corpus_no_hindi_num.txt')
         eng_separated = os.path.join(model_intermediate_folder, 'eng_train_separated.txt')
         marathi_separated = os.path.join(model_intermediate_folder, 'marathi_train_separated.txt')
@@ -358,7 +359,10 @@ def english_marathi():
         fc.drop_duplicate(tab_sep_out_file, tab_sep_out_file_no_duplicate)
         print("duplicates removed from combined corpus")
 
-        format_handler.replace_hindi_numbers(tab_sep_out_file_no_duplicate,replaced_hindi_number_file_name)
+        format_handler.shuffle_file(tab_sep_out_file_no_duplicate,shuffled_tab_sep_file)
+        print("tab_sep_file_shuffled_successfully!")
+        
+        format_handler.replace_hindi_numbers(shuffled_tab_sep_file,replaced_hindi_number_file_name)
         print("hindi number replaced")
 
         fc.separate_corpus(0, replaced_hindi_number_file_name, eng_separated)
@@ -371,7 +375,7 @@ def english_marathi():
 
         format_handler.tag_number_date_url(ocl.english_marathi['DEV_ENGLISH'], dev_english_tagged)
         format_handler.tag_number_date_url(ocl.english_marathi['DEV_MARATHI'], dev_marathi_tagged)
-        format_handler.tag_number_date_url(ocl.english_marathi['TEST_ENGLISH'], test_english_tagged)
+        # format_handler.tag_number_date_url(ocl.english_marathi['TEST_ENGLISH'], test_english_tagged)
         # format_handler.tag_number_date_url(ocl.english_marathi['TEST_MARATHI'], test_marathi_tagged)
         print("test and dev data taggeg and in master folder")
 

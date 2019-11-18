@@ -90,6 +90,7 @@ def from_en(inputs, translation_server):
                         i['src'],date_original,url_original,num_array = date_url_util.tag_number_date_url_1(i['src'])
                         translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_gujrati["ENG_100919"],sp_model.english_gujrati["GUJ_100919"])                       
                         translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)
+                        translation = translation.replace("ન્યાય માટે Accessક્સેસને","ન્યાયની પહોંચને")
                         logger.info("final output gujrati: {}".format(translation))
                     elif i['id'] == 11:  
                         "english-bengali"
@@ -116,6 +117,7 @@ def from_en(inputs, translation_server):
                         i['src'],date_original,url_original,num_array = date_url_util.tag_number_date_url_1(i['src'])
                         translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_kannada["ENG_200919"],sp_model.english_kannada["KANNADA_200919"])                        
                         translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)
+                        translation = translation.replace("uc","")
                         logger.info("final output kannada: {}".format(translation))
                     elif i['id'] == 16:  
                         "english-telgu"
@@ -125,6 +127,7 @@ def from_en(inputs, translation_server):
                         logger.info("final output telgu: {}".format(translation))
                     elif i['id'] == 17:  
                         "english-malayalam"
+                        i['src'] = i['src'].replace("litigants struggle","litigants struggling").replace("don't know","do not know")
                         i['src'],date_original,url_original,num_array = date_url_util.tag_number_date_url_1(i['src'])
                         translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_malayalam["ENG_200919"],sp_model.english_malayalam["MALAYALAM_200919"])                       
                         translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)
@@ -134,6 +137,7 @@ def from_en(inputs, translation_server):
                         i['src'],date_original,url_original,num_array = date_url_util.tag_number_date_url_1(i['src']) 
                         translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_punjabi["ENG_200919"],sp_model.english_punjabi["PUNJABI_200919"])                       
                         translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)
+                        translation = translation.replace("infrastructureਾਂਚਾ","ਢਾਂਚਾ")
                         logger.info("final output punjabi: {}".format(translation))
                     elif i['id'] == 20:  
                         "180919 model, no tokenization,handling num,date,url+augmented data"                        
@@ -248,7 +252,13 @@ def from_en(inputs, translation_server):
                         translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_hindi["ENG_EXP_5.4"],sp_model.english_hindi["HIN_EXP_5.4"])                      
                         translation = anuvada.indic_detokenizer(translation)
                         translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)  
-                        logger.info("experiment5.4-{} output: {}".format(i['id'],translation))                                 
+                        logger.info("experiment5.4-{} output: {}".format(i['id'],translation)) 
+                    elif i['id'] == 42:  
+                        "english-marathi exp-2"
+                        i['src'],date_original,url_original,num_array = date_url_util.tag_number_date_url_1(i['src'])
+                        translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_marathi["ENG_071119"],sp_model.english_marathi["MARATHI_071119"])                        
+                        translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)
+                        logger.info("final output marathi exp-2: {}".format(translation))                                    
                     else:
                         logger.info("unsupported model id: {} for given english translation".format(i['id']))
                         logger.error("unsupported model id: {} for given english translation".format(i['id']))
