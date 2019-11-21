@@ -47,7 +47,8 @@
             "opt": {
                 "beam_size": 5,
                 "log_file":"log_file.txt",
-                "log_file_level":"INFO"
+                "log_file_level":"INFO",
+                "replace_unk":true
             }
         },
         {
@@ -59,7 +60,8 @@
             "opt": {
                 "beam_size": 5,
                 "log_file":"log_file.txt",
-                "log_file_level":"INFO"
+                "log_file_level":"INFO",
+                "replace_unk":true
             }
         },
         {
@@ -71,7 +73,8 @@
             "opt": {
                 "beam_size": 5,
                 "log_file":"log_file.txt",
-                "log_file_level":"INFO"
+                "log_file_level":"INFO",
+                "replace_unk":true
             }
         },
         {
@@ -83,7 +86,8 @@
             "opt": {
                 "beam_size": 5,
                 "log_file":"log_file.txt",
-                "log_file_level":"INFO"
+                "log_file_level":"INFO",
+                "replace_unk":true
             }
         },
         {
@@ -95,7 +99,8 @@
             "opt": {
                 "beam_size": 5,
                 "log_file":"log_file.txt",
-                "log_file_level":"INFO"
+                "log_file_level":"INFO",
+                "replace_unk":true
             }
         },
         {
@@ -107,7 +112,8 @@
             "opt": {
                 "beam_size": 5,
                 "log_file":"log_file.txt",
-                "log_file_level":"INFO"
+                "log_file_level":"INFO",
+                "replace_unk":true
             }
         },
         {
@@ -119,7 +125,8 @@
             "opt": {
                 "beam_size": 5,
                 "log_file":"log_file.txt",
-                "log_file_level":"INFO"
+                "log_file_level":"INFO",
+                "replace_unk":true
             }
         },
         {
@@ -131,7 +138,8 @@
             "opt": {
                 "beam_size": 5,
                 "log_file":"log_file.txt",
-                "log_file_level":"INFO"
+                "log_file_level":"INFO",
+                "replace_unk":true
             }
         },
         {
