@@ -11,12 +11,9 @@ bootstrap_server = os.environ.get(KAFKA_IP_HOST, default_value)
 def get_consumer(topic):
     try:
         consumer = KafkaConsumer(
-           topic,
-           bootstrap_servers=[bootstrap_server],
-           auto_offset_reset='earliest',
-           enable_auto_commit=True,
-           group_id='anuvaad',
-           value_deserializer=lambda x: json.loads(x.decode('utf-8')))
+            topic,
+            bootstrap_servers=[bootstrap_server],
+            value_deserializer=lambda x: json.loads(x.decode('utf-8')))
 
         logger.info('get_consumer : consumer returned for topic = ' + topic)
         return consumer
