@@ -30,7 +30,8 @@ english_hindi = {
     "ENG_EXP_12": "model/sentencepiece_models/en_exp-12-2019-10-29-24k.model",
     "HIN_EXP_12": "model/sentencepiece_models/hi_exp-12-2019-10-29-24k.model",
     "ENG_EXP_5.4": "model/sentencepiece_models/en_exp-5.4-2019-10-29-24k.model",
-    "HIN_EXP_5.4": "model/sentencepiece_models/hi_exp-5.4-2019-10-29-24k.model"
+    "HIN_EXP_5.4": "model/sentencepiece_models/hi_exp-5.4-2019-10-29-24k.model",
+    "ENG_HIN_EXP_1_SV": "model/sentencepiece_models/en_hi_exp-1-sv-2019-11-11-48k.model",
 
 }
 
