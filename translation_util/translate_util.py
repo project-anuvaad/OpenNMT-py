@@ -266,6 +266,14 @@ def from_en(inputs, translation_server):
                         translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_hindi["ENG_HIN_EXP_1_SV"],sp_model.english_hindi["ENG_HIN_EXP_1_SV"])                      
                         translation = anuvada.indic_detokenizer(translation)
                         translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)  
+                        logger.info("experiment-{} output: {}".format(i['id'],translation))     
+                    elif i['id'] == 34:
+                        "Exp-2-SV Eng-hind sharevocabi experiments  111119 48k bpe , data same as exp-5.4"                        
+                        i['src'],date_original,url_original,num_array = date_url_util.tag_number_date_url_1(i['src'])
+                        i['src'] = anuvada.moses_tokenizer(i['src'])
+                        translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_hindi["ENG_HIN_EXP_2_SV"],sp_model.english_hindi["ENG_HIN_EXP_2_SV"])                      
+                        translation = anuvada.indic_detokenizer(translation)
+                        translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)  
                         logger.info("experiment-{} output: {}".format(i['id'],translation))                                    
                     else:
                         logger.info("unsupported model id: {} for given english translation".format(i['id']))
