@@ -183,9 +183,11 @@ def english_hindi_experiments():
 
         fc.tab_separated_parllel_corpus(hindi_merged_file_name, english_merged_file_name, tab_sep_out_file)
         print("tab separated corpus created")
+        print(os.system('wc -l {}'.format(tab_sep_out_file)))
         fc.drop_duplicate(tab_sep_out_file, tab_sep_out_file_no_duplicate)
         print("duplicates removed from combined corpus")
-
+        print(os.system('wc -l {}'.format(tab_sep_out_file_no_duplicate)))
+        
         format_handler.shuffle_file(tab_sep_out_file_no_duplicate,shuffled_tab_sep_file)
         print("tab_sep_file_shuffled_successfully!")
 
