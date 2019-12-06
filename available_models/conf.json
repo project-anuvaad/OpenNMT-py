@@ -222,32 +222,6 @@
             }
         },
         {
-            "id": 33,
-            "model": "model_en_hi_exp-1-sv_2019-11-11-model_step_220000.pt",
-            "timeout": 600,
-            "on_timeout": "to_cpu",
-            "load": true,
-            "opt": {
-                "beam_size": 5,
-                "log_file":"log_file.txt",
-                "log_file_level":"INFO",
-                "replace_unk":true
-            }
-        },
-        {
-            "id": 34,
-            "model": "model_en_hi_exp-2-sv_2019-11-11-model_step_200000.pt",
-            "timeout": 600,
-            "on_timeout": "to_cpu",
-            "load": true,
-            "opt": {
-                "beam_size": 5,
-                "log_file":"log_file.txt",
-                "log_file_level":"INFO",
-                "replace_unk":true
-            }
-        },
-        {
             "id": 55,
             "model": "model_en-hi_exp-5.5_2019-12-04-model_step_230000.pt",
             "timeout": 600,
