@@ -63,18 +63,6 @@
             }
         },
         {
-            "id": 8,
-            "model": "model_020819-model_step_5000.pt",
-            "timeout": 600,
-            "on_timeout": "to_cpu",
-            "load": true,
-            "opt": {
-                "beam_size": 5,
-                "log_file":"log_file.txt",
-                "log_file_level":"INFO"
-            }
-        },
-        {
             "id": 7,
             "model": "model_tamil_2019-09-23-model_step_100000.pt",
             "timeout": 600,
@@ -113,18 +101,6 @@
         {
             "id": 12,
             "model": "model_2019-09-14-model_step_100000.pt",
-            "timeout": 600,
-            "on_timeout": "to_cpu",
-            "load": true,
-            "opt": {
-                "beam_size": 5,
-                "log_file":"log_file.txt",
-                "log_file_level":"INFO"
-            }
-        },
-        {
-            "id": 13,
-            "model": "model_2019-09-17-model_step_100000.pt",
             "timeout": 600,
             "on_timeout": "to_cpu",
             "load": true,
@@ -183,18 +159,6 @@
             }
         },
         {
-            "id": 20,
-            "model": "model_2019-09-18-model_step_90000.pt",
-            "timeout": 600,
-            "on_timeout": "to_cpu",
-            "load": true,
-            "opt": {
-                "beam_size": 5,
-                "log_file":"log_file.txt",
-                "log_file_level":"INFO"
-            }
-        },
-        {
             "id": 21,
             "model": "model_en-hi_exp-1_2019-10-01-model_step_110000.pt",
             "timeout": 600,
@@ -207,152 +171,8 @@
             }
         },
         {
-            "id": 22,
-            "model": "model_en-hi_exp-2_2019-09-30-model_step_100000.pt",
-            "timeout": 600,
-            "on_timeout": "to_cpu",
-            "load": true,
-            "opt": {
-                "beam_size": 5,
-                "log_file":"log_file.txt",
-                "log_file_level":"INFO"
-            }
-        },
-        {
-            "id": 23,
-            "model": "model_en-hi_exp-3_2019-09-30-model_step_100000.pt",
-            "timeout": 600,
-            "on_timeout": "to_cpu",
-            "load": true,
-            "opt": {
-                "beam_size": 5,
-                "log_file":"log_file.txt",
-                "log_file_level":"INFO"
-            }
-        },
-        {
-            "id": 24,
-            "model": "model_en-hi_exp-4_2019-10-05-model_step_130000.pt",
-            "timeout": 600,
-            "on_timeout": "to_cpu",
-            "load": true,
-            "opt": {
-                "beam_size": 5,
-                "log_file":"log_file.txt",
-                "log_file_level":"INFO"
-            }
-        },
-        {
-            "id": 26,
-            "model": "model_en-hi_exp-6_2019-10-04-model_step_110000.pt",
-            "timeout": 600,
-            "on_timeout": "to_cpu",
-            "load": true,
-            "opt": {
-                "beam_size": 5,
-                "log_file":"log_file.txt",
-                "log_file_level":"INFO"
-            }
-        },
-        {
-            "id": 27,
-            "model": "model_en-hi_exp-7_2019-10-12-model_step_100000.pt",
-            "timeout": 600,
-            "on_timeout": "to_cpu",
-            "load": true,
-            "opt": {
-                "beam_size": 5,
-                "log_file":"log_file.txt",
-                "log_file_level":"INFO"
-            }
-        },
-        {
-            "id": 28,
-            "model": "model_en-hi_exp-8_2019-10-12-model_step_120000.pt",
-            "timeout": 600,
-            "on_timeout": "to_cpu",
-            "load": true,
-            "opt": {
-                "beam_size": 5,
-                "log_file":"log_file.txt",
-                "log_file_level":"INFO"
-            }
-        },
-        {
-            "id": 19,
-            "model": "model_en-hi_exp-8_2019-10-12-model_step_80000.pt",
-            "timeout": 600,
-            "on_timeout": "to_cpu",
-            "load": true,
-            "opt": {
-                "beam_size": 5,
-                "log_file":"log_file.txt",
-                "log_file_level":"INFO"
-            }
-        },
-        {
-            "id": 25,
-            "model": "model_en-hi_exp-5.1_2019-10-18_step_120000.pt",
-            "timeout": 600,
-            "on_timeout": "to_cpu",
-            "load": true,
-            "opt": {
-                "beam_size": 5,
-                "log_file":"log_file.txt",
-                "log_file_level":"INFO"
-            }
-        },
-        {
-            "id": 52,
-            "model": "model_en-hi_exp-5.2_2019-10-18-model_step_150000.pt",
-            "timeout": 600,
-            "on_timeout": "to_cpu",
-            "load": true,
-            "opt": {
-                "beam_size": 5,
-                "log_file":"log_file.txt",
-                "log_file_level":"INFO"
-            }
-        },
-        {
-            "id": 53,
-            "model": "model_en-hi_exp-5.2_2019-10-18-model_step_250000.pt",
-            "timeout": 600,
-            "on_timeout": "to_cpu",
-            "load": true,
-            "opt": {
-                "beam_size": 5,
-                "log_file":"log_file.txt",
-                "log_file_level":"INFO"
-            }
-        },
-        {
-            "id": 29,
-            "model": "model_en-hi_exp-9_2019-10-18-model_step_130000.pt",
-            "timeout": 600,
-            "on_timeout": "to_cpu",
-            "load": true,
-            "opt": {
-                "beam_size": 5,
-                "log_file":"log_file.txt",
-                "log_file_level":"INFO"
-            }
-        },
-        {
             "id": 30,
             "model": "model_en-hi_exp-10_2019-10-25-model_step_250000.pt",
-            "timeout": 600,
-            "on_timeout": "to_cpu",
-            "load": true,
-            "opt": {
-                "beam_size": 5,
-                "log_file":"log_file.txt",
-                "log_file_level":"INFO"
-            }
-        },
-        {
-            "id": 31,
-            "model": "model_en-hi_exp-11_2019-10-25-model_step_190000.pt",
             "timeout": 600,
             "on_timeout": "to_cpu",
             "load": true,
