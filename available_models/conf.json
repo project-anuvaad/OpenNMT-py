@@ -246,6 +246,19 @@
                 "log_file_level":"INFO",
                 "replace_unk":true
             }
+        },
+        {
+            "id": 55,
+            "model": "model_en-hi_exp-5.5_2019-12-04-model_step_230000.pt",
+            "timeout": 600,
+            "on_timeout": "to_cpu",
+            "load": true,
+            "opt": {
+                "beam_size": 5,
+                "log_file":"log_file.txt",
+                "log_file_level":"INFO",
+                "replace_unk":true
+            }
         }
     ]
 }
