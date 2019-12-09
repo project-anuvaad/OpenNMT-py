@@ -83,19 +83,18 @@ def english_hindi():
 
 def english_hindi_experiments():
 
-    "Exp-5.5: -data same as 5.1/5.4 exp...old data+ india kanoon 830k(including 1.5 lakhs names n no learned counsel)+72192k shabkosh, BPE 24k, nolowercasing,pretok,shuffling"
-    "However, changes have been made in corpus manual replacement of tokens from sheet"
+    "Exp-5.6: BPE 24k each, nolowercasing,pretok,shuffling"
     "steps:1.tokenize hindi using indicnlp, english using moses"
     "      2.train sp models for hindi and english and then encode train, dev, test files "
     "      3.preprocess nmt and embeddings"
     "      4.nmt-train, change hyperparamter manually, these are hardcoded for now"        
     "Note: SP model prefix is date wise, If training more than one DIFFERENT model in a single day, kindly keep this factor in mind and change prefix accordingly similarly nmt model and preprocess.py"
     try:
-        sp_model_prefix_hindi = 'hi_exp-5.5-{}-24k'.format(date_now)
-        sp_model_prefix_english = 'en_exp-5.5-{}-24k'.format(date_now)
+        sp_model_prefix_hindi = 'hi_exp-5.6-{}-24k'.format(date_now)
+        sp_model_prefix_english = 'en_exp-5.6-{}-24k'.format(date_now)
         model_intermediate_folder = os.path.join(INTERMEDIATE_DATA_LOCATION, 'english_hindi')
         model_master_train_folder = os.path.join(TRAIN_DEV_TEST_DATA_LOCATION, 'english_hindi')
-        nmt_model_path = os.path.join(NMT_MODEL_DIR, 'english_hindi','model_en-hi_exp-5.5_{}-model'.format(date_now))
+        nmt_model_path = os.path.join(NMT_MODEL_DIR, 'english_hindi','model_en-hi_exp-5.6_{}-model'.format(date_now))
         if not any([os.path.exists(model_intermediate_folder),os.path.exists(model_master_train_folder),os.path.exists(os.path.join(NMT_MODEL_DIR, 'english_hindi'))]):
             os.makedirs(model_intermediate_folder)
             os.makedirs(model_master_train_folder)
@@ -115,9 +114,9 @@ def english_hindi_experiments():
         english_test_Gen_encoded_file = os.path.join(model_master_train_folder, 'english_test_Gen_final.txt')
         english_test_LC_encoded_file = os.path.join(model_master_train_folder, 'english_test_LC_final.txt')
         english_test_TB_encoded_file = os.path.join(model_master_train_folder, 'english_test_TB_final.txt')
-        nmt_processed_data = os.path.join(model_master_train_folder, 'processed_data_exp-5.5_{}'.format(date_now))
+        nmt_processed_data = os.path.join(model_master_train_folder, 'processed_data_exp-5.6_{}'.format(date_now))
 
-        print("Exp-5.5 training")
+        print("Exp-5.6 training")
         os.system('python ./tools/indic_tokenize.py {0} {1} hi'.format(mcl.english_hindi['HINDI_TRAIN_FILE'], hindi_tokenized_file))
         os.system('python ./tools/indic_tokenize.py {0} {1} hi'.format(mcl.english_hindi['DEV_HINDI'], hindi_dev_tokenized_file))
         logger.info("english-hindi, hindi train and dev corpus tokenized")
