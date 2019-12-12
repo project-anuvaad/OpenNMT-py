@@ -187,7 +187,15 @@ def from_en(inputs, translation_server):
                         translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_hindi["ENG_EXP_5.5"],sp_model.english_hindi["HIN_EXP_5.5"])                      
                         translation = anuvada.indic_detokenizer(translation)
                         translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)  
-                        logger.info("experiment 5.5-{} output: {}".format(i['id'],translation))                                      
+                        logger.info("experiment 5.5-{} output: {}".format(i['id'],translation))   
+                    elif i['id'] == 56:
+                        "09/12/19-Exp-5.6:"                        
+                        i['src'],date_original,url_original,num_array = date_url_util.tag_number_date_url_1(i['src'])
+                        i['src'] = anuvada.moses_tokenizer(i['src'])
+                        translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_hindi["ENG_EXP_5.6"],sp_model.english_hindi["HIN_EXP_5.6"])                      
+                        translation = anuvada.indic_detokenizer(translation)
+                        translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)  
+                        logger.info("experiment 5.6-{} output: {}".format(i['id'],translation))                                       
                     else:
                         logger.info("unsupported model id: {} for given english translation".format(i['id']))
                         logger.error("unsupported model id: {} for given english translation".format(i['id']))
