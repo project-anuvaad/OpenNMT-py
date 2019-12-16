@@ -15,6 +15,8 @@ english_hindi = {
     "HIN_EXP_5.5": "model/sentencepiece_models/hi_exp-5.5-2019-12-04-24k.model",
     "ENG_EXP_5.6": "model/sentencepiece_models/en_exp-5.6-2019-12-09-24k.model",
     "HIN_EXP_5.6": "model/sentencepiece_models/hi_exp-5.6-2019-12-09-24k.model",
+    "ENG_EXP_5.7": "model/sentencepiece_models/en_exp-5.7-2019-12-10-24k.model",
+    "HIN_EXP_5.7": "model/sentencepiece_models/hi_exp-5.7-2019-12-10-24k.model",
 
 }
 
