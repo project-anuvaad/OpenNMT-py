@@ -604,6 +604,60 @@ def english_punjabi():
     except Exception as e:
         print(e)
 
+def english_hindi_exp_5_10():
+    "Exp-5.10: -processing 245529k sentences"
+    try:
+        print("In english_hindi_experiments,scripts,Exp 5.10 eng-hindi")
+        model_intermediate_folder = os.path.join(INTERMEDIATE_DATA_LOCATION, 'english_hindi_5.10')
+        model_master_folder = os.path.join(MASTER_DATA_LOCATION, 'english_hindi_5.10')
+        english_merged_file_name = os.path.join(model_intermediate_folder, 'english_merged_original_5.10.txt')
+        hindi_merged_file_name = os.path.join(model_intermediate_folder, 'hindi_merged_original_5.10.txt')
+        tab_sep_out_file = os.path.join(model_intermediate_folder, 'tab_sep_corpus_5.10.txt')
+        tab_sep_out_file_no_duplicate = os.path.join(model_intermediate_folder, 'tab_sep_corpus_no_duplicate_5.10.txt')
+        shuffled_tab_sep_file = os.path.join(model_intermediate_folder, 'shuffled_tab_sep_file_5.10.txt')
+        replaced_hindi_number_file_name = os.path.join(model_intermediate_folder, 'corpus_no_hindi_num_5.10.txt')
+        eng_separated = os.path.join(model_intermediate_folder, 'eng_train_separated_5.10.txt')
+        hindi_separated = os.path.join(model_intermediate_folder, 'hindi_train_separated_5.10.txt')
+        english_tagged = os.path.join(model_master_folder, 'eng_train_corpus_final_5.10.txt')
+        hindi_tagged = os.path.join(model_master_folder, 'hindi_train_corpus_final_5.10.txt')
+
+
+        if not any ([os.path.exists(model_intermediate_folder),os.path.exists(model_master_folder)]):
+            os.makedirs(model_intermediate_folder)
+            os.makedirs(model_master_folder)
+            print("folder created at {} and {}".format(model_intermediate_folder,model_master_folder))
+        
+        file_names_english = ocl.english_hindi['FILE_NAMES_ENGLISH_5.10']
+        file_names_hindi = ocl.english_hindi['FILE_NAMES_HINDI_5.10']
+        fm.file_merger(file_names_english, english_merged_file_name)
+        fm.file_merger(file_names_hindi, hindi_merged_file_name)
+        print("original src and tgt file merged successfully")
+                
+
+        fc.tab_separated_parllel_corpus(hindi_merged_file_name, english_merged_file_name, tab_sep_out_file)
+        print("tab separated corpus created")
+        print(os.system('wc -l {}'.format(tab_sep_out_file)))
+        fc.drop_duplicate(tab_sep_out_file, tab_sep_out_file_no_duplicate)
+        print("duplicates removed from combined corpus")
+        print(os.system('wc -l {}'.format(tab_sep_out_file_no_duplicate)))
+        
+        format_handler.shuffle_file(tab_sep_out_file_no_duplicate,shuffled_tab_sep_file)
+        print("tab_sep_file_shuffled_successfully!")
+
+        format_handler.replace_hindi_numbers(shuffled_tab_sep_file,replaced_hindi_number_file_name)
+        print("hindi number replaced")
+
+        fc.separate_corpus(0, replaced_hindi_number_file_name, eng_separated)
+        fc.separate_corpus(1, replaced_hindi_number_file_name, hindi_separated)
+        print("corpus separated into src and tgt")
+
+        format_handler.tag_number_date_url(eng_separated, english_tagged)
+        format_handler.tag_number_date_url(hindi_separated, hindi_tagged)
+        print("url,num and date tagging done, corpus in master folder")
+
+    except Exception as e:
+        print(e)
+
 if __name__ == '__main__':
     if sys.argv[1] == "english-tamil":
         english_tamil()
@@ -624,6 +678,10 @@ if __name__ == '__main__':
     elif sys.argv[1] == "english-punjabi":
         english_punjabi() 
     elif sys.argv[1] == "english-hindi-exp":
-        english_hindi_experiments()                        
+        english_hindi_experiments()   
+    elif sys.argv[1] == "english-hindi-exp_5.10":
+        english_hindi_exp_5_10()   
+    elif sys.argv[1] == "ik_5_4_shuffle_for_graders":
+        ik_5_4_shuffle_for_graders()                           
     else:
         print("invalid request", sys.argv)
