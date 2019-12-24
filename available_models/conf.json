@@ -222,8 +222,8 @@
             }
         },
         {
-            "id": 58,
-            "model": "model_en-hi_inc_exp-5.8_2019-12-12-model_step_270000.pt",
+            "id": 60,
+            "model": "model_en-hi_exp-5.10_2019-12-20-model_step_150000.pt",
             "timeout": 600,
             "on_timeout": "to_cpu",
             "load": true,
@@ -235,8 +235,8 @@
             }
         },
         {
-            "id": 57,
-            "model": "model_en-hi_exp-5.7_2019-12-10-model_step_240000.pt",
+            "id": 61,
+            "model": "model_en-hi_inc_exp-5.10_2019-12-22-model_step_250000.pt",
             "timeout": 600,
             "on_timeout": "to_cpu",
             "load": true,

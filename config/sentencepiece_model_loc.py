@@ -9,14 +9,10 @@ english_hindi = {
     "HIN_EXP_12": "model/sentencepiece_models/hi_exp-12-2019-10-29-24k.model",
     "ENG_EXP_5.4": "model/sentencepiece_models/en_exp-5.4-2019-10-29-24k.model",
     "HIN_EXP_5.4": "model/sentencepiece_models/hi_exp-5.4-2019-10-29-24k.model",
-    "ENG_HIN_EXP_1_SV": "model/sentencepiece_models/en_hi_exp-1-sv-2019-11-11-48k.model",
-    "ENG_HIN_EXP_2_SV": "model/sentencepiece_models/en_hi_exp-2-sv-2019-11-11-48k.model",
-    "ENG_EXP_5.5": "model/sentencepiece_models/en_exp-5.5-2019-12-04-24k.model",
-    "HIN_EXP_5.5": "model/sentencepiece_models/hi_exp-5.5-2019-12-04-24k.model",
     "ENG_EXP_5.6": "model/sentencepiece_models/en_exp-5.6-2019-12-09-24k.model",
     "HIN_EXP_5.6": "model/sentencepiece_models/hi_exp-5.6-2019-12-09-24k.model",
-    "ENG_EXP_5.7": "model/sentencepiece_models/en_exp-5.7-2019-12-10-24k.model",
-    "HIN_EXP_5.7": "model/sentencepiece_models/hi_exp-5.7-2019-12-10-24k.model",
+    "ENG_EXP_5.10": "model/sentencepiece_models/en_exp-5.10-2019-12-20-24k.model",
+    "HIN_EXP_5.10": "model/sentencepiece_models/hi_exp-5.10-2019-12-20-24k.model",
 
 }
 
