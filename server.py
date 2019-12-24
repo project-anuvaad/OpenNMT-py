@@ -24,7 +24,7 @@ import onmt.opts as opts
 from onmt.utils.parse import ArgumentParser
 from mongo_model import db,Benchmarks
 import datetime
-from kafka_utils.document_translator import doc_translator
+from kafka_utils.document_translator import doc_translator, testing_func1,testing_func2
 import threading
 import translation_util.translate_util as translate_util
 
@@ -63,6 +63,8 @@ def start(config_file,
     def kafka_function():
         logger.info('starting kafka from nmt-server')
         doc_translator(translation_server)
+        testing_func2(translation_server)
+        testing_func1(translation_server)  
 
     if bootstrap_server_boolean:
         t1 = threading.Thread(target=kafka_function)
