@@ -134,30 +134,6 @@
             }
         },
         {
-            "id": 21,
-            "model": "model_en-hi_exp-1_2019-10-01-model_step_110000.pt",
-            "timeout": 600,
-            "on_timeout": "to_cpu",
-            "load": true,
-            "opt": {
-                "beam_size": 5,
-                "log_file":"log_file.txt",
-                "log_file_level":"INFO"
-            }
-        },
-        {
-            "id": 30,
-            "model": "model_en-hi_exp-10_2019-10-25-model_step_250000.pt",
-            "timeout": 600,
-            "on_timeout": "to_cpu",
-            "load": true,
-            "opt": {
-                "beam_size": 5,
-                "log_file":"log_file.txt",
-                "log_file_level":"INFO"
-            }
-        },
-        {
             "id": 54,
             "model": "model_en-hi_exp-5.4_2019-10-29-model_step_230000.pt",
             "timeout": 600,
@@ -199,32 +175,6 @@
         {
             "id": 56,
             "model": "model_en-hi_exp-5.6_2019-12-09-model_step_250000.pt",
-            "timeout": 600,
-            "on_timeout": "to_cpu",
-            "load": true,
-            "opt": {
-                "beam_size": 5,
-                "log_file":"log_file.txt",
-                "log_file_level":"INFO",
-                "replace_unk":true
-            }
-        },
-        {
-            "id": 60,
-            "model": "model_en-hi_exp-5.10_2019-12-20-model_step_150000.pt",
-            "timeout": 600,
-            "on_timeout": "to_cpu",
-            "load": true,
-            "opt": {
-                "beam_size": 5,
-                "log_file":"log_file.txt",
-                "log_file_level":"INFO",
-                "replace_unk":true
-            }
-        },
-        {
-            "id": 61,
-            "model": "model_en-hi_inc_exp-5.10_2019-12-22-model_step_200000.pt",
             "timeout": 600,
             "on_timeout": "to_cpu",
             "load": true,

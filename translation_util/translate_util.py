@@ -125,23 +125,7 @@ def from_en(inputs, translation_server):
                         translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_punjabi["ENG_200919"],sp_model.english_punjabi["PUNJABI_200919"])                       
                         translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)
                         translation = translation.replace("infrastructureਾਂਚਾ","ਢਾਂਚਾ")
-                        logger.info("final output punjabi: {}".format(translation))
-                    elif i['id'] == 21:  
-                        "exp-1 BPE model with varying vocab size 15k for both hindi and english +tokenization"                        
-                        i['src'],date_original,url_original,num_array = date_url_util.tag_number_date_url_1(i['src'])
-                        i['src'] = anuvada.moses_tokenizer(i['src'])
-                        translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_hindi["ENG_EXP_1"],sp_model.english_hindi["HIN_EXP_1"])                      
-                        translation = anuvada.indic_detokenizer(translation)
-                        translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)  
-                        logger.info("experiment-1 output: {}".format(translation))  
-                    elif i['id'] == 30:
-                        "25/10/2019 experiment 10, Old data + dictionary,BPE-24k, nolowercasing,pretok,shuffling,50k nmt"                        
-                        i['src'],date_original,url_original,num_array = date_url_util.tag_number_date_url_1(i['src'])
-                        i['src'] = anuvada.moses_tokenizer(i['src'])
-                        translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_hindi["ENG_EXP_10"],sp_model.english_hindi["HIN_EXP_10"])                      
-                        translation = anuvada.indic_detokenizer(translation)
-                        translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)  
-                        logger.info("experiment-{} output: {}".format(i['id'],translation))    
+                        logger.info("final output punjabi: {}".format(translation))    
                     elif i['id'] == 32:
                         "29/10/2019 Exp-12: old_data_original+lc_cleaned+ ik names translated from google(100k)+shabdkosh(appended 29k new),BPE-24K,50knmt,shuff,pretok"                        
                         i['src'],date_original,url_original,num_array = date_url_util.tag_number_date_url_1(i['src'])
@@ -171,15 +155,7 @@ def from_en(inputs, translation_server):
                         translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_hindi["ENG_EXP_5.6"],sp_model.english_hindi["HIN_EXP_5.6"])                      
                         translation = anuvada.indic_detokenizer(translation)
                         translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)  
-                        logger.info("experiment 5.6-{} output: {}".format(i['id'],translation)) 
-                    elif i['id'] in [60,61]:
-                        "20/12/19-Exp-5.10:"                        
-                        i['src'],date_original,url_original,num_array = date_url_util.tag_number_date_url_1(i['src'])
-                        i['src'] = anuvada.moses_tokenizer(i['src'])
-                        translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_hindi["ENG_EXP_5.10"],sp_model.english_hindi["HIN_EXP_5.10"])                      
-                        translation = anuvada.indic_detokenizer(translation)
-                        translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)  
-                        logger.info("experiment 5.10-{} output: {}".format(i['id'],translation))                                             
+                        logger.info("experiment 5.6-{} output: {}".format(i['id'],translation))                                             
                     else:
                         logger.info("unsupported model id: {} for given english translation".format(i['id']))
                         logger.error("unsupported model id: {} for given english translation".format(i['id']))
