@@ -17,7 +17,14 @@ english_hindi = {
     "TEST_ENGLISH_TB": "corpus/original_data/english_hindi/test_data/english/TB.txt",
     "TEST_HINDI_GEN": "corpus/original_data/english_hindi/test_data/hindi/Gen.txt",
     "TEST_HINDI_LC": "corpus/original_data/english_hindi/test_data/hindi/LC.txt",
-    "TEST_HINDI_TB": "corpus/original_data/english_hindi/test_data/hindi/TB.txt"
+    "TEST_HINDI_TB": "corpus/original_data/english_hindi/test_data/hindi/TB.txt",
+
+    "FILE_NAMES_ENGLISH_5.10": ['corpus/IITB_splitted_data/en-set-1100747-1105754', 'corpus/IITB_splitted_data/en-set-1105754-1109481', 'corpus/IITB_splitted_data/en-set-1109481-1232841',
+                           'corpus/IITB_splitted_data/en-set-1492827-1561840', 'corpus/original_data/tgt-law_commision100519.txt',
+                           'corpus/original_data/SC_specific_eng_020819.txt','corpus/original_data/eng_orders_upper_n_lowercased180919.txt'],
+    "FILE_NAMES_HINDI_5.10": ['corpus/IITB_splitted_data/hi-set-1100747-1105754', 'corpus/IITB_splitted_data/hi-set-1105754-1109481', 'corpus/IITB_splitted_data/hi-set-1109481-1232841',
+                         'corpus/IITB_splitted_data/hi-set-1492827-1561840', 'corpus/original_data/src-law_commision_100519.txt',
+                         'corpus/original_data/SC_specific_hin_020819.txt','corpus/original_data/hin_orders_upper_n_lowercased180919.txt'],
 }
 
 english_tamil = {
