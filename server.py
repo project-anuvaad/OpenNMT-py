@@ -62,7 +62,7 @@ def start(config_file,
 
     def kafka_function():
         logger.info('starting kafka from nmt-server')
-        doc_translator(translation_server)
+        doc_translator(translation_server) 
 
     if bootstrap_server_boolean:
         t1 = threading.Thread(target=kafka_function)
