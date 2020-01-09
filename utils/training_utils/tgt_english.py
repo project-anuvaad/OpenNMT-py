@@ -1,4 +1,5 @@
 import sys
+sys.path.insert(1, '/home/ajitesh/Desktop/anuvaad/OpenNMT-py')
 import os
 from onmt.utils.logging import logger
 import tools.indic_tokenize as hin_tokenizer
@@ -141,6 +142,6 @@ if __name__ == '__main__':
     if sys.argv[1] == "tamil_to_english":
         tamil_to_english()
     elif sys.argv[1] == "hinidi-english-exp":
-        hindi_english_experiments()                                             
+        hindi_english_experiments()                                                 
     else:
         print("invalid request", sys.argv)
