@@ -62,6 +62,19 @@
             }
         },
         {
+            "id": 8,
+            "model": "model_ta-en_2020-01-09-model_step_150000.pt",
+            "timeout": 600,
+            "on_timeout": "to_cpu",
+            "load": true,
+            "opt": {
+                "beam_size": 5,
+                "log_file":"log_file.txt",
+                "log_file_level":"INFO",
+                "replace_unk":true
+            }
+        },
+        {
             "id": 10,
             "model": "model_2019-09-10-model_step_90000.pt",
             "timeout": 600,

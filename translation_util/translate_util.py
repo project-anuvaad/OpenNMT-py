@@ -326,7 +326,7 @@ def translate_func(inputs, translation_server):
                 input_sw,output_sw = "",""  
 
             else:
-                if i['id'] == 5:
+                if i['id'] == 8:
                     i['src'],date_original,url_original,num_array = date_url_util.tag_number_date_url_1(i['src'])
                     i['src'] = anuvada.indic_tokenizer(i['src'])
                     translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.hindi_english["HIN_EXP_1_291019"],sp_model.hindi_english["ENG_EXP_1_291019"])
