@@ -27,11 +27,11 @@ def encode_translate_decode(i,translation_server,sp_encoder,sp_decoder):
         return translation,scores,input_sw,output_sw
     except ServerModelError as e:
         logger.error("ServerModelError error in encode_translate_decode: {} and {}".format(e,sys.exc_info()[0]))
-        return "",[0],"",""
+        raise
         
     except Exception as e:
         logger.error("Unexpexcted error in encode_translate_decode: {} and {}".format(e,sys.exc_info()[0]))
-        return "",[0],"",""
+        raise
 
 
 def from_en(inputs, translation_server):
@@ -291,3 +291,72 @@ def from_hindi(inputs, translation_server):
         logger.error("Unexpected error:%s and %s"% (e,sys.exc_info()[0]))   
 
     return (out)
+
+
+def translate_func(inputs, translation_server):
+
+    inputs = inputs
+    out = {}
+    tgt = list()
+    pred_score = list()
+    sentence_id = list()
+    node_id = list()
+    input_subwords = list()
+    output_subwords = list()
+    s_id = [0000]
+    n_id = [0000]
+
+    try:
+        for i in inputs:
+            if all(v in i for v in ['s_id','n_id']):
+                s_id = [i['s_id']]
+                n_id = [i['n_id']]  
+                
+            if  any(v not in i for v in ['src','id']):
+                out['status'] = statusCode["ID_OR_SRC_MISSING"]
+                logger.info("either id or src missing in some input")
+                return (out) 
+
+            logger.info("input sentences:{}".format(i['src']))    
+            i['src'] = i['src'].strip()    
+            if ancillary_functions.special_case_fits(i['src']):
+                logger.info("sentence fits in special case, returning accordingly and not going to model")
+                translation = ancillary_functions.handle_special_cases(i['src'],i['id'])
+                scores = [1] 
+                input_sw,output_sw = "",""  
+
+            else:
+                if i['id'] == 5:
+                    i['src'],date_original,url_original,num_array = date_url_util.tag_number_date_url_1(i['src'])
+                    i['src'] = anuvada.indic_tokenizer(i['src'])
+                    translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.hindi_english["HIN_EXP_1_291019"],sp_model.hindi_english["ENG_EXP_1_291019"])
+                    translation = anuvada.moses_detokenizer(translation)
+                    translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)  
+                    logger.info("experiment-{} output: {}".format(i['id'],translation)) 
+                else:
+                    logger.info("unsupported model id: {} for given input".format(i['id']))
+                    raise Exception("unsupported model id: {} for given input".format(i['id']))      
+                
+            tgt.append(translation)
+            pred_score.append(scores[0])
+            sentence_id.append(s_id[0])
+            node_id.append(n_id[0])
+            input_subwords.append(input_sw)
+            output_subwords.append(output_sw)
+
+        out['status'] = statusCode["SUCCESS"]
+        out['response_body'] = [{"tgt": tgt[i],
+                "pred_score": pred_score[i], "s_id": sentence_id[i],"input_subwords": input_subwords[i],
+                "output_subwords":output_subwords[i],"n_id":node_id[i]}
+                for i in range(len(tgt))]
+    except ServerModelError as e:
+        out['status'] = statusCode["SEVER_MODEL_ERR"]
+        out['status']['errObj'] = str(e)
+        logger.error("ServerModelError error in TRANSLATE_UTIL-FROM_HINDI: {} and {}".format(e,sys.exc_info()[0]))
+    except Exception as e:
+        out['status'] = statusCode["SYSTEM_ERR"]
+        out['status']['errObj'] = str(e)
+        logger.error("Unexpected error:%s and %s"% (e,sys.exc_info()[0]))   
+
+    return (out)
+

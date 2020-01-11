@@ -1,5 +1,4 @@
 import sys
-sys.path.insert(1, '~/anuvaad/OpenNMT-py')
 import os
 from onmt.utils.logging import logger
 import tools.indic_tokenize as hin_tokenizer

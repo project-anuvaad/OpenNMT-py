@@ -5,6 +5,7 @@ import tools.indic_tokenize as hin_tokenizer
 import tools.sp_enc_dec as sp
 import datetime
 import corpus.master_corpus_location as mcl
+from utils.training_utils import tgt_english
 
 date_now = datetime.datetime.now().strftime('%Y-%m-%d')
 INTERMEDIATE_DATA_LOCATION = 'intermediate_data/'
@@ -773,6 +774,9 @@ def english_hindi_sharevocab_experiments():
         print(e)
         logger.info("error in english_hindi anuvaad script: {}".format(e))
 
+def train_tamil_to_english():
+    tgt_english.tamil_to_english()
+
 if __name__ == '__main__':
     if sys.argv[1] == "english-tamil":
         english_tamil()
@@ -801,6 +805,8 @@ if __name__ == '__main__':
     elif sys.argv[1] == "english-hindi-exp-sv":
         english_hindi_sharevocab_experiments()
     elif sys.argv[1] == "incremental_training":
-        incremental_training(sys.argv[2],sys.argv[3],sys.argv[4])                                                
+        incremental_training(sys.argv[2],sys.argv[3],sys.argv[4]) 
+    elif sys.argv[1] == "train_tamil_to_english":
+        train_tamil_to_english()                                                   
     else:
         print("invalid request", sys.argv)
