@@ -18,7 +18,9 @@ english_hindi = {
 
 english_tamil = {
     "ENG_230919": "model/sentencepiece_models/enTa-2019-09-23-10k.model",
-    "TAM_230919": "model/sentencepiece_models/tamil-2019-09-23-10k.model"
+    "TAM_230919": "model/sentencepiece_models/tamil-2019-09-23-10k.model",
+    "ENG_090120": "model/sentencepiece_models/enTa-2020-01-09-24k.model",
+    "TAM_090120": "model/sentencepiece_models/tamil-2020-01-09-24k.model",
 }
 
 english_gujrati = {
