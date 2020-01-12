@@ -115,7 +115,7 @@ def start(config_file,
 
         return jsonify(out)
 
-    @app.route('/translate', methods=['POST'])
+    @app.route('/translate-anuvaad', methods=['POST'])
     def translate():
         inputs = request.get_json(force=True)
         if len(inputs)>0:
