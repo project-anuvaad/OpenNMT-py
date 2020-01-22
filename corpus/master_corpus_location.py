@@ -14,7 +14,8 @@ english_tamil = {
     "TAMIL_TRAIN_FILE": 'corpus/master_corpus/english_tamil/tamil_train_corpus_final.txt',
     "DEV_ENGLISH": "corpus/master_corpus/english_tamil/english_dev_final.txt",
     "DEV_TAMIL": "corpus/master_corpus/english_tamil/tamil_dev_final.txt",
-    "TEST_ENGLISH": "corpus/master_corpus/english_tamil/english_test_final.txt"
+    "TEST_ENGLISH": "corpus/master_corpus/english_tamil/english_test_final.txt",
+    "TEST_TAMIL":"corpus/master_corpus/english_tamil/tamil_test_final.txt"
 }
 
 english_gujrati = {

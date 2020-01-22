@@ -15,61 +15,88 @@ TRAIN_LOG_FILE = 'available_models/anuvaad_training_log_file.txt'
 
 logger = init_logger(TRAIN_LOG_FILE)
 
-def english_tamil():
+def english_tamil(eng_file,tamil_file):
     try:
+        logger.info("English and tamil corpus preprocessing: starting")
+
+        unique_id = str(uuid.uuid1())
         model_intermediate_folder = os.path.join(INTERMEDIATE_DATA_LOCATION, 'english_tamil')
         model_master_folder = os.path.join(MASTER_DATA_LOCATION, 'english_tamil')
-        english_merged_file_name = os.path.join(model_intermediate_folder, 'english_merged_original.txt')
-        tamil_merged_file_name = os.path.join(model_intermediate_folder, 'tamil_merged_original.txt')
-        tab_sep_out_file = os.path.join(model_intermediate_folder, 'tab_sep_corpus.txt')
-        tab_sep_out_file_no_duplicate = os.path.join(model_intermediate_folder, 'tab_sep_corpus_no_duplicate.txt')
-        replaced_hindi_number_file_name = os.path.join(model_intermediate_folder, 'corpus_no_hindi_num.txt')
-        eng_separated = os.path.join(model_intermediate_folder, 'eng_train_separated.txt')
-        tamil_separated = os.path.join(model_intermediate_folder, 'tamil_train_separated.txt')
-        english_tagged = os.path.join(model_master_folder, 'eng_train_corpus_final.txt')
-        tamil_tagged = os.path.join(model_master_folder, 'tamil_train_corpus_final.txt')
 
-        dev_english_tagged = os.path.join(model_master_folder, 'english_dev_final.txt')
-        dev_tamil_tagged = os.path.join(model_master_folder, 'tamil_dev_final.txt')
+        english_merged_file_name = os.path.join(model_intermediate_folder, 'english_merged_original'+unique_id+'.txt')
+        tamil_merged_file_name = os.path.join(model_intermediate_folder, 'tamil_merged_original'+unique_id+'.txt')
+        tab_sep_out_file = os.path.join(model_intermediate_folder, 'tab_sep_corpus'+unique_id+'.txt')
+        tab_sep_out_file_no_duplicate = os.path.join(model_intermediate_folder, 'tab_sep_corpus_no_duplicate'+unique_id+'.txt')
+        shuffled_tab_sep_file = os.path.join(model_intermediate_folder, 'shuffled_tab_sep_file'+unique_id+'.txt')
+        replaced_hindi_number_file_name = os.path.join(model_intermediate_folder, 'corpus_no_hindi_num'+unique_id+'.txt')
+        train_file = os.path.join(model_intermediate_folder, 'train_file'+unique_id+'.txt')
+        dev_file = os.path.join(model_intermediate_folder, 'dev_file'+unique_id+'.txt')
+        eng_separated = os.path.join(model_intermediate_folder, 'eng_train_separated'+unique_id+'.txt')
+        tamil_separated = os.path.join(model_intermediate_folder, 'tamil_train_separated'+unique_id+'.txt')
+        eng_dev_separated = os.path.join(model_intermediate_folder, 'eng_dev_separated'+unique_id+'.txt')
+        tamil_dev_separated = os.path.join(model_intermediate_folder, 'tamil_dev_separated'+unique_id+'.txt')
+        english_tagged = os.path.join(model_master_folder, 'eng_train_corpus_final'+unique_id+'.txt')
+        tamil_tagged = os.path.join(model_master_folder, 'tamil_train_corpus_final'+unique_id+'.txt')
+
+        dev_english_tagged = os.path.join(model_master_folder, 'english_dev_final'+unique_id+'.txt')
+        dev_tamil_tagged = os.path.join(model_master_folder, 'tamil_dev_final'+unique_id+'.txt')
         test_english_tagged = os.path.join(model_master_folder, 'english_test_final.txt')
         test_tamil_tagged = os.path.join(model_master_folder, 'tamil_test_final.txt')
 
         if not any ([os.path.exists(model_intermediate_folder),os.path.exists(model_master_folder)]):
             os.makedirs(model_intermediate_folder)
             os.makedirs(model_master_folder)
-            print("folder created at {} and {}".format(model_intermediate_folder,model_master_folder))
+            logger.info("folder created at {} and {}".format(model_intermediate_folder,model_master_folder))
+        
+        # file_names_english = ocl.english_tamil['FILE_NAMES_ENGLISH']
+        # file_names_tamil = ocl.english_tamil['FILE_NAMES_tamil']
+        # fm.file_merger(file_names_english, english_merged_file_name)
+        # fm.file_merger(file_names_tamil, tamil_merged_file_name)
+        # print("original src and tgt file merged successfully")
+                
 
-        file_names_english = ocl.english_tamil['FILE_NAMES_ENGLISH']
-        file_names_tamil = ocl.english_tamil['FILE_NAMES_TAMIL']
-        fm.file_merger(file_names_english, english_merged_file_name)
-        fm.file_merger(file_names_tamil, tamil_merged_file_name)
-        print("original src and tgt file merged successfully")
-
-        fc.tab_separated_parllel_corpus(tamil_merged_file_name, english_merged_file_name, tab_sep_out_file)
-        print("tab separated corpus created")
+        fc.tab_separated_parllel_corpus(tamil_file, eng_file, tab_sep_out_file)
+        logger.info("tab separated corpus created")
+        logger.info(os.system('wc -l {}'.format(tab_sep_out_file)))
         fc.drop_duplicate(tab_sep_out_file, tab_sep_out_file_no_duplicate)
-        print("duplicates removed from combined corpus")
+        logger.info("duplicates removed from combined corpus")
+        logger.info(os.system('wc -l {}'.format(tab_sep_out_file_no_duplicate)))
+        
+        format_handler.shuffle_file(tab_sep_out_file_no_duplicate,shuffled_tab_sep_file)
+        logger.info("tab_sep_file_shuffled_successfully!")
 
-        format_handler.replace_hindi_numbers(tab_sep_out_file_no_duplicate,replaced_hindi_number_file_name)
-        print("hindi number replaced")
+        format_handler.replace_hindi_numbers(shuffled_tab_sep_file,replaced_hindi_number_file_name)
+        logger.info("hindi number replaced")
 
-        fc.separate_corpus(0, replaced_hindi_number_file_name, eng_separated)
-        fc.separate_corpus(1, replaced_hindi_number_file_name, tamil_separated)
-        print("corpus separated into src and tgt")
+        fc.split_into_train_validation(replaced_hindi_number_file_name,train_file,dev_file,0.995)
+        logger.info("splitted file into train and validation set")
+
+        fc.separate_corpus(0, train_file, eng_separated)
+        fc.separate_corpus(1, train_file, tamil_separated)
+        fc.separate_corpus(0, dev_file, eng_dev_separated)
+        fc.separate_corpus(1, dev_file, tamil_dev_separated)
+        logger.info("corpus separated into src and tgt for training and validation")
 
         format_handler.tag_number_date_url(eng_separated, english_tagged)
         format_handler.tag_number_date_url(tamil_separated, tamil_tagged)
-        print("url,num and date tagging done, corpus in master folder")
+        format_handler.tag_number_date_url(eng_dev_separated, dev_english_tagged)
+        format_handler.tag_number_date_url(tamil_dev_separated, dev_tamil_tagged)
 
-        format_handler.tag_number_date_url(ocl.english_tamil['DEV_ENGLISH'], dev_english_tagged)
-        format_handler.tag_number_date_url(ocl.english_tamil['DEV_TAMIL'], dev_tamil_tagged)
+        logger.info("url,num and date tagging done, corpus in master folder")
         format_handler.tag_number_date_url(ocl.english_tamil['TEST_ENGLISH'], test_english_tagged)
         format_handler.tag_number_date_url(ocl.english_tamil['TEST_TAMIL'], test_tamil_tagged)
-        print("test and dev data taggeg and in master folder")
+        logger.info("test data taggeg and in master folder : Preprocesssing finished !")
+
+        os.system('rm -f {0} {1} {2} {3} {4} {5} {6} {7} {8} {9}'.format(tab_sep_out_file,tab_sep_out_file_no_duplicate,shuffled_tab_sep_file,\
+                  replaced_hindi_number_file_name,train_file,dev_file,eng_separated,tamil_separated,eng_dev_separated,tamil_dev_separated))
+
+        logger.info("intermediate files are removed successfully: in corpus/scripts/en-tamil")
+
+        return {'ENGLISH_TRAIN_FILE':english_tagged,'TAMIL_TRAIN_FILE':tamil_tagged, 'DEV_ENGLISH':dev_english_tagged,'DEV_TAMIL':dev_tamil_tagged, \
+               'unique_id':unique_id}
 
     except Exception as e:
-        print(e)
-
+        logger.error("error in english_tamil_experiments corpus/scripts- {}".format(e))
 
 def english_hindi():
     "last-18/09/19 model, not using thi function"
@@ -219,6 +246,10 @@ def english_hindi_experiments(eng_file,hindi_file):
         format_handler.tag_number_date_url(ocl.english_hindi['TEST_HINDI_LC'], test_LC_hindi_tagged)
         logger.info("test data taggeg and in master folder : Preprocesssing finished !")
 
+        os.system('rm -f {0} {1} {2} {3} {4} {5} {6} {7} {8} {9}'.format(tab_sep_out_file,tab_sep_out_file_no_duplicate,shuffled_tab_sep_file,\
+                  replaced_hindi_number_file_name,train_file,dev_file,eng_separated,hindi_separated,eng_dev_separated,hindi_dev_separated))
+        logger.info("intermediate files are removed successfully: in corpus/scripts/en-hi") 
+
         return {'ENGLISH_TRAIN_FILE':english_tagged,'HINDI_TRAIN_FILE':hindi_tagged, 'DEV_ENGLISH':dev_english_tagged,'DEV_HINDI':dev_hindi_tagged, \
                'unique_id':unique_id}
 
@@ -335,64 +366,87 @@ def english_bengali():
     except Exception as e:
         print(e)    
 
-def english_marathi():
+def english_marathi(eng_file,marathi_file):
     try:
+        logger.info("English and marathi corpus preprocessing: starting")
+
+        unique_id = str(uuid.uuid1())
         model_intermediate_folder = os.path.join(INTERMEDIATE_DATA_LOCATION, 'english_marathi')
         model_master_folder = os.path.join(MASTER_DATA_LOCATION, 'english_marathi')
-        english_merged_file_name = os.path.join(model_intermediate_folder, 'english_merged_original.txt')
-        marathi_merged_file_name = os.path.join(model_intermediate_folder, 'marathi_merged_original.txt')
-        tab_sep_out_file = os.path.join(model_intermediate_folder, 'tab_sep_corpus.txt')
-        tab_sep_out_file_no_duplicate = os.path.join(model_intermediate_folder, 'tab_sep_corpus_no_duplicate.txt')
-        shuffled_tab_sep_file = os.path.join(model_intermediate_folder, 'shuffled_tab_sep_file.txt')
-        replaced_hindi_number_file_name = os.path.join(model_intermediate_folder, 'corpus_no_hindi_num.txt')
-        eng_separated = os.path.join(model_intermediate_folder, 'eng_train_separated.txt')
-        marathi_separated = os.path.join(model_intermediate_folder, 'marathi_train_separated.txt')
-        english_tagged = os.path.join(model_master_folder, 'eng_train_corpus_final.txt')
-        marathi_tagged = os.path.join(model_master_folder, 'marathi_train_corpus_final.txt')
 
-        dev_english_tagged = os.path.join(model_master_folder, 'english_dev_final.txt')
-        dev_marathi_tagged = os.path.join(model_master_folder, 'marathi_dev_final.txt')
-        test_english_tagged = os.path.join(model_master_folder, 'english_test_final.txt')
+        english_merged_file_name = os.path.join(model_intermediate_folder, 'english_merged_original'+unique_id+'.txt')
+        marathi_merged_file_name = os.path.join(model_intermediate_folder, 'marathi_merged_original'+unique_id+'.txt')
+        tab_sep_out_file = os.path.join(model_intermediate_folder, 'tab_sep_corpus'+unique_id+'.txt')
+        tab_sep_out_file_no_duplicate = os.path.join(model_intermediate_folder, 'tab_sep_corpus_no_duplicate'+unique_id+'.txt')
+        shuffled_tab_sep_file = os.path.join(model_intermediate_folder, 'shuffled_tab_sep_file'+unique_id+'.txt')
+        replaced_hindi_number_file_name = os.path.join(model_intermediate_folder, 'corpus_no_hindi_num'+unique_id+'.txt')
+        train_file = os.path.join(model_intermediate_folder, 'train_file'+unique_id+'.txt')
+        dev_file = os.path.join(model_intermediate_folder, 'dev_file'+unique_id+'.txt')
+        eng_separated = os.path.join(model_intermediate_folder, 'eng_train_separated'+unique_id+'.txt')
+        marathi_separated = os.path.join(model_intermediate_folder, 'marathi_train_separated'+unique_id+'.txt')
+        eng_dev_separated = os.path.join(model_intermediate_folder, 'eng_dev_separated'+unique_id+'.txt')
+        marathi_dev_separated = os.path.join(model_intermediate_folder, 'marathi_dev_separated'+unique_id+'.txt')
+        english_tagged = os.path.join(model_master_folder, 'eng_train_corpus_final'+unique_id+'.txt')
+        marathi_tagged = os.path.join(model_master_folder, 'marathi_train_corpus_final'+unique_id+'.txt')
+
+        dev_english_tagged = os.path.join(model_master_folder, 'english_dev_final'+unique_id+'.txt')
+        dev_marathi_tagged = os.path.join(model_master_folder, 'marathi_dev_final'+unique_id+'.txt')
+        # test_english_tagged = os.path.join(model_master_folder, 'english_test_final.txt')
         # test_marathi_tagged = os.path.join(model_master_folder, 'marathi_test_final.txt')
 
         if not any ([os.path.exists(model_intermediate_folder),os.path.exists(model_master_folder)]):
             os.makedirs(model_intermediate_folder)
             os.makedirs(model_master_folder)
-            print("folder created at {} and {}".format(model_intermediate_folder,model_master_folder))
-
-        file_names_english = ocl.english_marathi['FILE_NAMES_ENGLISH']
-        file_names_marathi = ocl.english_marathi['FILE_NAMES_MARATHI']
-        fm.file_merger(file_names_english, english_merged_file_name)
-        fm.file_merger(file_names_marathi, marathi_merged_file_name)
-        print("original src and tgt file merged successfully")
-
-        fc.tab_separated_parllel_corpus(marathi_merged_file_name, english_merged_file_name, tab_sep_out_file)
-        print("tab separated corpus created")
-        fc.drop_duplicate(tab_sep_out_file, tab_sep_out_file_no_duplicate)
-        print("duplicates removed from combined corpus")
-
-        format_handler.shuffle_file(tab_sep_out_file_no_duplicate,shuffled_tab_sep_file)
-        print("tab_sep_file_shuffled_successfully!")
+            logger.info("folder created at {} and {}".format(model_intermediate_folder,model_master_folder))
         
-        format_handler.replace_hindi_numbers(shuffled_tab_sep_file,replaced_hindi_number_file_name)
-        print("hindi number replaced")
+        # file_names_english = ocl.english_marathi['FILE_NAMES_ENGLISH']
+        # file_names_marathi = ocl.english_marathi['FILE_NAMES_marathi']
+        # fm.file_merger(file_names_english, english_merged_file_name)
+        # fm.file_merger(file_names_marathi, marathi_merged_file_name)
+        # print("original src and tgt file merged successfully")
+                
+        fc.tab_separated_parllel_corpus(marathi_file, eng_file, tab_sep_out_file)
+        logger.info("tab separated corpus created")
+        logger.info(os.system('wc -l {}'.format(tab_sep_out_file)))
+        fc.drop_duplicate(tab_sep_out_file, tab_sep_out_file_no_duplicate)
+        logger.info("duplicates removed from combined corpus")
+        logger.info(os.system('wc -l {}'.format(tab_sep_out_file_no_duplicate)))
+        
+        format_handler.shuffle_file(tab_sep_out_file_no_duplicate,shuffled_tab_sep_file)
+        logger.info("tab_sep_file_shuffled_successfully!")
 
-        fc.separate_corpus(0, replaced_hindi_number_file_name, eng_separated)
-        fc.separate_corpus(1, replaced_hindi_number_file_name, marathi_separated)
-        print("corpus separated into src and tgt")
+        format_handler.replace_hindi_numbers(shuffled_tab_sep_file,replaced_hindi_number_file_name)
+        logger.info("hindi number replaced")
+
+        fc.split_into_train_validation(replaced_hindi_number_file_name,train_file,dev_file,0.995)
+        logger.info("splitted file into train and validation set")
+
+        fc.separate_corpus(0, train_file, eng_separated)
+        fc.separate_corpus(1, train_file, marathi_separated)
+        fc.separate_corpus(0, dev_file, eng_dev_separated)
+        fc.separate_corpus(1, dev_file, marathi_dev_separated)
+        logger.info("corpus separated into src and tgt for training and validation")
 
         format_handler.tag_number_date_url(eng_separated, english_tagged)
         format_handler.tag_number_date_url(marathi_separated, marathi_tagged)
-        print("url,num and date tagging done, corpus in master folder")
+        format_handler.tag_number_date_url(eng_dev_separated, dev_english_tagged)
+        format_handler.tag_number_date_url(marathi_dev_separated, dev_marathi_tagged)
 
-        format_handler.tag_number_date_url(ocl.english_marathi['DEV_ENGLISH'], dev_english_tagged)
-        format_handler.tag_number_date_url(ocl.english_marathi['DEV_MARATHI'], dev_marathi_tagged)
+        logger.info("url,num and date tagging done, corpus in master folder")
         # format_handler.tag_number_date_url(ocl.english_marathi['TEST_ENGLISH'], test_english_tagged)
         # format_handler.tag_number_date_url(ocl.english_marathi['TEST_MARATHI'], test_marathi_tagged)
-        print("test and dev data taggeg and in master folder")
+        # logger.info("test data taggeg and in master folder : Preprocesssing finished !")
+        os.system('rm -f {0} {1} {2} {3} {4} {5} {6} {7} {8} {9}'.format(tab_sep_out_file,tab_sep_out_file_no_duplicate,shuffled_tab_sep_file,\
+                  replaced_hindi_number_file_name,train_file,dev_file,eng_separated,marathi_separated,eng_dev_separated,marathi_dev_separated))
+
+        logger.info("intermediate files are removed successfully: in corpus/scripts")          
+
+        return {'ENGLISH_TRAIN_FILE':english_tagged,'MARATHI_TRAIN_FILE':marathi_tagged, 'DEV_ENGLISH':dev_english_tagged,'DEV_MARATHI':dev_marathi_tagged, \
+               'unique_id':unique_id}
 
     except Exception as e:
-        print(e)
+        logger.error("error in english_marathi_experiments corpus/scripts- {}".format(e))
+    
 
 def english_kannada():
     try:
@@ -668,30 +722,30 @@ def english_hindi_exp_5_10():
     except Exception as e:
         print(e)
 
-if __name__ == '__main__':
-    if sys.argv[1] == "english-tamil":
-        english_tamil()
-    elif sys.argv[1] == "english-hindi":
-        english_hindi()
-    elif sys.argv[1] == "english-gujrati":
-        english_gujrati() 
-    elif sys.argv[1] == "english-bengali":
-        english_bengali()
-    elif sys.argv[1] == "english-marathi":
-        english_marathi() 
-    elif sys.argv[1] == "english-kannada":
-        english_kannada()  
-    elif sys.argv[1] == "english-telgu":
-        english_telgu()
-    elif sys.argv[1] == "english-malayalam":
-        english_malayalam()   
-    elif sys.argv[1] == "english-punjabi":
-        english_punjabi() 
-    elif sys.argv[1] == "english-hindi-exp":
-        english_hindi_experiments()   
-    elif sys.argv[1] == "english-hindi-exp_5.10":
-        english_hindi_exp_5_10()   
-    elif sys.argv[1] == "ik_5_4_shuffle_for_graders":
-        ik_5_4_shuffle_for_graders()                           
-    else:
-        print("invalid request", sys.argv)
+# if __name__ == '__main__':
+#     if sys.argv[1] == "english-tamil":
+#         english_tamil()
+#     elif sys.argv[1] == "english-hindi":
+#         english_hindi()
+#     elif sys.argv[1] == "english-gujrati":
+#         english_gujrati() 
+#     elif sys.argv[1] == "english-bengali":
+#         english_bengali()
+#     elif sys.argv[1] == "english-marathi":
+#         english_marathi() 
+#     elif sys.argv[1] == "english-kannada":
+#         english_kannada()  
+#     elif sys.argv[1] == "english-telgu":
+#         english_telgu()
+#     elif sys.argv[1] == "english-malayalam":
+#         english_malayalam()   
+#     elif sys.argv[1] == "english-punjabi":
+#         english_punjabi() 
+#     elif sys.argv[1] == "english-hindi-exp":
+#         english_hindi_experiments()   
+#     elif sys.argv[1] == "english-hindi-exp_5.10":
+#         english_hindi_exp_5_10()   
+#     elif sys.argv[1] == "ik_5_4_shuffle_for_graders":
+#         ik_5_4_shuffle_for_graders()                           
+#     else:
+#         print("invalid request", sys.argv)

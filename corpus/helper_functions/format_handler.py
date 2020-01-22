@@ -14,6 +14,11 @@ import re
 import sys
 from dateutil.parser import parse
 import random
+from onmt.utils.logging import init_logger
+
+TRAIN_LOG_FILE = 'available_models/anuvaad_training_log_file.txt'
+
+logger = init_logger(TRAIN_LOG_FILE)
 
 "below is for replacing numbers with #" "not using now"
 def replace_number_with_hash(in_file,out_file):
@@ -122,6 +127,7 @@ def tag_number_date_url(in_file,out_file):
     
   except Exception as e:
     print("in error pass format_handler: ",e)
+    logger.info("Error in corpus/helper_function/format handler, ignoring it-{}".format(e))
     pass
     
   
