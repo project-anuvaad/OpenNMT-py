@@ -492,4 +492,135 @@ def english_and_telugu(inputs):
                "telugu_dev_encoded_file":telugu_dev_encoded_file,"nmt_processed_data":nmt_processed_data,"nmt_model_path":nmt_model_path}  
 
     except Exception as e:
-        logger.error("error in english_telugu pairwise preprocessing: {}".format(e))        
+        logger.error("error in english_telugu pairwise preprocessing: {}".format(e))
+
+def english_and_malayalam(inputs):
+    try:
+        experiment_key = inputs['experiment_key']
+        unique_id = inputs['unique_id']
+        sp_model_prefix_malayalam = 'malayalam-{}-{}-24k'.format(experiment_key,date_now)
+        sp_model_prefix_english = 'enMalay-{}-{}-24k'.format(experiment_key,date_now)
+        model_intermediate_folder = os.path.join(INTERMEDIATE_DATA_LOCATION, 'english_malayalam')
+        model_master_train_folder = os.path.join(TRAIN_DEV_TEST_DATA_LOCATION, 'english_malayalam')
+        nmt_model_path = os.path.join(NMT_MODEL_DIR, 'english_malayalam','model_enMalay-{}_{}-model'.format(experiment_key,date_now))
+        if not any([os.path.exists(model_intermediate_folder),os.path.exists(model_master_train_folder),os.path.exists(os.path.join(NMT_MODEL_DIR, 'english_malayalam'))]):
+            os.makedirs(model_intermediate_folder)
+            os.makedirs(model_master_train_folder)
+            os.makedirs(os.path.join(NMT_MODEL_DIR, 'english_malayalam'))
+            logger.info("folder created at {}".format(model_intermediate_folder))
+        
+        malayalam_tokenized_file = os.path.join(model_intermediate_folder, 'malayalam_train_tok'+unique_id+'.txt')
+        malayalam_dev_tokenized_file = os.path.join(model_intermediate_folder, 'malayalam_dev_tok'+unique_id+'.txt')
+        malayalam_test_tokenized_file = os.path.join(model_intermediate_folder, 'malayalam_test_tok'+unique_id+'.txt')
+        english_tokenized_file = os.path.join(model_intermediate_folder, 'english_train_tok'+unique_id+'.txt')
+        english_dev_tokenized_file = os.path.join(model_intermediate_folder, 'english_dev_tok'+unique_id+'.txt')
+        english_test_tokenized_file = os.path.join(model_intermediate_folder, 'english_test_tok'+unique_id+'.txt')
+        malayalam_encoded_file = os.path.join(model_master_train_folder, 'malayalam_train_final'+unique_id+'.txt')
+        malayalam_dev_encoded_file = os.path.join(model_master_train_folder, 'malayalam_dev_final'+unique_id+'.txt')
+        malayalam_test_encoded_file = os.path.join(model_master_train_folder, 'malayalam_test_final'+unique_id+'.txt')
+        english_encoded_file = os.path.join(model_master_train_folder, 'english_train_final'+unique_id+'.txt')
+        english_dev_encoded_file = os.path.join(model_master_train_folder, 'english_dev_final'+unique_id+'.txt')
+        english_test_encoded_file = os.path.join(model_master_train_folder, 'english_test_final'+unique_id+'.txt')
+        nmt_processed_data = os.path.join(model_master_train_folder, 'processed_data-{}_{}'.format(experiment_key,date_now))
+
+        logger.info("Eng-malayalam pairwise preprocessing, startting for exp:{}".format(experiment_key))
+
+        os.system('python ./tools/indic_tokenize.py {0} {1} ml'.format(inputs['MALAYALAM_TRAIN_FILE'], malayalam_tokenized_file))
+        os.system('python ./tools/indic_tokenize.py {0} {1} ml'.format(inputs['DEV_MALAYALAM'], malayalam_dev_tokenized_file))
+        # os.system('python ./tools/indic_tokenize.py {0} {1} ml'.format(mcl.english_malayalam['TEST_MALAYALAM'], malayalam_test_tokenized_file))
+        logger.info("Eng-malayalam pairwise preprocessing, malayalam train,dev,test corpus tokenized")
+
+        os.system('perl ./tools/tokenizer.perl <{0}> {1}'.format(inputs['ENGLISH_TRAIN_FILE'], english_tokenized_file))
+        os.system('perl ./tools/tokenizer.perl <{0}> {1}'.format(inputs['DEV_ENGLISH'], english_dev_tokenized_file))
+        # os.system('perl ./tools/tokenizer.perl <{0}> {1}'.format(mcl.english_malayalam['TEST_ENGLISH'], english_test_tokenized_file))
+        logger.info("Eng-malayalam pairwise preprocessing, english train,dev,test corpus tokenized")
+
+        sp.train_spm(malayalam_tokenized_file,sp_model_prefix_malayalam, 24000, 'bpe')
+        logger.info("sentencepiece model malayalam trained")
+        sp.train_spm(english_tokenized_file,sp_model_prefix_english, 24000, 'bpe')
+        logger.info("sentencepiece model english trained")
+
+        sp.encode_as_pieces(os.path.join(SENTENCEPIECE_MODEL_DIR, (sp_model_prefix_malayalam+'.model')),malayalam_tokenized_file,malayalam_encoded_file)
+        sp.encode_as_pieces(os.path.join(SENTENCEPIECE_MODEL_DIR, (sp_model_prefix_malayalam+'.model')),malayalam_dev_tokenized_file,malayalam_dev_encoded_file)
+        # sp.encode_as_pieces(os.path.join(SENTENCEPIECE_MODEL_DIR, (sp_model_prefix_malayalam+'.model')),malayalam_test_tokenized_file,malayalam_test_encoded_file)
+        logger.info("malayalam-train file and dev encoded and final stored in data folder")
+        sp.encode_as_pieces(os.path.join(SENTENCEPIECE_MODEL_DIR, (sp_model_prefix_english+'.model')),english_tokenized_file,english_encoded_file)
+        sp.encode_as_pieces(os.path.join(SENTENCEPIECE_MODEL_DIR, (sp_model_prefix_english+'.model')),english_dev_tokenized_file,english_dev_encoded_file)
+        # sp.encode_as_pieces(os.path.join(SENTENCEPIECE_MODEL_DIR, (sp_model_prefix_english+'.model')),english_test_tokenized_file,english_test_encoded_file)
+        logger.info("english-train,dev,test file encoded and final stored in data folder")
+
+        os.system('rm -f {0} {1} {2} {3} {4} {5} {6} {7}'.format(malayalam_tokenized_file,malayalam_dev_tokenized_file,english_tokenized_file,english_dev_tokenized_file,\
+                   inputs['MALAYALAM_TRAIN_FILE'],inputs['DEV_MALAYALAM'],inputs['ENGLISH_TRAIN_FILE'],inputs['DEV_ENGLISH']))
+        logger.info("removed intermediate files: pairwise preporcessing: eng-malayalam")           
+
+        return {"english_encoded_file":english_encoded_file,"malayalam_encoded_file":malayalam_encoded_file,"english_dev_encoded_file":english_dev_encoded_file, \
+               "malayalam_dev_encoded_file":malayalam_dev_encoded_file,"nmt_processed_data":nmt_processed_data,"nmt_model_path":nmt_model_path}  
+
+    except Exception as e:
+        logger.error("error in english_malayalam pairwise preprocessing: {}".format(e))  
+
+
+def english_and_punjabi(inputs):
+    try:
+        experiment_key = inputs['experiment_key']
+        unique_id = inputs['unique_id']
+        sp_model_prefix_punjabi = 'punjabi-{}-{}-24k'.format(experiment_key,date_now)
+        sp_model_prefix_english = 'enPun-{}-{}-24k'.format(experiment_key,date_now)
+        model_intermediate_folder = os.path.join(INTERMEDIATE_DATA_LOCATION, 'english_punjabi')
+        model_master_train_folder = os.path.join(TRAIN_DEV_TEST_DATA_LOCATION, 'english_punjabi')
+        nmt_model_path = os.path.join(NMT_MODEL_DIR, 'english_punjabi','model_enPun-{}_{}-model'.format(experiment_key,date_now))
+        if not any([os.path.exists(model_intermediate_folder),os.path.exists(model_master_train_folder),os.path.exists(os.path.join(NMT_MODEL_DIR, 'english_punjabi'))]):
+            os.makedirs(model_intermediate_folder)
+            os.makedirs(model_master_train_folder)
+            os.makedirs(os.path.join(NMT_MODEL_DIR, 'english_punjabi'))
+            logger.info("folder created at {}".format(model_intermediate_folder))
+        
+        punjabi_tokenized_file = os.path.join(model_intermediate_folder, 'punjabi_train_tok'+unique_id+'.txt')
+        punjabi_dev_tokenized_file = os.path.join(model_intermediate_folder, 'punjabi_dev_tok'+unique_id+'.txt')
+        punjabi_test_tokenized_file = os.path.join(model_intermediate_folder, 'punjabi_test_tok'+unique_id+'.txt')
+        english_tokenized_file = os.path.join(model_intermediate_folder, 'english_train_tok'+unique_id+'.txt')
+        english_dev_tokenized_file = os.path.join(model_intermediate_folder, 'english_dev_tok'+unique_id+'.txt')
+        english_test_tokenized_file = os.path.join(model_intermediate_folder, 'english_test_tok'+unique_id+'.txt')
+        punjabi_encoded_file = os.path.join(model_master_train_folder, 'punjabi_train_final'+unique_id+'.txt')
+        punjabi_dev_encoded_file = os.path.join(model_master_train_folder, 'punjabi_dev_final'+unique_id+'.txt')
+        punjabi_test_encoded_file = os.path.join(model_master_train_folder, 'punjabi_test_final'+unique_id+'.txt')
+        english_encoded_file = os.path.join(model_master_train_folder, 'english_train_final'+unique_id+'.txt')
+        english_dev_encoded_file = os.path.join(model_master_train_folder, 'english_dev_final'+unique_id+'.txt')
+        english_test_encoded_file = os.path.join(model_master_train_folder, 'english_test_final'+unique_id+'.txt')
+        nmt_processed_data = os.path.join(model_master_train_folder, 'processed_data-{}_{}'.format(experiment_key,date_now))
+
+        logger.info("Eng-punjabi pairwise preprocessing, startting for exp:{}".format(experiment_key))
+
+        os.system('python ./tools/indic_tokenize.py {0} {1} pa'.format(inputs['PUNJABI_TRAIN_FILE'], punjabi_tokenized_file))
+        os.system('python ./tools/indic_tokenize.py {0} {1} pa'.format(inputs['DEV_PUNJABI'], punjabi_dev_tokenized_file))
+        # os.system('python ./tools/indic_tokenize.py {0} {1} pa'.format(mcl.english_punjabi['TEST_PUNJABI'], punjabi_test_tokenized_file))
+        logger.info("Eng-punjabi pairwise preprocessing, punjabi train,dev,test corpus tokenized")
+
+        os.system('perl ./tools/tokenizer.perl <{0}> {1}'.format(inputs['ENGLISH_TRAIN_FILE'], english_tokenized_file))
+        os.system('perl ./tools/tokenizer.perl <{0}> {1}'.format(inputs['DEV_ENGLISH'], english_dev_tokenized_file))
+        # os.system('perl ./tools/tokenizer.perl <{0}> {1}'.format(mcl.english_punjabi['TEST_ENGLISH'], english_test_tokenized_file))
+        logger.info("Eng-punjabi pairwise preprocessing, english train,dev,test corpus tokenized")
+
+        sp.train_spm(punjabi_tokenized_file,sp_model_prefix_punjabi, 24000, 'bpe')
+        logger.info("sentencepiece model punjabi trained")
+        sp.train_spm(english_tokenized_file,sp_model_prefix_english, 24000, 'bpe')
+        logger.info("sentencepiece model english trained")
+
+        sp.encode_as_pieces(os.path.join(SENTENCEPIECE_MODEL_DIR, (sp_model_prefix_punjabi+'.model')),punjabi_tokenized_file,punjabi_encoded_file)
+        sp.encode_as_pieces(os.path.join(SENTENCEPIECE_MODEL_DIR, (sp_model_prefix_punjabi+'.model')),punjabi_dev_tokenized_file,punjabi_dev_encoded_file)
+        # sp.encode_as_pieces(os.path.join(SENTENCEPIECE_MODEL_DIR, (sp_model_prefix_punjabi+'.model')),punjabi_test_tokenized_file,punjabi_test_encoded_file)
+        logger.info("punjabi-train file and dev encoded and final stored in data folder")
+        sp.encode_as_pieces(os.path.join(SENTENCEPIECE_MODEL_DIR, (sp_model_prefix_english+'.model')),english_tokenized_file,english_encoded_file)
+        sp.encode_as_pieces(os.path.join(SENTENCEPIECE_MODEL_DIR, (sp_model_prefix_english+'.model')),english_dev_tokenized_file,english_dev_encoded_file)
+        # sp.encode_as_pieces(os.path.join(SENTENCEPIECE_MODEL_DIR, (sp_model_prefix_english+'.model')),english_test_tokenized_file,english_test_encoded_file)
+        logger.info("english-train,dev,test file encoded and final stored in data folder")
+
+        os.system('rm -f {0} {1} {2} {3} {4} {5} {6} {7}'.format(punjabi_tokenized_file,punjabi_dev_tokenized_file,english_tokenized_file,english_dev_tokenized_file,\
+                   inputs['PUNJABI_TRAIN_FILE'],inputs['DEV_PUNJABI'],inputs['ENGLISH_TRAIN_FILE'],inputs['DEV_ENGLISH']))
+        logger.info("removed intermediate files: pairwise preporcessing: eng-punjabi")           
+
+        return {"english_encoded_file":english_encoded_file,"punjabi_encoded_file":punjabi_encoded_file,"english_dev_encoded_file":english_dev_encoded_file, \
+               "punjabi_dev_encoded_file":punjabi_dev_encoded_file,"nmt_processed_data":nmt_processed_data,"nmt_model_path":nmt_model_path}  
+
+    except Exception as e:
+        logger.error("error in english_punjabi pairwise preprocessing: {}".format(e))                      

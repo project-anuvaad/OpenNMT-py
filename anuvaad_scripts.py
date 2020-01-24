@@ -193,19 +193,52 @@ def english_telugu(model_type,eng_file,telugu_file,epoch,experiment_key):
         logger.error("error in english_telugu anuvaad script: {}".format(e)) 
    
 
-def english_malayalam(): 
+def english_malayalam(model_type,eng_file,malayalam_file,epoch,experiment_key): 
     try:
-       print("hi") 
-    except Exception as e:
-        print(e)
-        logger.info("error in english_malayalam anuvaad script: {}".format(e))
+        experiment_key = experiment_key or "default"
+        logger.info("request for {} training on {}-{} and epoch:{} for exp:{}".format(model_type,eng_file,malayalam_file,epoch,experiment_key))
+        preprocessed_data = corpus_scripts.english_malayalam(eng_file,malayalam_file)
+        preprocessed_data['experiment_key'] = experiment_key
 
-def english_punjabi(): 
-    try:
-        print("hi")
+        f_out = pairwise_processing.english_and_malayalam(preprocessed_data)
+
+        if model_type == "english-malayalam":
+            training_para = {'train_src':f_out['english_encoded_file'],'train_tgt':f_out['malayalam_encoded_file'], \
+                            'valid_src':f_out['english_dev_encoded_file'],"valid_tgt":f_out['malayalam_dev_encoded_file'], \
+                            'nmt_processed_data':f_out['nmt_processed_data'],'nmt_model_path':f_out['nmt_model_path'],'epoch':epoch}
+        elif model_type == "malayalam-english":
+            training_para = {'train_src':f_out['malayalam_encoded_file'],'train_tgt':f_out['english_encoded_file'], \
+                            'valid_src':f_out['malayalam_dev_encoded_file'],"valid_tgt":f_out['english_dev_encoded_file'], \
+                            'nmt_processed_data':f_out['nmt_processed_data'],'nmt_model_path':f_out['nmt_model_path'],'epoch':epoch}                                      
+        
+        logger.info("starting onmt_train for :{}".format(model_type))
+        onmt_utils.onmt_train(training_para)
     except Exception as e:
-        print(e)
-        logger.info("error in english_punjabi anuvaad script: {}".format(e))
+        logger.error("error in english_malayalam anuvaad script: {}".format(e)) 
+    
+
+def english_punjabi(model_type,eng_file,punjabi_file,epoch,experiment_key): 
+    try:
+        experiment_key = experiment_key or "default"
+        logger.info("request for {} training on {}-{} and epoch:{} for exp:{}".format(model_type,eng_file,punjabi_file,epoch,experiment_key))
+        preprocessed_data = corpus_scripts.english_punjabi(eng_file,punjabi_file)
+        preprocessed_data['experiment_key'] = experiment_key
+
+        f_out = pairwise_processing.english_and_punjabi(preprocessed_data)
+
+        if model_type == "english-punjabi":
+            training_para = {'train_src':f_out['english_encoded_file'],'train_tgt':f_out['punjabi_encoded_file'], \
+                            'valid_src':f_out['english_dev_encoded_file'],"valid_tgt":f_out['punjabi_dev_encoded_file'], \
+                            'nmt_processed_data':f_out['nmt_processed_data'],'nmt_model_path':f_out['nmt_model_path'],'epoch':epoch}
+        elif model_type == "punjabi-english":
+            training_para = {'train_src':f_out['punjabi_encoded_file'],'train_tgt':f_out['english_encoded_file'], \
+                            'valid_src':f_out['punjabi_dev_encoded_file'],"valid_tgt":f_out['english_dev_encoded_file'], \
+                            'nmt_processed_data':f_out['nmt_processed_data'],'nmt_model_path':f_out['nmt_model_path'],'epoch':epoch}                                      
+        
+        logger.info("starting onmt_train for :{}".format(model_type))
+        onmt_utils.onmt_train(training_para)
+    except Exception as e:
+        logger.error("error in english_punjabi anuvaad script: {}".format(e))
 
 
 if __name__ == '__main__':
@@ -222,10 +255,10 @@ if __name__ == '__main__':
             english_kannada(sys.argv[1],sys.argv[2],sys.argv[3],sys.argv[4],sys.argv[5]) 
         elif sys.argv[1] in ["english-telugu","telugu-english"]:
             english_telugu(sys.argv[1],sys.argv[2],sys.argv[3],sys.argv[4],sys.argv[5])
-        elif sys.argv[1] == "english-malayalam":
-            english_malayalam() 
-        elif sys.argv[1] == "english-punjabi":
-            english_punjabi() 
+        elif sys.argv[1] in ["english-malayalam","malayalam-english"]:
+            english_malayalam(sys.argv[1],sys.argv[2],sys.argv[3],sys.argv[4],sys.argv[5]) 
+        elif sys.argv[1] in ["english-punjabi","punjabi-english"]:
+            english_punjabi(sys.argv[1],sys.argv[2],sys.argv[3],sys.argv[4],sys.argv[5]) 
         elif sys.argv[1] in ["english-hindi","hindi-english"]:
             english_hindi_experiments(sys.argv[1],sys.argv[2],sys.argv[3],sys.argv[4],sys.argv[5])  
         elif sys.argv[1] == "incremental_training":
