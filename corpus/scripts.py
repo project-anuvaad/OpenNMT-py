@@ -11,7 +11,7 @@ import uuid
 
 INTERMEDIATE_DATA_LOCATION = 'corpus/intermediate_data/'
 MASTER_DATA_LOCATION = 'corpus/master_corpus'
-TRAIN_LOG_FILE = 'available_models/anuvaad_training_log_file.txt'
+TRAIN_LOG_FILE = 'intermediate_data/anuvaad_training_log_file.txt'
 
 logger = init_logger(TRAIN_LOG_FILE)
 

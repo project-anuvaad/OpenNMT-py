@@ -16,7 +16,7 @@ INTERMEDIATE_DATA_LOCATION = 'intermediate_data/'
 TRAIN_DEV_TEST_DATA_LOCATION = 'data/'
 NMT_MODEL_DIR = 'model/'
 SENTENCEPIECE_MODEL_DIR = 'model/sentencepiece_models/'
-TRAIN_LOG_FILE = 'available_models/anuvaad_training_log_file.txt'
+TRAIN_LOG_FILE = 'intermediate_data/anuvaad_training_log_file.txt'
 
 logger = init_logger(TRAIN_LOG_FILE)
 
