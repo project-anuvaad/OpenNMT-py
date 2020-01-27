@@ -54,7 +54,7 @@ corpus/original_data/english_hindi/dict_18-10-19/*
 corpus/original_data/english_hindi/exp-10_and_exp-11
 corpus/original_data/english_hindi/exp-12_13_14
 corpus/original_data/english_hindi/exp_5.4_ik_no_learned_counsel
-
+corpusfiles/*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
