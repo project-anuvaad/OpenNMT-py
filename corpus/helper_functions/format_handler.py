@@ -84,7 +84,7 @@ def tag_number_date_url(in_file,out_file):
             xlines[i] = xlines[i].replace(str(j),'NnUuMm'+str(hindi_numbers[count_number]),1)
             count_number +=1
             if count_number >30:
-              print("count exceeding 30")
+              # print("count exceeding 30")
               count_number = 30
 
           for word in xlines[i].split():
