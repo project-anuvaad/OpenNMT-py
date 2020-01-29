@@ -44,7 +44,7 @@ corpus/original_data/english_malayalam/*
 !corpus/original_data/english_malayalam/.gitkeep
 corpus/original_data/english_punjabi/*
 !corpus/original_data/english_punjabi/.gitkeep
-available_models/log_file.txt
+available_models/models/log_file.txt
 intermediate_data/anuvaad_training_log_file.txt
 corpus/original_data/english_hindi/corpus_with_name_18-10-19/*
 !corpus/original_data/english_hindi/corpus_with_name_18-10-19/.gitkeep
