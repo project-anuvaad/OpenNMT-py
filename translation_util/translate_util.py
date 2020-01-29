@@ -336,7 +336,7 @@ def translate_func(inputs, translation_server):
                 elif i['id'] == 43:
                     i['src'],date_original,url_original,num_array = date_url_util.tag_number_date_url_1(i['src'])
                     i['src'] = anuvada.indic_tokenizer(i['src'])
-                    translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_tamil["TAM_090120"],sp_model.english_tamil["ENG_090120"])
+                    translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_marathi["MARATHI_270120"],sp_model.english_marathi["ENG_270120"])
                     translation = anuvada.moses_detokenizer(translation)
                     translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)  
                     logger.info("experiment-{} output: {}".format(i['id'],translation))     

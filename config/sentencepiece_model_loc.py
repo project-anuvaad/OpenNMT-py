@@ -38,6 +38,8 @@ english_marathi = {
     "MARATHI_140919": "model/sentencepiece_models/marathi-2019-09-14-10k.model",
     "ENG_071119": "model/sentencepiece_models/enMr_exp-2-2019-11-07-24k.model",
     "MARATHI_071119": "model/sentencepiece_models/marathi_exp-2-2019-11-07-24k.model",
+    "ENG_270120": "model/sentencepiece_models/enMr-mr-en-1.2-2020-01-27-24k.model",
+    "MARATHI_270120": "model/sentencepiece_models/marathi-mr-en-1.2-2020-01-27-24k.model",
 }
 
 english_kannada = {
