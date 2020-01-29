@@ -91,10 +91,8 @@ def tag_number_date_url(in_file,out_file):
             ext = [".",",","?","!"]
             if word.isalpha()== False and word[:-1].isalpha() == False and len(word)>4 and token_is_date(word):
               if word.endswith(tuple(ext)):
-                print("ffff",word)
                 end_token = word[-1]
                 word = word[:-1]
-                print("worddd",word)
                 if len(word)<7 and (word):    
                   word = word+end_token
                 else:
