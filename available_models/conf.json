@@ -1,5 +1,5 @@
 {
-    "models_root": "./available_models",
+    "models_root": "./available_models/models",
     "models": [
         {
             "id": 1,
