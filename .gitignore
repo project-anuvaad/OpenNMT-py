@@ -9,6 +9,8 @@ data/*
 !data/.gitkeep
 model
 !model/.gitkeep
+available_models/models
+!available_models/models/.gitkeep
 mypredif*.txt
 nohup.out
 other_models/
