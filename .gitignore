@@ -7,7 +7,7 @@ pred.txt
 .DS_Store
 data/*
 !data/.gitkeep
-model/*
+model
 !model/.gitkeep
 mypredif*.txt
 nohup.out
