@@ -38,28 +38,28 @@ def english_and_tamil(inputs):
         
         tamil_tokenized_file = os.path.join(model_intermediate_folder, 'tamil_train_tok'+unique_id+'.txt')
         tamil_dev_tokenized_file = os.path.join(model_intermediate_folder, 'tamil_dev_tok'+unique_id+'.txt')
-        tamil_test_tokenized_file = os.path.join(model_intermediate_folder, 'tamil_test_tok'+unique_id+'.txt')
+        # tamil_test_tokenized_file = os.path.join(model_intermediate_folder, 'tamil_test_tok'+unique_id+'.txt')
         english_tokenized_file = os.path.join(model_intermediate_folder, 'english_train_tok'+unique_id+'.txt')
         english_dev_tokenized_file = os.path.join(model_intermediate_folder, 'english_dev_tok'+unique_id+'.txt')
-        english_test_tokenized_file = os.path.join(model_intermediate_folder, 'english_test_tok'+unique_id+'.txt')
+        # english_test_tokenized_file = os.path.join(model_intermediate_folder, 'english_test_tok'+unique_id+'.txt')
         tamil_encoded_file = os.path.join(model_master_train_folder, 'tamil_train_final'+unique_id+'.txt')
         tamil_dev_encoded_file = os.path.join(model_master_train_folder, 'tamil_dev_final'+unique_id+'.txt')
-        tamil_test_encoded_file = os.path.join(model_master_train_folder, 'tamil_test_final'+unique_id+'.txt')
+        # tamil_test_encoded_file = os.path.join(model_master_train_folder, 'tamil_test_final'+unique_id+'.txt')
         english_encoded_file = os.path.join(model_master_train_folder, 'english_train_final'+unique_id+'.txt')
         english_dev_encoded_file = os.path.join(model_master_train_folder, 'english_dev_final'+unique_id+'.txt')
-        english_test_encoded_file = os.path.join(model_master_train_folder, 'english_test_final'+unique_id+'.txt')
+        # english_test_encoded_file = os.path.join(model_master_train_folder, 'english_test_final'+unique_id+'.txt')
         nmt_processed_data = os.path.join(model_master_train_folder, 'processed_data-{}_{}'.format(experiment_key,date_now))
 
         logger.info("Eng-tamil pairwise preprocessing, startting for exp:{}".format(experiment_key))
 
         os.system('python ./tools/indic_tokenize.py {0} {1} ta'.format(inputs['TAMIL_TRAIN_FILE'], tamil_tokenized_file))
         os.system('python ./tools/indic_tokenize.py {0} {1} ta'.format(inputs['DEV_TAMIL'], tamil_dev_tokenized_file))
-        os.system('python ./tools/indic_tokenize.py {0} {1} ta'.format(mcl.english_tamil['TEST_TAMIL'], tamil_test_tokenized_file))
+        # os.system('python ./tools/indic_tokenize.py {0} {1} ta'.format(mcl.english_tamil['TEST_TAMIL'], tamil_test_tokenized_file))
         logger.info("Eng-tamil pairwise preprocessing, tamil train,dev,test corpus tokenized")
 
         os.system('perl ./tools/tokenizer.perl <{0}> {1}'.format(inputs['ENGLISH_TRAIN_FILE'], english_tokenized_file))
         os.system('perl ./tools/tokenizer.perl <{0}> {1}'.format(inputs['DEV_ENGLISH'], english_dev_tokenized_file))
-        os.system('perl ./tools/tokenizer.perl <{0}> {1}'.format(mcl.english_tamil['TEST_ENGLISH'], english_test_tokenized_file))
+        # os.system('perl ./tools/tokenizer.perl <{0}> {1}'.format(mcl.english_tamil['TEST_ENGLISH'], english_test_tokenized_file))
         logger.info("Eng-tamil pairwise preprocessing, english train,dev,test corpus tokenized")
 
         sp.train_spm(tamil_tokenized_file,sp_model_prefix_tamil, 24000, 'bpe')
@@ -69,11 +69,11 @@ def english_and_tamil(inputs):
 
         sp.encode_as_pieces(os.path.join(SENTENCEPIECE_MODEL_DIR, (sp_model_prefix_tamil+'.model')),tamil_tokenized_file,tamil_encoded_file)
         sp.encode_as_pieces(os.path.join(SENTENCEPIECE_MODEL_DIR, (sp_model_prefix_tamil+'.model')),tamil_dev_tokenized_file,tamil_dev_encoded_file)
-        sp.encode_as_pieces(os.path.join(SENTENCEPIECE_MODEL_DIR, (sp_model_prefix_tamil+'.model')),tamil_test_tokenized_file,tamil_test_encoded_file)
+        # sp.encode_as_pieces(os.path.join(SENTENCEPIECE_MODEL_DIR, (sp_model_prefix_tamil+'.model')),tamil_test_tokenized_file,tamil_test_encoded_file)
         logger.info("tamil-train file and dev encoded and final stored in data folder")
         sp.encode_as_pieces(os.path.join(SENTENCEPIECE_MODEL_DIR, (sp_model_prefix_english+'.model')),english_tokenized_file,english_encoded_file)
         sp.encode_as_pieces(os.path.join(SENTENCEPIECE_MODEL_DIR, (sp_model_prefix_english+'.model')),english_dev_tokenized_file,english_dev_encoded_file)
-        sp.encode_as_pieces(os.path.join(SENTENCEPIECE_MODEL_DIR, (sp_model_prefix_english+'.model')),english_test_tokenized_file,english_test_encoded_file)
+        # sp.encode_as_pieces(os.path.join(SENTENCEPIECE_MODEL_DIR, (sp_model_prefix_english+'.model')),english_test_tokenized_file,english_test_encoded_file)
         logger.info("english-train,dev,test file encoded and final stored in data folder")
 
         os.system('rm -f {0} {1} {2} {3} {4} {5} {6} {7}'.format(tamil_tokenized_file,tamil_dev_tokenized_file,english_tokenized_file,english_dev_tokenized_file,\

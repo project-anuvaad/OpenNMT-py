@@ -40,8 +40,8 @@ def english_tamil(eng_file,tamil_file):
 
         dev_english_tagged = os.path.join(model_master_folder, 'english_dev_final'+unique_id+'.txt')
         dev_tamil_tagged = os.path.join(model_master_folder, 'tamil_dev_final'+unique_id+'.txt')
-        test_english_tagged = os.path.join(model_master_folder, 'english_test_final.txt')
-        test_tamil_tagged = os.path.join(model_master_folder, 'tamil_test_final.txt')
+        # test_english_tagged = os.path.join(model_master_folder, 'english_test_final.txt')
+        # test_tamil_tagged = os.path.join(model_master_folder, 'tamil_test_final.txt')
 
         if not any ([os.path.exists(model_intermediate_folder),os.path.exists(model_master_folder)]):
             os.makedirs(model_intermediate_folder)
@@ -83,9 +83,9 @@ def english_tamil(eng_file,tamil_file):
         format_handler.tag_number_date_url(tamil_dev_separated, dev_tamil_tagged)
 
         logger.info("url,num and date tagging done, corpus in master folder")
-        format_handler.tag_number_date_url(ocl.english_tamil['TEST_ENGLISH'], test_english_tagged)
-        format_handler.tag_number_date_url(ocl.english_tamil['TEST_TAMIL'], test_tamil_tagged)
-        logger.info("test data taggeg and in master folder : Preprocesssing finished !")
+        # format_handler.tag_number_date_url(ocl.english_tamil['TEST_ENGLISH'], test_english_tagged)
+        # format_handler.tag_number_date_url(ocl.english_tamil['TEST_TAMIL'], test_tamil_tagged)
+        # logger.info("test data taggeg and in master folder : Preprocesssing finished !")
 
         os.system('rm -f {0} {1} {2} {3} {4} {5} {6} {7} {8} {9}'.format(tab_sep_out_file,tab_sep_out_file_no_duplicate,shuffled_tab_sep_file,\
                   replaced_hindi_number_file_name,train_file,dev_file,eng_separated,tamil_separated,eng_dev_separated,tamil_dev_separated))
