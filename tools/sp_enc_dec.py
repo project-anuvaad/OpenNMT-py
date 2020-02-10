@@ -9,8 +9,8 @@ def train_spm(input_file,prefix,vocab_size,model_type):
     try:
         user_defined_symbol = 'UuRrLl,DdAaTtEe,NnUuMm'
         spm.SentencePieceTrainer.Train('--input={} --model_prefix={} --vocab_size={} --model_type={} --user_defined_symbols={}'.format(input_file,prefix,vocab_size,model_type,user_defined_symbol))
-        os.system('cp {} {}'.format(prefix+'.model','"model/sentencepiece_models/'))
-        os.system('cp {} {}'.format(prefix+'.vocab','"model/sentencepiece_models/'))
+        os.system('cp {} {}'.format(prefix+'.model','model/sentencepiece_models/'))
+        os.system('cp {} {}'.format(prefix+'.vocab','model/sentencepiece_models/'))
         # shutil.copy("{}".format(prefix+'.model'), "model/sentencepiece_models/{}".format(prefix+'.model'))
         # shutil.copy("{}".format(prefix+'.vocab'), "model/sentencepiece_models/{}".format(prefix+'.vocab'))
         os.system('rm -f {0} {1}'.format(prefix+'.model',prefix+'.vocab'))
