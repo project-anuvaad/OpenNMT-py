@@ -11,10 +11,10 @@ def train_spm(input_file,prefix,vocab_size,model_type):
         shutil.move("{}".format(prefix+'.model'), "model/sentencepiece_models/{}".format(prefix+'.model'))
         shutil.move("{}".format(prefix+'.vocab'), "model/sentencepiece_models/{}".format(prefix+'.vocab'))
         return
-    except:
-        print("something went wrong!")
+    except Exception as e:
+        print("something went wrong!: ",e)
         print("Unexpected error:", sys.exc_info()[0])
-        return
+        raise
 
 def encode_as_pieces(load_model,src_file,tgt_file):
     # makes segmenter instance and loads the model file (m.model)
@@ -29,10 +29,10 @@ def encode_as_pieces(load_model,src_file,tgt_file):
                     encLine = sp.encode_as_pieces(xlines[i])
                     outfile.write(str(encLine))
                     outfile.write("\n")
-    except:
-        print("something went wrong!")
+    except Exception as e:
+        print("something went wrong!: ",e)
         print("Unexpected error:", sys.exc_info()[0])
-        return
+        raise
 
 def encode_line(load_model,line):
     # makes segmenter instance and loads the model file (m.model)

@@ -63,10 +63,10 @@ def english_and_tamil(inputs):
         logger.info("Eng-tamil pairwise preprocessing, english train,dev,test corpus tokenized")
 
         sp.train_spm(tamil_tokenized_file,sp_model_prefix_tamil, 24000, 'bpe')
-        logger.info("sentencepiece model tamil trained")
+        logger.info("sentencepiece model tamil trained at {}".format(os.path.join(SENTENCEPIECE_MODEL_DIR, (sp_model_prefix_tamil+'.model'))))
         sp.train_spm(english_tokenized_file,sp_model_prefix_english, 24000, 'bpe')
-        logger.info("sentencepiece model english trained")
-
+        logger.info("sentencepiece model english trained at {}".format(os.path.join(SENTENCEPIECE_MODEL_DIR, (sp_model_prefix_english+'.model'))))
+        
         sp.encode_as_pieces(os.path.join(SENTENCEPIECE_MODEL_DIR, (sp_model_prefix_tamil+'.model')),tamil_tokenized_file,tamil_encoded_file)
         sp.encode_as_pieces(os.path.join(SENTENCEPIECE_MODEL_DIR, (sp_model_prefix_tamil+'.model')),tamil_dev_tokenized_file,tamil_dev_encoded_file)
         # sp.encode_as_pieces(os.path.join(SENTENCEPIECE_MODEL_DIR, (sp_model_prefix_tamil+'.model')),tamil_test_tokenized_file,tamil_test_encoded_file)
@@ -380,16 +380,16 @@ def english_and_kannada(inputs):
         
         kannada_tokenized_file = os.path.join(model_intermediate_folder, 'kannada_train_tok'+unique_id+'.txt')
         kannada_dev_tokenized_file = os.path.join(model_intermediate_folder, 'kannada_dev_tok'+unique_id+'.txt')
-        kannada_test_tokenized_file = os.path.join(model_intermediate_folder, 'kannada_test_tok'+unique_id+'.txt')
+        # kannada_test_tokenized_file = os.path.join(model_intermediate_folder, 'kannada_test_tok'+unique_id+'.txt')
         english_tokenized_file = os.path.join(model_intermediate_folder, 'english_train_tok'+unique_id+'.txt')
         english_dev_tokenized_file = os.path.join(model_intermediate_folder, 'english_dev_tok'+unique_id+'.txt')
-        english_test_tokenized_file = os.path.join(model_intermediate_folder, 'english_test_tok'+unique_id+'.txt')
+        # english_test_tokenized_file = os.path.join(model_intermediate_folder, 'english_test_tok'+unique_id+'.txt')
         kannada_encoded_file = os.path.join(model_master_train_folder, 'kannada_train_final'+unique_id+'.txt')
         kannada_dev_encoded_file = os.path.join(model_master_train_folder, 'kannada_dev_final'+unique_id+'.txt')
-        kannada_test_encoded_file = os.path.join(model_master_train_folder, 'kannada_test_final'+unique_id+'.txt')
+        # kannada_test_encoded_file = os.path.join(model_master_train_folder, 'kannada_test_final'+unique_id+'.txt')
         english_encoded_file = os.path.join(model_master_train_folder, 'english_train_final'+unique_id+'.txt')
         english_dev_encoded_file = os.path.join(model_master_train_folder, 'english_dev_final'+unique_id+'.txt')
-        english_test_encoded_file = os.path.join(model_master_train_folder, 'english_test_final'+unique_id+'.txt')
+        # english_test_encoded_file = os.path.join(model_master_train_folder, 'english_test_final'+unique_id+'.txt')
         nmt_processed_data = os.path.join(model_master_train_folder, 'processed_data-{}_{}'.format(experiment_key,date_now))
 
         logger.info("Eng-kannada pairwise preprocessing, startting for exp:{}".format(experiment_key))
@@ -405,9 +405,9 @@ def english_and_kannada(inputs):
         logger.info("Eng-kannada pairwise preprocessing, english train,dev,test corpus tokenized")
 
         sp.train_spm(kannada_tokenized_file,sp_model_prefix_kannada, 24000, 'bpe')
-        logger.info("sentencepiece model kannada trained")
+        logger.info("sentencepiece model kannada trained at {}".format(os.path.join(SENTENCEPIECE_MODEL_DIR, (sp_model_prefix_kannada+'.model'))))
         sp.train_spm(english_tokenized_file,sp_model_prefix_english, 24000, 'bpe')
-        logger.info("sentencepiece model english trained")
+        logger.info("sentencepiece model english trained at {}".format(os.path.join(SENTENCEPIECE_MODEL_DIR, (sp_model_prefix_english+'.model'))))
 
         sp.encode_as_pieces(os.path.join(SENTENCEPIECE_MODEL_DIR, (sp_model_prefix_kannada+'.model')),kannada_tokenized_file,kannada_encoded_file)
         sp.encode_as_pieces(os.path.join(SENTENCEPIECE_MODEL_DIR, (sp_model_prefix_kannada+'.model')),kannada_dev_tokenized_file,kannada_dev_encoded_file)
