@@ -261,6 +261,45 @@
             }
         },
         {
+            "id": 46,
+            "model": "model_en-ta-ta-to-en-2_2020-02-10-model_step_200000.pt",
+            "timeout": 600,
+            "on_timeout": "to_cpu",
+            "load": true,
+            "opt": {
+                "beam_size": 5,
+                "log_file":"log_file.txt",
+                "log_file_level":"INFO",
+                "replace_unk":true
+            }
+        },
+        {
+            "id": 47,
+            "model": "model_enKann-en-to-kn-2_2020-02-10-model_step_200000.pt",
+            "timeout": 600,
+            "on_timeout": "to_cpu",
+            "load": true,
+            "opt": {
+                "beam_size": 5,
+                "log_file":"log_file.txt",
+                "log_file_level":"INFO",
+                "replace_unk":true
+            }
+        },
+        {
+            "id": 48,
+            "model": "model_enKann-kn-to-en-1_2020-02-10-model_step_200000.pt",
+            "timeout": 600,
+            "on_timeout": "to_cpu",
+            "load": true,
+            "opt": {
+                "beam_size": 5,
+                "log_file":"log_file.txt",
+                "log_file_level":"INFO",
+                "replace_unk":true
+            }
+        },
+        {
             "id": 56,
             "model": "model_en-hi_exp-5.6_2019-12-09-model_step_250000.pt",
             "timeout": 600,
