@@ -82,7 +82,7 @@ def from_en(inputs, translation_server):
                     elif i['id'] == 10:  
                         "english-gujrati"
                         i['src'],date_original,url_original,num_array = date_url_util.tag_number_date_url_1(i['src'])
-                        translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_gujrati["ENG_100919"],sp_model.english_gujrati["GUJ_100919"])                       
+                        translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_gujarati["ENG_100919"],sp_model.english_gujarati["GUJ_100919"])                       
                         translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)
                         translation = translation.replace("ન્યાય માટે Accessક્સેસને","ન્યાયની પહોંચને")
                         logger.info("final output gujrati: {}".format(translation))
@@ -109,7 +109,7 @@ def from_en(inputs, translation_server):
                     elif i['id'] == 16:  
                         "english-telgu"
                         i['src'],date_original,url_original,num_array = date_url_util.tag_number_date_url_1(i['src'])
-                        translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_telgu["ENG_200919"],sp_model.english_telgu["TELGU_200919"])                       
+                        translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_telugu["ENG_200919"],sp_model.english_telugu["TELGU_200919"])                       
                         translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)
                         logger.info("final output telgu: {}".format(translation))
                     elif i['id'] == 17:  
@@ -373,7 +373,35 @@ def translate_func(inputs, translation_server):
                     i['src'] = anuvada.indic_tokenizer(i['src'])
                     translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_kannada["KANNADA_100220"],sp_model.english_kannada["ENG_100220"])
                     translation = anuvada.moses_detokenizer(translation)
-                    translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)                        
+                    translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)
+                elif i['id'] == 49:
+                    "en-tel 2nd"
+                    i['src'],date_original,url_original,num_array = date_url_util.tag_number_date_url_1(i['src'])
+                    i['src'] = anuvada.moses_tokenizer(i['src'])
+                    translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_telugu["ENG_120220"],sp_model.english_telugu["TELUGU_120220"])
+                    translation = anuvada.indic_detokenizer(translation)
+                    translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array) 
+                elif i['id'] == 50:
+                    "tel-en 1st"
+                    i['src'],date_original,url_original,num_array = date_url_util.tag_number_date_url_1(i['src'])
+                    i['src'] = anuvada.indic_tokenizer(i['src'])
+                    translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_telugu["TELUGU_120220"],sp_model.english_telugu["ENG_120220"])
+                    translation = anuvada.moses_detokenizer(translation)
+                    translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)
+                elif i['id'] == 51:
+                    "en-guj 2nd"
+                    i['src'],date_original,url_original,num_array = date_url_util.tag_number_date_url_1(i['src'])
+                    i['src'] = anuvada.moses_tokenizer(i['src'])
+                    translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_gujarati["ENG_140220"],sp_model.english_gujarati["GUJ_140220"])
+                    translation = anuvada.indic_detokenizer(translation)
+                    translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array) 
+                elif i['id'] == 52:
+                    "guj-en 1st"
+                    i['src'],date_original,url_original,num_array = date_url_util.tag_number_date_url_1(i['src'])
+                    i['src'] = anuvada.indic_tokenizer(i['src'])
+                    translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_gujarati["GUJ_140220"],sp_model.english_gujarati["ENG_140220"])
+                    translation = anuvada.moses_detokenizer(translation)
+                    translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)                                
                 else:
                     logger.info("unsupported model id: {} for given input".format(i['id']))
                     raise Exception("unsupported model id: {} for given input".format(i['id']))      

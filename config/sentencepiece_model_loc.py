@@ -27,9 +27,11 @@ english_tamil = {
     "TAM_100220": "model/sentencepiece_models/tamil-ta-to-en-2-2020-02-10-24k.model",
 }
 
-english_gujrati = {
+english_gujarati = {
     "ENG_100919": "model/sentencepiece_models/en-2019-09-10-10k.model",
-    "GUJ_100919": "model/sentencepiece_models/guj-2019-09-10-10k.model"
+    "GUJ_100919": "model/sentencepiece_models/guj-2019-09-10-10k.model",
+    "ENG_140220": "model/sentencepiece_models/enGuj-en-to-guj-2-2020-02-14-24k.model",
+    "GUJ_140220": "model/sentencepiece_models/gujarati-en-to-guj-2-2020-02-14-24k.model",
 }
 
 english_bengali = {
@@ -55,9 +57,11 @@ english_kannada = {
     "KANNADA_100220": "model/sentencepiece_models/kannada-en-to-kn-2-2020-02-10-24k.model",
 }
 
-english_telgu = {
+english_telugu = {
     "ENG_200919": "model/sentencepiece_models/enTe-2019-09-20-10k.model",
     "TELGU_200919": "model/sentencepiece_models/telgu-2019-09-20-10k.model",
+    "ENG_120220": "model/sentencepiece_models/enTelg-en-to-tel-2-2020-02-12-24k.model",
+    "TELUGU_120220": "model/sentencepiece_models/telugu-en-to-tel-2-2020-02-12-24k.model",
 }
 
 english_malayalam = {
