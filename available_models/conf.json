@@ -352,6 +352,32 @@
             }
         },
         {
+            "id": 53,
+            "model": "model_enPun-en-to-pun-2_2020-02-16-model_step_200000.pt",
+            "timeout": 600,
+            "on_timeout": "to_cpu",
+            "load": true,
+            "opt": {
+                "beam_size": 5,
+                "log_file":"log_file.txt",
+                "log_file_level":"INFO",
+                "replace_unk":true
+            }
+        },
+        {
+            "id": 55,
+            "model": "model_enPun-pun-to-en-1_2020-02-16-model_step_200000.pt",
+            "timeout": 600,
+            "on_timeout": "to_cpu",
+            "load": true,
+            "opt": {
+                "beam_size": 5,
+                "log_file":"log_file.txt",
+                "log_file_level":"INFO",
+                "replace_unk":true
+            }
+        },
+        {
             "id": 56,
             "model": "model_en-hi_exp-5.6_2019-12-09-model_step_250000.pt",
             "timeout": 600,

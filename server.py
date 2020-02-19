@@ -124,7 +124,7 @@ def start(config_file,
             logger.info("out from translate_func-trans_util done{}".format(out))
             return jsonify(out)
         else:
-            logger.info("null inputs in request in translation_hi API")
+            logger.info("null inputs in request in translate-anuvaad API")
             return jsonify({'status':statusCode["INVALID_API_REQUEST"]})       
 
     @app.route('/translation_en', methods=['POST'])

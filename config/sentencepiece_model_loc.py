@@ -71,7 +71,9 @@ english_malayalam = {
 
 english_punjabi = {
     "ENG_200919": "model/sentencepiece_models/enPu-2019-09-20-10k.model",
-    "PUNJABI_200919": "model/sentencepiece_models/punjabi-2019-09-20-10k.model"
+    "PUNJABI_200919": "model/sentencepiece_models/punjabi-2019-09-20-10k.model",
+    "ENG_160220": "model/sentencepiece_models/enPun-en-to-pun-2-2020-02-16-24k.model",
+    "PUNJABI_160220": "model/sentencepiece_models/punjabi-en-to-pun-2-2020-02-16-24k.model"
 }
 
 hindi_english = {
