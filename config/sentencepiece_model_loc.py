@@ -37,6 +37,8 @@ english_gujarati = {
 english_bengali = {
     "ENG_120919": "model/sentencepiece_models/en-2019-09-12-10k.model",
     "BENG_120919": "model/sentencepiece_models/beng-2019-09-12-10k.model",
+    "ENG_180220": "model/sentencepiece_models/enBeng-en-to-beng-2-2020-02-18-24k.model",
+    "BENG_180220": "model/sentencepiece_models/bengali-en-to-beng-2-2020-02-18-24k.model",
 }
 
 english_marathi = {
