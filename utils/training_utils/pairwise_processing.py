@@ -503,7 +503,8 @@ def english_and_malayalam(inputs):
         model_intermediate_folder = os.path.join(INTERMEDIATE_DATA_LOCATION, 'english_malayalam')
         model_master_train_folder = os.path.join(TRAIN_DEV_TEST_DATA_LOCATION, 'english_malayalam')
         nmt_model_path = os.path.join(NMT_MODEL_DIR, 'english_malayalam','model_enMalay-{}_{}-model'.format(experiment_key,date_now))
-        if not any([os.path.exists(model_intermediate_folder),os.path.exists(model_master_train_folder),os.path.exists(os.path.join(NMT_MODEL_DIR, 'english_malayalam'))]):
+        if not any ([os.path.exists(model_intermediate_folder),os.path.exists(model_master_train_folder),os.path.exists(os.path.join(NMT_MODEL_DIR, 'english_malayalam'))]):
+            print("inside folder creation")
             os.makedirs(model_intermediate_folder)
             os.makedirs(model_master_train_folder)
             os.makedirs(os.path.join(NMT_MODEL_DIR, 'english_malayalam'))
