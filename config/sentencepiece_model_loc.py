@@ -68,7 +68,9 @@ english_telugu = {
 
 english_malayalam = {
     "ENG_200919": "model/sentencepiece_models/enMl-2019-09-20-10k.model",
-    "MALAYALAM_200919": "model/sentencepiece_models/malayalam-2019-09-20-10k.model"
+    "MALAYALAM_200919": "model/sentencepiece_models/malayalam-2019-09-20-10k.model",
+    "ENG_210220": "model/sentencepiece_models/",
+    "MALAYALAM_210220": "model/sentencepiece_models/"
 }
 
 english_punjabi = {

@@ -401,7 +401,17 @@ def translate_func(inputs, translation_server):
                     "bengali-en 1st"
                     i['src'] = anuvada.indic_tokenizer(i['src'])
                     translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_bengali["BENG_180220"],sp_model.english_bengali["ENG_180220"])
-                    translation = anuvada.moses_detokenizer(translation)                                        
+                    translation = anuvada.moses_detokenizer(translation)
+                elif i['id'] == 59:
+                    "en-malay 2nd"
+                    i['src'] = anuvada.moses_tokenizer(i['src'])
+                    translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_malayalam["ENG_210220"],sp_model.english_malayalam["MALAYALAM_210220"])
+                    translation = anuvada.indic_detokenizer(translation) 
+                elif i['id'] == 60:
+                    "malay-en 1st"
+                    i['src'] = anuvada.indic_tokenizer(i['src'])
+                    translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_malayalam["MALAYALAM_210220"],sp_model.english_malayalam["ENG_210220"])
+                    translation = anuvada.moses_detokenizer(translation)                                            
                 else:
                     logger.info("unsupported model id: {} for given input".format(i['id']))
                     raise Exception("unsupported model id: {} for given input".format(i['id']))      
