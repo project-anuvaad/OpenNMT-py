@@ -30,11 +30,17 @@ def english_and_tamil(inputs):
         model_intermediate_folder = os.path.join(INTERMEDIATE_DATA_LOCATION, 'english_tamil')
         model_master_train_folder = os.path.join(TRAIN_DEV_TEST_DATA_LOCATION, 'english_tamil')
         nmt_model_path = os.path.join(NMT_MODEL_DIR, 'english_tamil','model_en-ta-{}_{}-model'.format(experiment_key,date_now))
-        if not any([os.path.exists(model_intermediate_folder),os.path.exists(model_master_train_folder),os.path.exists(os.path.join(NMT_MODEL_DIR, 'english_tamil'))]):
-            os.makedirs(model_intermediate_folder)
-            os.makedirs(model_master_train_folder)
-            os.makedirs(os.path.join(NMT_MODEL_DIR, 'english_tamil'))
-            logger.info("folder created at {}".format(model_intermediate_folder))
+       
+        paths = [model_intermediate_folder,model_master_train_folder,os.path.join(NMT_MODEL_DIR, 'english_tamil')]
+        if_path_exists = [os.path.exists(model_intermediate_folder),os.path.exists(model_master_train_folder),os.path.exists(os.path.join(NMT_MODEL_DIR, 'english_tamil'))]
+        indices = [i for i, val in enumerate(if_path_exists) if not val]
+        [os.makedirs(paths[i]) for i in indices if len(indices)>0]
+        logger.info("folder created ")
+        # if not any([os.path.exists(model_intermediate_folder),os.path.exists(model_master_train_folder),os.path.exists(os.path.join(NMT_MODEL_DIR, 'english_tamil'))]):
+        #     os.makedirs(model_intermediate_folder)
+        #     os.makedirs(model_master_train_folder)
+        #     os.makedirs(os.path.join(NMT_MODEL_DIR, 'english_tamil'))
+        #     logger.info("folder created at {}".format(model_intermediate_folder))
         
         tamil_tokenized_file = os.path.join(model_intermediate_folder, 'tamil_train_tok'+unique_id+'.txt')
         tamil_dev_tokenized_file = os.path.join(model_intermediate_folder, 'tamil_dev_tok'+unique_id+'.txt')
@@ -176,11 +182,17 @@ def english_and_marathi(inputs):
         model_intermediate_folder = os.path.join(INTERMEDIATE_DATA_LOCATION, 'english_marathi')
         model_master_train_folder = os.path.join(TRAIN_DEV_TEST_DATA_LOCATION, 'english_marathi')
         nmt_model_path = os.path.join(NMT_MODEL_DIR, 'english_marathi','model_enMr-{}_{}-model'.format(experiment_key,date_now))
-        if not any([os.path.exists(model_intermediate_folder),os.path.exists(model_master_train_folder),os.path.exists(os.path.join(NMT_MODEL_DIR, 'english_marathi'))]):
-            os.makedirs(model_intermediate_folder)
-            os.makedirs(model_master_train_folder)
-            os.makedirs(os.path.join(NMT_MODEL_DIR, 'english_marathi'))
-            logger.info("folder created at {}".format(model_intermediate_folder))
+        
+        paths = [model_intermediate_folder,model_master_train_folder,os.path.join(NMT_MODEL_DIR, 'english_marathi')]
+        if_path_exists = [os.path.exists(model_intermediate_folder),os.path.exists(model_master_train_folder),os.path.exists(os.path.join(NMT_MODEL_DIR, 'english_marathi'))]
+        indices = [i for i, val in enumerate(if_path_exists) if not val]
+        [os.makedirs(paths[i]) for i in indices if len(indices)>0]
+        logger.info("folder created ")
+        # if not any([os.path.exists(model_intermediate_folder),os.path.exists(model_master_train_folder),os.path.exists(os.path.join(NMT_MODEL_DIR, 'english_marathi'))]):
+        #     os.makedirs(model_intermediate_folder)
+        #     os.makedirs(model_master_train_folder)
+        #     os.makedirs(os.path.join(NMT_MODEL_DIR, 'english_marathi'))
+        #     logger.info("folder created at {}".format(model_intermediate_folder))
         
         marathi_tokenized_file = os.path.join(model_intermediate_folder, 'marathi_train_tok'+unique_id+'.txt')
         marathi_dev_tokenized_file = os.path.join(model_intermediate_folder, 'marathi_dev_tok'+unique_id+'.txt')
