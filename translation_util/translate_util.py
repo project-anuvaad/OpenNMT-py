@@ -475,7 +475,7 @@ def translate_func(inputs, translation_server):
 
             # translation = (prefix+" "+translation+" "+suffix).strip()
             translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)
-            logger.info("experiment-{} output: {}".format(i['id'],translation))    
+            logger.info("trans_function-experiment-{} output: {}".format(i['id'],translation))    
             tgt.append(translation)
             pred_score.append(scores[0])
             sentence_id.append(s_id[0])

@@ -119,7 +119,7 @@ def start(config_file,
     def translate():
         inputs = request.get_json(force=True)
         if len(inputs)>0:
-            logger.info("Making translation_common API call")
+            logger.info("Making translate-anuvaad API call")
             out = translate_util.translate_func(inputs, translation_server)
             logger.info("out from translate_func-trans_util done{}".format(out))
             return jsonify(out)
