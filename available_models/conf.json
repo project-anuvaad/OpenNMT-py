@@ -2,30 +2,6 @@
     "models_root": "./available_models/models",
     "models": [
         {
-            "id": 1,
-            "model": "model_270519-model_step_100000.pt",
-            "timeout": 600,
-            "on_timeout": "to_cpu",
-            "load": true,
-            "opt": {
-                "beam_size": 5,
-                "log_file":"log_file",
-                "log_file_level":"INFO"
-            }
-        },
-        {
-            "id": 2,
-            "model": "model_220519-model_step_80000.pt",
-            "timeout": 600,
-            "on_timeout": "to_cpu",
-            "load": true,
-            "opt": {
-                "beam_size": 5,
-                "log_file":"log_file.txt",
-                "log_file_level":"INFO"
-            }
-        },
-        {
             "id": 5,
             "model": "model_hi-en_exp_h-1_2019-10-29-model_step_180000.pt",
             "timeout": 600,
@@ -87,18 +63,6 @@
             }
         },
         {
-            "id": 12,
-            "model": "model_2019-09-14-model_step_100000.pt",
-            "timeout": 600,
-            "on_timeout": "to_cpu",
-            "load": true,
-            "opt": {
-                "beam_size": 5,
-                "log_file":"log_file.txt",
-                "log_file_level":"INFO"
-            }
-        },
-        {
             "id": 15,
             "model": "model_kannada_2019-09-20-model_step_100000.pt",
             "timeout": 600,
@@ -147,19 +111,6 @@
             }
         },
         {
-            "id": 54,
-            "model": "model_en-hi_exp-5.4_2019-10-29-model_step_230000.pt",
-            "timeout": 600,
-            "on_timeout": "to_cpu",
-            "load": true,
-            "opt": {
-                "beam_size": 5,
-                "log_file":"log_file.txt",
-                "log_file_level":"INFO",
-                "replace_unk":true
-            }
-        },
-        {
             "id": 32,
             "model": "model_en-hi_exp-12_2019-10-29-model_step_250000.pt",
             "timeout": 600,
@@ -199,73 +150,8 @@
             }
         },
         {
-            "id": 44,
-            "model": "model_enMr-en-mr-3_2020-02-06-model_step_150000.pt",
-            "timeout": 600,
-            "on_timeout": "to_cpu",
-            "load": true,
-            "opt": {
-                "beam_size": 5,
-                "log_file":"log_file.txt",
-                "log_file_level":"INFO",
-                "replace_unk":true
-            }
-        },
-        {
-            "id": 45,
-            "model": "model_en-ta-eng-tam_2020-02-08-model_step_200000.pt",
-            "timeout": 600,
-            "on_timeout": "to_cpu",
-            "load": true,
-            "opt": {
-                "beam_size": 5,
-                "log_file":"log_file.txt",
-                "log_file_level":"INFO",
-                "replace_unk":true
-            }
-        },
-        {
-            "id": 46,
-            "model": "model_en-ta-ta-to-en-2_2020-02-10-model_step_200000.pt",
-            "timeout": 600,
-            "on_timeout": "to_cpu",
-            "load": true,
-            "opt": {
-                "beam_size": 5,
-                "log_file":"log_file.txt",
-                "log_file_level":"INFO",
-                "replace_unk":true
-            }
-        },
-        {
-            "id": 47,
-            "model": "model_enKann-en-to-kn-2_2020-02-10-model_step_200000.pt",
-            "timeout": 600,
-            "on_timeout": "to_cpu",
-            "load": true,
-            "opt": {
-                "beam_size": 5,
-                "log_file":"log_file.txt",
-                "log_file_level":"INFO",
-                "replace_unk":true
-            }
-        },
-        {
             "id": 48,
             "model": "model_enKann-kn-to-en-1_2020-02-10-model_step_200000.pt",
-            "timeout": 600,
-            "on_timeout": "to_cpu",
-            "load": true,
-            "opt": {
-                "beam_size": 5,
-                "log_file":"log_file.txt",
-                "log_file_level":"INFO",
-                "replace_unk":true
-            }
-        },
-        {
-            "id": 49,
-            "model": "model_enTelg-en-to-tel-2_2020-02-12-model_step_200000.pt",
             "timeout": 600,
             "on_timeout": "to_cpu",
             "load": true,
@@ -290,34 +176,8 @@
             }
         },
         {
-            "id": 51,
-            "model": "model_enGuj-en-to-guj-2_2020-02-14-model_step_200000.pt",
-            "timeout": 600,
-            "on_timeout": "to_cpu",
-            "load": true,
-            "opt": {
-                "beam_size": 5,
-                "log_file":"log_file.txt",
-                "log_file_level":"INFO",
-                "replace_unk":true
-            }
-        },
-        {
             "id": 52,
             "model": "model_enGuj-guj-to-en-1_2020-02-14-model_step_200000.pt",
-            "timeout": 600,
-            "on_timeout": "to_cpu",
-            "load": true,
-            "opt": {
-                "beam_size": 5,
-                "log_file":"log_file.txt",
-                "log_file_level":"INFO",
-                "replace_unk":true
-            }
-        },
-        {
-            "id": 53,
-            "model": "model_enPun-en-to-pun-2_2020-02-16-model_step_200000.pt",
             "timeout": 600,
             "on_timeout": "to_cpu",
             "load": true,
@@ -355,34 +215,8 @@
             }
         },
         {
-            "id": 57,
-            "model": "model_enBeng-en-to-beng-2_2020-02-18-model_step_200000.pt",
-            "timeout": 600,
-            "on_timeout": "to_cpu",
-            "load": true,
-            "opt": {
-                "beam_size": 5,
-                "log_file":"log_file.txt",
-                "log_file_level":"INFO",
-                "replace_unk":true
-            }
-        },
-        {
             "id": 58,
             "model": "model_enBeng-beng-to-en-1_2020-02-18-model_step_200000.pt",
-            "timeout": 600,
-            "on_timeout": "to_cpu",
-            "load": true,
-            "opt": {
-                "beam_size": 5,
-                "log_file":"log_file.txt",
-                "log_file_level":"INFO",
-                "replace_unk":true
-            }
-        },
-        {
-            "id": 59,
-            "model": "model_enMalay-en-to-maly-2_2020-02-21-model_step_200000.pt",
             "timeout": 600,
             "on_timeout": "to_cpu",
             "load": true,

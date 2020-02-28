@@ -474,4 +474,3 @@ def translate_func(inputs, translation_server):
         logger.error("Unexpected error:%s and %s"% (e,sys.exc_info()[0]))   
 
     return (out)
-
