@@ -12,17 +12,27 @@ english_hindi = {
 
 english_tamil = {
     "ENG_230919": "model/sentencepiece_models/enTa-2019-09-23-10k.model",
-    "TAM_230919": "model/sentencepiece_models/tamil-2019-09-23-10k.model"
+    "TAM_230919": "model/sentencepiece_models/tamil-2019-09-23-10k.model",
+    "ENG_090120": "model/sentencepiece_models/enTa-2020-01-09-24k.model",
+    "TAM_090120": "model/sentencepiece_models/tamil-2020-01-09-24k.model",
+    "ENG_080220": "model/sentencepiece_models/enTa-eng-tam-2020-02-08-24k.model",
+    "TAM_080220": "model/sentencepiece_models/tamil-eng-tam-2020-02-08-24k.model",
+    "ENG_100220": "model/sentencepiece_models/enTa-ta-to-en-2-2020-02-10-24k.model",
+    "TAM_100220": "model/sentencepiece_models/tamil-ta-to-en-2-2020-02-10-24k.model",
 }
 
-english_gujrati = {
+english_gujarati = {
     "ENG_100919": "model/sentencepiece_models/en-2019-09-10-10k.model",
-    "GUJ_100919": "model/sentencepiece_models/guj-2019-09-10-10k.model"
+    "GUJ_100919": "model/sentencepiece_models/guj-2019-09-10-10k.model",
+    "ENG_140220": "model/sentencepiece_models/enGuj-en-to-guj-2-2020-02-14-24k.model",
+    "GUJ_140220": "model/sentencepiece_models/gujarati-en-to-guj-2-2020-02-14-24k.model",
 }
 
 english_bengali = {
     "ENG_120919": "model/sentencepiece_models/en-2019-09-12-10k.model",
     "BENG_120919": "model/sentencepiece_models/beng-2019-09-12-10k.model",
+    "ENG_180220": "model/sentencepiece_models/enBeng-en-to-beng-2-2020-02-18-24k.model",
+    "BENG_180220": "model/sentencepiece_models/bengali-en-to-beng-2-2020-02-18-24k.model",
 }
 
 english_marathi = {
@@ -30,26 +40,38 @@ english_marathi = {
     "MARATHI_140919": "model/sentencepiece_models/marathi-2019-09-14-10k.model",
     "ENG_071119": "model/sentencepiece_models/enMr_exp-2-2019-11-07-24k.model",
     "MARATHI_071119": "model/sentencepiece_models/marathi_exp-2-2019-11-07-24k.model",
+    "ENG_270120": "model/sentencepiece_models/enMr-mr-en-1.2-2020-01-27-24k.model",
+    "MARATHI_270120": "model/sentencepiece_models/marathi-mr-en-1.2-2020-01-27-24k.model",
+    "ENG_060220": "model/sentencepiece_models/enMr-en-mr-3-2020-02-06-24k.model",
+    "MARATHI_060220": "model/sentencepiece_models/marathi-en-mr-3-2020-02-06-24k.model",
 }
 
 english_kannada = {
     "ENG_200919": "model/sentencepiece_models/enKn-2019-09-20-10k.model",
     "KANNADA_200919": "model/sentencepiece_models/kannada-2019-09-20-10k.model",
+    "ENG_100220": "model/sentencepiece_models/enKann-en-to-kn-2-2020-02-10-24k.model",
+    "KANNADA_100220": "model/sentencepiece_models/kannada-en-to-kn-2-2020-02-10-24k.model",
 }
 
-english_telgu = {
+english_telugu = {
     "ENG_200919": "model/sentencepiece_models/enTe-2019-09-20-10k.model",
     "TELGU_200919": "model/sentencepiece_models/telgu-2019-09-20-10k.model",
+    "ENG_120220": "model/sentencepiece_models/enTelg-en-to-tel-2-2020-02-12-24k.model",
+    "TELUGU_120220": "model/sentencepiece_models/telugu-en-to-tel-2-2020-02-12-24k.model",
 }
 
 english_malayalam = {
     "ENG_200919": "model/sentencepiece_models/enMl-2019-09-20-10k.model",
-    "MALAYALAM_200919": "model/sentencepiece_models/malayalam-2019-09-20-10k.model"
+    "MALAYALAM_200919": "model/sentencepiece_models/malayalam-2019-09-20-10k.model",
+    "ENG_210220": "model/sentencepiece_models/enMalay-en-to-maly-2-2020-02-21-24k.model",
+    "MALAYALAM_210220": "model/sentencepiece_models/malayalam-en-to-maly-2-2020-02-21-24k.model"
 }
 
 english_punjabi = {
     "ENG_200919": "model/sentencepiece_models/enPu-2019-09-20-10k.model",
-    "PUNJABI_200919": "model/sentencepiece_models/punjabi-2019-09-20-10k.model"
+    "PUNJABI_200919": "model/sentencepiece_models/punjabi-2019-09-20-10k.model",
+    "ENG_160220": "model/sentencepiece_models/enPun-en-to-pun-2-2020-02-16-24k.model",
+    "PUNJABI_160220": "model/sentencepiece_models/punjabi-en-to-pun-2-2020-02-16-24k.model"
 }
 
 hindi_english = {

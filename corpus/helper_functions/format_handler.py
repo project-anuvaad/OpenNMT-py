@@ -14,6 +14,11 @@ import re
 import sys
 from dateutil.parser import parse
 import random
+from onmt.utils.logging import init_logger
+
+TRAIN_LOG_FILE = 'intermediate_data/anuvaad_training_log_file.txt'
+
+logger = init_logger(TRAIN_LOG_FILE)
 
 "below is for replacing numbers with #" "not using now"
 def replace_number_with_hash(in_file,out_file):
@@ -79,17 +84,15 @@ def tag_number_date_url(in_file,out_file):
             xlines[i] = xlines[i].replace(str(j),'NnUuMm'+str(hindi_numbers[count_number]),1)
             count_number +=1
             if count_number >30:
-              print("count exceeding 30")
+              # print("count exceeding 30")
               count_number = 30
 
           for word in xlines[i].split():
             ext = [".",",","?","!"]
             if word.isalpha()== False and word[:-1].isalpha() == False and len(word)>4 and token_is_date(word):
               if word.endswith(tuple(ext)):
-                print("ffff",word)
                 end_token = word[-1]
                 word = word[:-1]
-                print("worddd",word)
                 if len(word)<7 and (word):    
                   word = word+end_token
                 else:
@@ -122,6 +125,7 @@ def tag_number_date_url(in_file,out_file):
     
   except Exception as e:
     print("in error pass format_handler: ",e)
+    logger.info("Error in corpus/helper_function/format handler, ignoring it-{}".format(e))
     pass
     
   

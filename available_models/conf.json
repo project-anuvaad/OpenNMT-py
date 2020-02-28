@@ -1,5 +1,5 @@
 {
-    "models_root": "./available_models",
+    "models_root": "./available_models/models",
     "models": [
         {
             "id": 1,
@@ -9,7 +9,7 @@
             "load": true,
             "opt": {
                 "beam_size": 5,
-                "log_file":"log_file.txt",
+                "log_file":"log_file",
                 "log_file_level":"INFO"
             }
         },
@@ -47,6 +47,19 @@
                 "beam_size": 5,
                 "log_file":"log_file.txt",
                 "log_file_level":"INFO"
+            }
+        },
+        {
+            "id": 8,
+            "model": "model_ta-en_2020-01-09-model_step_150000.pt",
+            "timeout": 600,
+            "on_timeout": "to_cpu",
+            "load": true,
+            "opt": {
+                "beam_size": 5,
+                "log_file":"log_file.txt",
+                "log_file_level":"INFO",
+                "replace_unk":true
             }
         },
         {
@@ -173,8 +186,216 @@
             }
         },
         {
+            "id": 43,
+            "model": "model_enMr-mr-en-1.2_2020-01-27-model_step_150000.pt",
+            "timeout": 600,
+            "on_timeout": "to_cpu",
+            "load": true,
+            "opt": {
+                "beam_size": 5,
+                "log_file":"log_file.txt",
+                "log_file_level":"INFO",
+                "replace_unk":true
+            }
+        },
+        {
+            "id": 44,
+            "model": "model_enMr-en-mr-3_2020-02-06-model_step_150000.pt",
+            "timeout": 600,
+            "on_timeout": "to_cpu",
+            "load": true,
+            "opt": {
+                "beam_size": 5,
+                "log_file":"log_file.txt",
+                "log_file_level":"INFO",
+                "replace_unk":true
+            }
+        },
+        {
+            "id": 45,
+            "model": "model_en-ta-eng-tam_2020-02-08-model_step_200000.pt",
+            "timeout": 600,
+            "on_timeout": "to_cpu",
+            "load": true,
+            "opt": {
+                "beam_size": 5,
+                "log_file":"log_file.txt",
+                "log_file_level":"INFO",
+                "replace_unk":true
+            }
+        },
+        {
+            "id": 46,
+            "model": "model_en-ta-ta-to-en-2_2020-02-10-model_step_200000.pt",
+            "timeout": 600,
+            "on_timeout": "to_cpu",
+            "load": true,
+            "opt": {
+                "beam_size": 5,
+                "log_file":"log_file.txt",
+                "log_file_level":"INFO",
+                "replace_unk":true
+            }
+        },
+        {
+            "id": 47,
+            "model": "model_enKann-en-to-kn-2_2020-02-10-model_step_200000.pt",
+            "timeout": 600,
+            "on_timeout": "to_cpu",
+            "load": true,
+            "opt": {
+                "beam_size": 5,
+                "log_file":"log_file.txt",
+                "log_file_level":"INFO",
+                "replace_unk":true
+            }
+        },
+        {
+            "id": 48,
+            "model": "model_enKann-kn-to-en-1_2020-02-10-model_step_200000.pt",
+            "timeout": 600,
+            "on_timeout": "to_cpu",
+            "load": true,
+            "opt": {
+                "beam_size": 5,
+                "log_file":"log_file.txt",
+                "log_file_level":"INFO",
+                "replace_unk":true
+            }
+        },
+        {
+            "id": 49,
+            "model": "model_enTelg-en-to-tel-2_2020-02-12-model_step_200000.pt",
+            "timeout": 600,
+            "on_timeout": "to_cpu",
+            "load": true,
+            "opt": {
+                "beam_size": 5,
+                "log_file":"log_file.txt",
+                "log_file_level":"INFO",
+                "replace_unk":true
+            }
+        },
+        {
+            "id": 50,
+            "model": "model_enTelg-tel-to-en-1_2020-02-12-model_step_200000.pt",
+            "timeout": 600,
+            "on_timeout": "to_cpu",
+            "load": true,
+            "opt": {
+                "beam_size": 5,
+                "log_file":"log_file.txt",
+                "log_file_level":"INFO",
+                "replace_unk":true
+            }
+        },
+        {
+            "id": 51,
+            "model": "model_enGuj-en-to-guj-2_2020-02-14-model_step_200000.pt",
+            "timeout": 600,
+            "on_timeout": "to_cpu",
+            "load": true,
+            "opt": {
+                "beam_size": 5,
+                "log_file":"log_file.txt",
+                "log_file_level":"INFO",
+                "replace_unk":true
+            }
+        },
+        {
+            "id": 52,
+            "model": "model_enGuj-guj-to-en-1_2020-02-14-model_step_200000.pt",
+            "timeout": 600,
+            "on_timeout": "to_cpu",
+            "load": true,
+            "opt": {
+                "beam_size": 5,
+                "log_file":"log_file.txt",
+                "log_file_level":"INFO",
+                "replace_unk":true
+            }
+        },
+        {
+            "id": 53,
+            "model": "model_enPun-en-to-pun-2_2020-02-16-model_step_200000.pt",
+            "timeout": 600,
+            "on_timeout": "to_cpu",
+            "load": true,
+            "opt": {
+                "beam_size": 5,
+                "log_file":"log_file.txt",
+                "log_file_level":"INFO",
+                "replace_unk":true
+            }
+        },
+        {
+            "id": 55,
+            "model": "model_enPun-pun-to-en-1_2020-02-16-model_step_200000.pt",
+            "timeout": 600,
+            "on_timeout": "to_cpu",
+            "load": true,
+            "opt": {
+                "beam_size": 5,
+                "log_file":"log_file.txt",
+                "log_file_level":"INFO",
+                "replace_unk":true
+            }
+        },
+        {
             "id": 56,
             "model": "model_en-hi_exp-5.6_2019-12-09-model_step_250000.pt",
+            "timeout": 600,
+            "on_timeout": "to_cpu",
+            "load": true,
+            "opt": {
+                "beam_size": 5,
+                "log_file":"log_file.txt",
+                "log_file_level":"INFO",
+                "replace_unk":true
+            }
+        },
+        {
+            "id": 57,
+            "model": "model_enBeng-en-to-beng-2_2020-02-18-model_step_200000.pt",
+            "timeout": 600,
+            "on_timeout": "to_cpu",
+            "load": true,
+            "opt": {
+                "beam_size": 5,
+                "log_file":"log_file.txt",
+                "log_file_level":"INFO",
+                "replace_unk":true
+            }
+        },
+        {
+            "id": 58,
+            "model": "model_enBeng-beng-to-en-1_2020-02-18-model_step_200000.pt",
+            "timeout": 600,
+            "on_timeout": "to_cpu",
+            "load": true,
+            "opt": {
+                "beam_size": 5,
+                "log_file":"log_file.txt",
+                "log_file_level":"INFO",
+                "replace_unk":true
+            }
+        },
+        {
+            "id": 59,
+            "model": "model_enMalay-en-to-maly-2_2020-02-21-model_step_200000.pt",
+            "timeout": 600,
+            "on_timeout": "to_cpu",
+            "load": true,
+            "opt": {
+                "beam_size": 5,
+                "log_file":"log_file.txt",
+                "log_file_level":"INFO",
+                "replace_unk":true
+            }
+        },
+        {
+            "id": 60,
+            "model": "model_enMalay-maly-to-en-1_2020-02-21-model_step_200000.pt",
             "timeout": 600,
             "on_timeout": "to_cpu",
             "load": true,
