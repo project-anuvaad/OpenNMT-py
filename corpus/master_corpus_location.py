@@ -5,7 +5,8 @@ english_hindi = {
     "DEV_HINDI": "corpus/master_corpus/english_hindi/hindi_dev_final.txt",
     "TEST_ENGLISH_GEN": "corpus/master_corpus/english_hindi/english_test_Gen_final.txt",
     "TEST_ENGLISH_LC": "corpus/master_corpus/english_hindi/english_test_LC_final.txt",
-    "TEST_ENGLISH_TB": "corpus/master_corpus/english_hindi/english_test_TB_final.txt",
+    "TEST_HINDI_GEN": "corpus/master_corpus/english_hindi/hindi_test_Gen_final.txt",
+    "TEST_HINDI_LC": "corpus/master_corpus/english_hindi/hindi_test_LC_final.txt",
 }
 
 english_tamil = {
@@ -13,7 +14,8 @@ english_tamil = {
     "TAMIL_TRAIN_FILE": 'corpus/master_corpus/english_tamil/tamil_train_corpus_final.txt',
     "DEV_ENGLISH": "corpus/master_corpus/english_tamil/english_dev_final.txt",
     "DEV_TAMIL": "corpus/master_corpus/english_tamil/tamil_dev_final.txt",
-    "TEST_ENGLISH": "corpus/master_corpus/english_tamil/english_test_final.txt"
+    "TEST_ENGLISH": "corpus/master_corpus/english_tamil/english_test_final.txt",
+    "TEST_TAMIL":"corpus/master_corpus/english_tamil/tamil_test_final.txt"
 }
 
 english_gujrati = {

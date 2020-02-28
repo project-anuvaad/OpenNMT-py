@@ -1,4 +1,6 @@
-import helper_functions.format_handler as format_handler
+import corpus.helper_functions.format_handler as format_handler
+import random
+import sys
 
 ## below is for dropping duplicate from text file
 def drop_duplicate(inFile,outFile):
@@ -34,4 +36,27 @@ def tab_separated_parllel_corpus(mono_corpus1,mono_corpus2,out_file):
           for i in range(len(xlines)):
             line = ylines[i].strip() + '\t' + xlines[i]
             zh.write(line)
+
+
+def split_into_train_validation(input_file,train_file,validation_file,percentage):
+  try:
+    isShuffle=True
+    random.seed(123)
+    outfile_train = open("{0}".format(train_file), "w") 
+    outfile_val = open("{0}".format(validation_file), "w")
+    with open(input_file, 'r',encoding="utf-8") as fin:
+      nLines = sum(1 for line in fin)
+      fin.seek(0)
+      nTrain = int(nLines*percentage)
+      nValid = nLines - nTrain
+      i = 0
+      for line in fin:
+        r = random.random() if isShuffle else 0 
+        if (i < nTrain and r < percentage) or (nLines - i > nValid):
+          outfile_train.write(line)
+          i += 1
+        else:
+          outfile_val.write(line)
+  except Exception as e:
+    print(e)
 

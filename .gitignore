@@ -7,7 +7,7 @@ pred.txt
 .DS_Store
 data/*
 !data/.gitkeep
-model/*
+model
 !model/.gitkeep
 mypredif*.txt
 nohup.out
@@ -20,7 +20,6 @@ bleu_out.txt
 bleu-detok.txt
 intermediate_data/*
 !intermediate_data/.gitkeep
-*truecaseModel_en100919
 /corpus/IITB_splitted_data/*
 !corpus/IITB_splitted_data/.gitkeep
 corpus/intermediate_data/*
@@ -45,8 +44,7 @@ corpus/original_data/english_malayalam/*
 !corpus/original_data/english_malayalam/.gitkeep
 corpus/original_data/english_punjabi/*
 !corpus/original_data/english_punjabi/.gitkeep
-available_models/log_file.txt
-!model/sentencepiece_models
+intermediate_data/anuvaad_training_log_file.txt
 corpus/original_data/english_hindi/corpus_with_name_18-10-19/*
 !corpus/original_data/english_hindi/corpus_with_name_18-10-19/.gitkeep
 corpus/original_data/english_hindi/dict_18-10-19/*
@@ -54,7 +52,7 @@ corpus/original_data/english_hindi/dict_18-10-19/*
 corpus/original_data/english_hindi/exp-10_and_exp-11
 corpus/original_data/english_hindi/exp-12_13_14
 corpus/original_data/english_hindi/exp_5.4_ik_no_learned_counsel
-
+corpusfiles
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
