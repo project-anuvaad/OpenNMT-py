@@ -9,7 +9,7 @@
             "load": true,
             "opt": {
                 "beam_size": 5,
-                "log_file":"log_file_1.txt",
+                "log_file":"log_file",
                 "log_file_level":"INFO"
             }
         },
@@ -21,7 +21,7 @@
             "load": true,
             "opt": {
                 "beam_size": 5,
-                "log_file":"log_file_2.txt",
+                "log_file":"log_file.txt",
                 "log_file_level":"INFO"
             }
         },
@@ -33,7 +33,7 @@
             "load": true,
             "opt": {
                 "beam_size": 5,
-                "log_file":"log_file_4.txt",
+                "log_file":"log_file.txt",
                 "log_file_level":"INFO"
             }
         },
@@ -45,7 +45,7 @@
             "load": true,
             "opt": {
                 "beam_size": 5,
-                "log_file":"log_file_5.txt",
+                "log_file":"log_file.txt",
                 "log_file_level":"INFO"
             }
         },
@@ -57,7 +57,7 @@
             "load": true,
             "opt": {
                 "beam_size": 5,
-                "log_file":"log_file_7.txt",
+                "log_file":"log_file.txt",
                 "log_file_level":"INFO"
             }
         },
@@ -69,7 +69,7 @@
             "load": true,
             "opt": {
                 "beam_size": 5,
-                "log_file":"log_file_8.txt",
+                "log_file":"log_file.txt",
                 "log_file_level":"INFO",
                 "replace_unk":true
             }
@@ -82,7 +82,7 @@
             "load": true,
             "opt": {
                 "beam_size": 5,
-                "log_file":"log_file_10.txt",
+                "log_file":"log_file.txt",
                 "log_file_level":"INFO"
             }
         },
@@ -94,7 +94,7 @@
             "load": true,
             "opt": {
                 "beam_size": 5,
-                "log_file":"log_file_11.txt",
+                "log_file":"log_file.txt",
                 "log_file_level":"INFO"
             }
         },
@@ -106,7 +106,7 @@
             "load": true,
             "opt": {
                 "beam_size": 5,
-                "log_file":"log_file_12.txt",
+                "log_file":"log_file.txt",
                 "log_file_level":"INFO"
             }
         },
@@ -118,7 +118,7 @@
             "load": true,
             "opt": {
                 "beam_size": 5,
-                "log_file":"log_file_15.txt",
+                "log_file":"log_file.txt",
                 "log_file_level":"INFO"
             }
         },
@@ -130,7 +130,7 @@
             "load": true,
             "opt": {
                 "beam_size": 5,
-                "log_file":"log_file_16.txt",
+                "log_file":"log_file.txt",
                 "log_file_level":"INFO"
             }
         },
@@ -142,7 +142,7 @@
             "load": true,
             "opt": {
                 "beam_size": 5,
-                "log_file":"log_file_17.txt",
+                "log_file":"log_file.txt",
                 "log_file_level":"INFO"
             }
         },
@@ -154,7 +154,7 @@
             "load": true,
             "opt": {
                 "beam_size": 5,
-                "log_file":"log_file_18.txt",
+                "log_file":"log_file.txt",
                 "log_file_level":"INFO"
             }
         },
@@ -166,7 +166,7 @@
             "load": true,
             "opt": {
                 "beam_size": 5,
-                "log_file":"log_file_21.txt",
+                "log_file":"log_file.txt",
                 "log_file_level":"INFO"
             }
         },
@@ -178,7 +178,7 @@
             "load": true,
             "opt": {
                 "beam_size": 5,
-                "log_file":"log_file_30.txt",
+                "log_file":"log_file.txt",
                 "log_file_level":"INFO"
             }
         },
@@ -190,7 +190,7 @@
             "load": true,
             "opt": {
                 "beam_size": 5,
-                "log_file":"log_file_54.txt",
+                "log_file":"log_file.txt",
                 "log_file_level":"INFO",
                 "replace_unk":true
             }
@@ -203,7 +203,7 @@
             "load": true,
             "opt": {
                 "beam_size": 5,
-                "log_file":"log_file_32.txt",
+                "log_file":"log_file.txt",
                 "log_file_level":"INFO",
                 "replace_unk":true
             }
@@ -216,7 +216,7 @@
             "load": true,
             "opt": {
                 "beam_size": 5,
-                "log_file":"log_file_42.txt",
+                "log_file":"log_file.txt",
                 "log_file_level":"INFO",
                 "replace_unk":true
             }
@@ -229,7 +229,7 @@
             "load": true,
             "opt": {
                 "beam_size": 5,
-                "log_file":"log_file_43.txt",
+                "log_file":"log_file.txt",
                 "log_file_level":"INFO",
                 "replace_unk":true
             }
@@ -242,7 +242,7 @@
             "load": true,
             "opt": {
                 "beam_size": 5,
-                "log_file":"log_file_44.txt",
+                "log_file":"log_file.txt",
                 "log_file_level":"INFO",
                 "replace_unk":true
             }
@@ -255,7 +255,7 @@
             "load": true,
             "opt": {
                 "beam_size": 5,
-                "log_file":"log_file_45.txt",
+                "log_file":"log_file.txt",
                 "log_file_level":"INFO",
                 "replace_unk":true
             }
@@ -268,7 +268,7 @@
             "load": true,
             "opt": {
                 "beam_size": 5,
-                "log_file":"log_file_46.txt",
+                "log_file":"log_file.txt",
                 "log_file_level":"INFO",
                 "replace_unk":true
             }
@@ -281,7 +281,7 @@
             "load": true,
             "opt": {
                 "beam_size": 5,
-                "log_file":"log_file_47.txt",
+                "log_file":"log_file.txt",
                 "log_file_level":"INFO",
                 "replace_unk":true
             }
@@ -294,7 +294,7 @@
             "load": true,
             "opt": {
                 "beam_size": 5,
-                "log_file":"log_file_48.txt",
+                "log_file":"log_file.txt",
                 "log_file_level":"INFO",
                 "replace_unk":true
             }
@@ -307,7 +307,7 @@
             "load": true,
             "opt": {
                 "beam_size": 5,
-                "log_file":"log_file_49.txt",
+                "log_file":"log_file.txt",
                 "log_file_level":"INFO",
                 "replace_unk":true
             }
@@ -320,7 +320,7 @@
             "load": true,
             "opt": {
                 "beam_size": 5,
-                "log_file":"log_file_50.txt",
+                "log_file":"log_file.txt",
                 "log_file_level":"INFO",
                 "replace_unk":true
             }
@@ -333,7 +333,7 @@
             "load": true,
             "opt": {
                 "beam_size": 5,
-                "log_file":"log_file_51.txt",
+                "log_file":"log_file.txt",
                 "log_file_level":"INFO",
                 "replace_unk":true
             }
@@ -346,7 +346,7 @@
             "load": true,
             "opt": {
                 "beam_size": 5,
-                "log_file":"log_file_52.txt",
+                "log_file":"log_file.txt",
                 "log_file_level":"INFO",
                 "replace_unk":true
             }
@@ -359,7 +359,7 @@
             "load": true,
             "opt": {
                 "beam_size": 5,
-                "log_file":"log_file_53.txt",
+                "log_file":"log_file.txt",
                 "log_file_level":"INFO",
                 "replace_unk":true
             }
@@ -372,7 +372,7 @@
             "load": true,
             "opt": {
                 "beam_size": 5,
-                "log_file":"log_file_55.txt",
+                "log_file":"log_file.txt",
                 "log_file_level":"INFO",
                 "replace_unk":true
             }
@@ -385,7 +385,7 @@
             "load": true,
             "opt": {
                 "beam_size": 5,
-                "log_file":"log_file_56.txt",
+                "log_file":"log_file.txt",
                 "log_file_level":"INFO",
                 "replace_unk":true
             }
@@ -398,7 +398,7 @@
             "load": true,
             "opt": {
                 "beam_size": 5,
-                "log_file":"log_file_57.txt",
+                "log_file":"log_file.txt",
                 "log_file_level":"INFO",
                 "replace_unk":true
             }
@@ -411,7 +411,7 @@
             "load": true,
             "opt": {
                 "beam_size": 5,
-                "log_file":"log_file_58.txt",
+                "log_file":"log_file.txt",
                 "log_file_level":"INFO",
                 "replace_unk":true
             }
@@ -424,7 +424,7 @@
             "load": true,
             "opt": {
                 "beam_size": 5,
-                "log_file":"log_file_59.txt",
+                "log_file":"log_file.txt",
                 "log_file_level":"INFO",
                 "replace_unk":true
             }
@@ -437,7 +437,7 @@
             "load": true,
             "opt": {
                 "beam_size": 5,
-                "log_file":"log_file_60.txt",
+                "log_file":"log_file.txt",
                 "log_file_level":"INFO",
                 "replace_unk":true
             }
