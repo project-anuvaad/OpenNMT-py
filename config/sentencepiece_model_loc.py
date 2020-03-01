@@ -25,6 +25,8 @@ english_tamil = {
     "TAM_080220": "model/sentencepiece_models/tamil-eng-tam-2020-02-08-24k.model",
     "ENG_100220": "model/sentencepiece_models/enTa-ta-to-en-2-2020-02-10-24k.model",
     "TAM_100220": "model/sentencepiece_models/tamil-ta-to-en-2-2020-02-10-24k.model",
+    "ENG_280220": "model/sentencepiece_models/enTa-ta-to-en-3-2020-02-28-24k.model",
+    "TAM_280220": "model/sentencepiece_models/tamil-ta-to-en-3-2020-02-28-24k.model",
 }
 
 english_gujarati = {
@@ -50,6 +52,8 @@ english_marathi = {
     "MARATHI_270120": "model/sentencepiece_models/marathi-mr-en-1.2-2020-01-27-24k.model",
     "ENG_060220": "model/sentencepiece_models/enMr-en-mr-3-2020-02-06-24k.model",
     "MARATHI_060220": "model/sentencepiece_models/marathi-en-mr-3-2020-02-06-24k.model",
+    "ENG_280220": "model/sentencepiece_models/enMr-mr-to-en-2-2020-02-28-24k.model",
+    "MARATHI_280220": "model/sentencepiece_models/marathi-mr-to-en-2-2020-02-28-24k.model",
 }
 
 english_kannada = {
