@@ -449,8 +449,8 @@ def translate_func(inputs, translation_server):
                     logger.info("unsupported model id: {} for given input".format(i['id']))
                     raise Exception("unsupported model id: {} for given input".format(i['id']))      
 
-            # translation = (prefix+" "+translation+" "+suffix).strip()
-            translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)
+                # translation = (prefix+" "+translation+" "+suffix).strip()
+                translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)
             logger.info("trans_function-experiment-{} output: {}".format(i['id'],translation))    
             tgt.append(translation)
             pred_score.append(scores[0])
