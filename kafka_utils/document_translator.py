@@ -25,10 +25,11 @@ def doc_translator(translation_server):
     c = get_consumer(consumer_topics['DOCUMENT_REQ'])
     p = get_producer()
     msg_count = 0
+    msg_sent = 0
     try:
         for msg in c:
             msg_count +=1
-            logger.info("*******************msg count*********:{}".format(msg_count))
+            logger.info("*******************msg receive count*********:{}".format(msg_count))
             iq = iq +1
             inputs = (msg.value)
 
@@ -55,6 +56,8 @@ def doc_translator(translation_server):
                 
             p.send(producer_topics['TO_DOCUMENT'], value={'out':out})
             p.flush()
+            msg_sent += 1
+            logger.info("*******************msg sent count*********:{}".format(msg_sent))
             
     except ValueError:  # includes simplejson.decoder.JSONDecodeError
         logger.error("Decoding JSON has failed in document_translator: %s"% sys.exc_info()[0])
