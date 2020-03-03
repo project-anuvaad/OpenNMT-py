@@ -37,11 +37,13 @@ def doc_translator(translation_server):
                 elif inputs['url_end_point'] == 'translation_hi':
                     logger.info("Running kafka on  {}".format(inputs['url_end_point']))
                     logger.info("Running kafka-translation on  {}".format(inputs['message']))
-                    out = translate_util.from_hindi(inputs['message'], translation_server)  
+                    out = translate_util.from_hindi(inputs['message'], translation_server)
+                    logger.info("final output kafka-translation_hi:{}".format(out))  
                 elif inputs['url_end_point'] == "translate-anuvaad":
                     logger.info("Running kafka on  {}".format(inputs['url_end_point']))
                     logger.info("Running kafka-translation on  {}".format(inputs['message']))  
-                    out = translate_util.translate_func(inputs['message'], translation_server) 
+                    out = translate_util.translate_func(inputs['message'], translation_server)
+                    logger.info("final output kafka-translate-anuvaad:{}".format(out)) 
                 else:
                     logger.info("Incorrect url_end_point for KAFKA")
                     out['status'] = statusCode["KAFKA_INVALID_REQUEST"]
