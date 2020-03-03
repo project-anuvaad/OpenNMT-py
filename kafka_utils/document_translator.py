@@ -24,8 +24,11 @@ def doc_translator(translation_server):
     out = {}
     c = get_consumer(consumer_topics['DOCUMENT_REQ'])
     p = get_producer()
+    msg_count = 0
     try:
         for msg in c:
+            msg_count +=1
+            logger.info("*******************msg count*********:{}".format(msg_count))
             iq = iq +1
             inputs = (msg.value)
 
