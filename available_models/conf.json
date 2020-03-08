@@ -470,7 +470,7 @@
         },
         {
             "id": 63,
-            "model": "model_en-ta-ta-en-1.1_2020-03-06-model_step_150000.pt",
+            "model": "model_ta-en-1.2_2020-03-07-model_step_150000.pt",
             "timeout": 600,
             "on_timeout": "to_cpu",
             "load": true,
