@@ -467,6 +467,19 @@
                 "log_file_level":"INFO",
                 "replace_unk":true
             }
+        },
+        {
+            "id": 63,
+            "model": "model_en-ta-ta-en-1.1_2020-03-06-model_step_150000.pt",
+            "timeout": 600,
+            "on_timeout": "to_cpu",
+            "load": true,
+            "opt": {
+                "beam_size": 5,
+                "log_file":"log_file.txt",
+                "log_file_level":"INFO",
+                "replace_unk":true
+            }
         }
     ]
 }

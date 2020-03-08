@@ -27,6 +27,8 @@ english_tamil = {
     "TAM_100220": "model/sentencepiece_models/tamil-ta-to-en-2-2020-02-10-24k.model",
     "ENG_280220": "model/sentencepiece_models/enTa-ta-to-en-3-2020-02-28-24k.model",
     "TAM_280220": "model/sentencepiece_models/tamil-ta-to-en-3-2020-02-28-24k.model",
+    "ENG_060320": "model/sentencepiece_models/enTa-ta-en-1.1-2020-03-06-24k.model",
+    "TAM_060320": "model/sentencepiece_models/tamil-ta-en-1.1-2020-03-06-24k.model",
 }
 
 english_gujarati = {

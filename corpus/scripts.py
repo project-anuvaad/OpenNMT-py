@@ -829,56 +829,27 @@ def english_punjabi(eng_file,punjabi_file):
         logger.error("error in english_punjabi corpus/scripts/en-punjabi- {}".format(e))
     
 
-def english_hindi_exp_5_10():
-    "Exp-5.10: -processing 245529k sentences"
+def file_shuffler():
     try:
-        print("In english_hindi_experiments,scripts,Exp 5.10 eng-hindi")
-        model_intermediate_folder = os.path.join(INTERMEDIATE_DATA_LOCATION, 'english_hindi_5.10')
-        model_master_folder = os.path.join(MASTER_DATA_LOCATION, 'english_hindi_5.10')
-        english_merged_file_name = os.path.join(model_intermediate_folder, 'english_merged_original_5.10.txt')
-        hindi_merged_file_name = os.path.join(model_intermediate_folder, 'hindi_merged_original_5.10.txt')
-        tab_sep_out_file = os.path.join(model_intermediate_folder, 'tab_sep_corpus_5.10.txt')
-        tab_sep_out_file_no_duplicate = os.path.join(model_intermediate_folder, 'tab_sep_corpus_no_duplicate_5.10.txt')
-        shuffled_tab_sep_file = os.path.join(model_intermediate_folder, 'shuffled_tab_sep_file_5.10.txt')
-        replaced_hindi_number_file_name = os.path.join(model_intermediate_folder, 'corpus_no_hindi_num_5.10.txt')
-        eng_separated = os.path.join(model_intermediate_folder, 'eng_train_separated_5.10.txt')
-        hindi_separated = os.path.join(model_intermediate_folder, 'hindi_train_separated_5.10.txt')
-        english_tagged = os.path.join(model_master_folder, 'eng_train_corpus_final_5.10.txt')
-        hindi_tagged = os.path.join(model_master_folder, 'hindi_train_corpus_final_5.10.txt')
+        model_intermediate_folder = os.path.join(INTERMEDIATE_DATA_LOCATION, 'file_shuffler')
+        tab_sep_out_file = os.path.join(model_intermediate_folder, 'tab_sep_corpus.txt')
+        shuffled_tab_sep_file = os.path.join(model_intermediate_folder, 'shuffled_tab_sep_file.txt')
+        eng_separated = os.path.join(model_intermediate_folder, 'eng_corpus.txt')
+        hindi_separated = os.path.join(model_intermediate_folder, 'hindi_corpus.txt')
 
-
-        if not any ([os.path.exists(model_intermediate_folder),os.path.exists(model_master_folder)]):
+        if not any ([os.path.exists(model_intermediate_folder)]):
             os.makedirs(model_intermediate_folder)
-            os.makedirs(model_master_folder)
-            print("folder created at {} and {}".format(model_intermediate_folder,model_master_folder))
-        
-        file_names_english = ocl.english_hindi['FILE_NAMES_ENGLISH_5.10']
-        file_names_hindi = ocl.english_hindi['FILE_NAMES_HINDI_5.10']
-        fm.file_merger(file_names_english, english_merged_file_name)
-        fm.file_merger(file_names_hindi, hindi_merged_file_name)
-        print("original src and tgt file merged successfully")
-                
+            print("folder created at {}".format(model_intermediate_folder))                
 
-        fc.tab_separated_parllel_corpus(hindi_merged_file_name, english_merged_file_name, tab_sep_out_file)
+        fc.tab_separated_parllel_corpus("7062e708-2a87-4a08-a167-a6f3aa7f5cc4_Hindi_target.txt", "7062e708-2a87-4a08-a167-a6f3aa7f5cc4_english_source.txt", tab_sep_out_file)
         print("tab separated corpus created")
-        print(os.system('wc -l {}'.format(tab_sep_out_file)))
-        fc.drop_duplicate(tab_sep_out_file, tab_sep_out_file_no_duplicate)
-        print("duplicates removed from combined corpus")
-        print(os.system('wc -l {}'.format(tab_sep_out_file_no_duplicate)))
         
-        format_handler.shuffle_file(tab_sep_out_file_no_duplicate,shuffled_tab_sep_file)
+        format_handler.shuffle_file(tab_sep_out_file,shuffled_tab_sep_file)
         print("tab_sep_file_shuffled_successfully!")
 
-        format_handler.replace_hindi_numbers(shuffled_tab_sep_file,replaced_hindi_number_file_name)
-        print("hindi number replaced")
-
-        fc.separate_corpus(0, replaced_hindi_number_file_name, eng_separated)
-        fc.separate_corpus(1, replaced_hindi_number_file_name, hindi_separated)
+        fc.separate_corpus(0, shuffled_tab_sep_file, eng_separated)
+        fc.separate_corpus(1, shuffled_tab_sep_file, hindi_separated)
         print("corpus separated into src and tgt")
-
-        format_handler.tag_number_date_url(eng_separated, english_tagged)
-        format_handler.tag_number_date_url(hindi_separated, hindi_tagged)
-        print("url,num and date tagging done, corpus in master folder")
 
     except Exception as e:
         print(e)
