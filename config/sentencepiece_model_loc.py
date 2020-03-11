@@ -11,8 +11,8 @@ english_hindi = {
     "HIN_EXP_5.4": "model/sentencepiece_models/hi_exp-5.4-2019-10-29-24k.model",
     "ENG_EXP_5.6": "model/sentencepiece_models/en_exp-5.6-2019-12-09-24k.model",
     "HIN_EXP_5.6": "model/sentencepiece_models/hi_exp-5.6-2019-12-09-24k.model",
-    "ENG_EXP_5.10": "model/sentencepiece_models/en_exp-5.10-2019-12-20-24k.model",
-    "HIN_EXP_5.10": "model/sentencepiece_models/hi_exp-5.10-2019-12-20-24k.model",
+    "ENG_EXP_13": "model/sentencepiece_models/en_en-hi-exp-13-2020-03-09-24k.model",
+    "HIN_EXP_13": "model/sentencepiece_models/hi_en-hi-exp-13-2020-03-09-24k.model",
 
 }
 
