@@ -26,7 +26,7 @@ def handle_single_token(token):
             # translation_text = transliterate_text(translation_text)
             # return prefix+translation_text+suffix
             return ""
-       elif token.isalpha() and len(token)==1:
+       elif len(token)==1:
             print("handling single token and returning character as it is")
             return (token)            
        else:
@@ -135,8 +135,8 @@ def replace_hindi_numbers(text):
 def special_case_fits(text):
     if util.token_is_date(text):
         return True
-    # elif util.token_is_url(text):
-    #     return True
+    elif util.token_is_url(text):
+        return True
     elif len(text.split()) == 1 and len(handle_single_token(text))>0:  
         return True  
 

@@ -22,6 +22,6 @@ def token_is_url(token):
       return True
     else:
       return False  
-  except:
+  except Exception as e:
     return False
 
