@@ -27,6 +27,7 @@ import datetime
 from kafka_utils.document_translator import doc_translator
 import threading
 import translation_util.translate_util as translate_util
+import translation_util.interactive_translate as interactive_translation
 
 STATUS_OK = "ok"
 STATUS_ERROR = "error"
@@ -125,7 +126,20 @@ def start(config_file,
             return jsonify(out)
         else:
             logger.info("null inputs in request in translate-anuvaad API")
-            return jsonify({'status':statusCode["INVALID_API_REQUEST"]})       
+            return jsonify({'status':statusCode["INVALID_API_REQUEST"]})
+            
+    @app.route('/interactive-translation', methods=['POST'])
+    def interactive_translate():
+        inputs = request.get_json(force=True)
+        if len(inputs)>0:
+            logger.info("Making interactive-translation API call")
+            print(inputs)
+            out = interactive_translation.interactive_translation(inputs)
+            logger.info("out from translate_func-trans_util done{}".format(out))
+            return jsonify(out)
+        else:
+            logger.info("null inputs in request in interactive-translation API")
+            return jsonify({'status':statusCode["INVALID_API_REQUEST"]})                    
 
     @app.route('/translation_en', methods=['POST'])
     def translation_en():
