@@ -1,0 +1,9 @@
+{
+    "models_root": "./available_models/interactive_models",
+    "models": [
+        {
+            "id": 56,
+            "path":"test"
+        }
+    ]
+}
