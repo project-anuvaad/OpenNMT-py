@@ -130,12 +130,13 @@ def start(config_file,
             
     @app.route('/interactive-translation', methods=['POST'])
     def interactive_translate():
+        "not using this for now"
         inputs = request.get_json(force=True)
         if len(inputs)>0:
             logger.info("Making interactive-translation API call")
             print(inputs)
             out = interactive_translation.interactive_translation(inputs)
-            logger.info("out from translate_func-trans_util done{}".format(out))
+            logger.info("out from interactive-translation done{}".format(out))
             return jsonify(out)
         else:
             logger.info("null inputs in request in interactive-translation API")

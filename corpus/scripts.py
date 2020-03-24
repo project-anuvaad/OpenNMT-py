@@ -831,24 +831,24 @@ def english_punjabi(eng_file,punjabi_file):
 
 def file_shuffler():
     try:
-        model_intermediate_folder = os.path.join(INTERMEDIATE_DATA_LOCATION, 'file_shuffler')
+        model_intermediate_folder = os.path.join(INTERMEDIATE_DATA_LOCATION, 'file_shuffler','en-kn-19-mar')
         tab_sep_out_file = os.path.join(model_intermediate_folder, 'tab_sep_corpus.txt')
         shuffled_tab_sep_file = os.path.join(model_intermediate_folder, 'shuffled_tab_sep_file.txt')
         eng_separated = os.path.join(model_intermediate_folder, 'eng_corpus.txt')
-        hindi_separated = os.path.join(model_intermediate_folder, 'hindi_corpus.txt')
+        target_separated = os.path.join(model_intermediate_folder, 'kn_corpus.txt')
 
         if not any ([os.path.exists(model_intermediate_folder)]):
             os.makedirs(model_intermediate_folder)
             print("folder created at {}".format(model_intermediate_folder))                
 
-        fc.tab_separated_parllel_corpus("7062e708-2a87-4a08-a167-a6f3aa7f5cc4_Hindi_target.txt", "7062e708-2a87-4a08-a167-a6f3aa7f5cc4_english_source.txt", tab_sep_out_file)
+        fc.tab_separated_parllel_corpus("corpus/original_data/english_kannada/en-kn_19-mar/c9af0df7-99cc-44ec-8321-3c089922c985_target.txt", "corpus/original_data/english_kannada/en-kn_19-mar/c9af0df7-99cc-44ec-8321-3c089922c985_source.txt", tab_sep_out_file)
         print("tab separated corpus created")
         
         format_handler.shuffle_file(tab_sep_out_file,shuffled_tab_sep_file)
         print("tab_sep_file_shuffled_successfully!")
 
         fc.separate_corpus(0, shuffled_tab_sep_file, eng_separated)
-        fc.separate_corpus(1, shuffled_tab_sep_file, hindi_separated)
+        fc.separate_corpus(1, shuffled_tab_sep_file, target_separated)
         print("corpus separated into src and tgt")
 
     except Exception as e:
