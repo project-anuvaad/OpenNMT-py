@@ -2,10 +2,12 @@
 from flask import Flask, render_template, request, jsonify
 from flask import Flask
 import translation_util.interactive_translate as interactive_translation
+from flask_cors import CORS
 
 
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route('/interactive-translation', methods=['POST'])
 def translate():
