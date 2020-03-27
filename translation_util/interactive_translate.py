@@ -11,54 +11,39 @@ import sys
 import os
 
 ICONFG_FILE = "available_models/interactive_models/iconf.json"
-MODEL_BASE_PATH = "available_models/interactive_models/"
 INTERACTIVE_LOG_FILE = 'intermediate_data/interactive_log_file.txt'
 
 logger = init_logger(INTERACTIVE_LOG_FILE)
 
 
-def model_conversion():
-    "in progress"
-    try:
-        converter = ctranslate2.converters.OpenNMTPyConverter("available_models/model_en-hi_exp-5.6_2019-12-09-model_step_150000.pt")
-        print("x")
+def model_conversion(inputs):
+    out = {}
 
+    if any(v not in inputs for v in ['inp_model_path','out_dir']):
+        out['status'] = statusCode["INVALID_API_REQUEST"]
+        logger.info("Missing either inp_model_path,out_dir in model conversion request")
+        return (out)
+    with open(ICONFG_FILE) as f:
+        confs = json.load(f)
+        model_root = confs['models_root']
+    final_dir =  os.path.join(model_root, inputs['out_dir'])  
+    try:
+        logger.info("Inside model_conversion-interactive_translate function")
+        converter = ctranslate2.converters.OpenNMTPyConverter(inputs['inp_model_path'])       # inp_model_path: the model which has to be converted
         output_dir = converter.convert(
-                     "available_models/interactive_models/test",         # Path to the output directory.
-                     "TransformerBase",   # A model specification instance from ctranslate2.specs.
-                     vmap=None,               # Path to a vocabulary mapping file.
-                     quantization=None,       # Weights quantization: "int8" or "int16".
+                     final_dir,                                          # Path to the output directory.
+                     "TransformerBase",                                  # A model specification instance from ctranslate2.specs.
+                     vmap=None,                                          # Path to a vocabulary mapping file.
+                     quantization=None,                                  # Weights quantization: "int8" or "int16".
                      force=False)
-        print("done")               
+        logger.info("Interactive model converted and saved at: {}".format(output_dir))
+        out['status'] = statusCode["SUCCESS"]              
     except Exception as e:
-        print(e)
+        logger.error("Error in model_conversion interactive translate: {} and {}".format(e,sys.exc_info()[0]))
+        out['status'] = statusCode["SYSTEM_ERR"]
+        out['status']['errObj'] = str(e)
 
-
-def interactive_translation(inputs):
-    try:
-        translator = ctranslate2.Translator(MODEL_BASE_PATH)
-
-        i_tok = anuvada.moses_tokenizer(inputs['src'])
-        i_enc = str(sp.encode_line(sp_model.english_hindi["ENG_EXP_5.6"],i_tok))
-
-        tp_tok = anuvada.indic_tokenizer(inputs['target_prefix'])
-        tp_enc = str(sp.encode_line(sp_model.english_hindi["HIN_EXP_5.6"],tp_tok))
-        
-        i_final = format_converter(i_enc)
-        tp_final = format_converter(tp_enc)
-        tp_final[-1] = tp_final[-1].replace(']',",")
-        print("succes till here")
-
-        out = translator.translate_batch([i_final],beam_size = 5, target_prefix = [tp_final])    
-        tok = out[0][0]['tokens']  
-        y_1 = " ".join(tok)
-        translation = sp.decode_line(sp_model.english_hindi["HIN_EXP_5.6"],y_1)
-        translation = anuvada.indic_detokenizer(translation)
-        logger.info("interactive output-{}".format(translation))
-        return translation
-    except Exception as e:
-        print(e)
-        print(sys.exc_info()[0])
+    return (out)    
 
 
 def encode_itranslate_decode(i,sp_encoder,sp_decoder):
@@ -88,7 +73,7 @@ def encode_itranslate_decode(i,sp_encoder,sp_decoder):
         logger.error("Unexpexcted error in encode_itranslate_decode: {} and {}".format(e,sys.exc_info()[0]))
         raise
 
-def interactive_translation_1(inputs):
+def interactive_translation(inputs):
     out = {}
     tgt = list()
 
