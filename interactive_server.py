@@ -18,6 +18,7 @@ def translate():
     inputs = request.get_json(force=True)
     if len(inputs)>0:
         logger.info("Making interactive-translation API call")
+        logger.info("inputs---{}".format(inputs))
         out = interactive_translation.interactive_translation(inputs)
         logger.info("out from interactive-translation done{}".format(out))
         return jsonify(out)
