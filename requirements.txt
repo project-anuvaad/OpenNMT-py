@@ -10,3 +10,4 @@ indic-transliteration
 kafka-python
 python-dateutil
 Flask-Cors
+ctranslate2==1.8.0
