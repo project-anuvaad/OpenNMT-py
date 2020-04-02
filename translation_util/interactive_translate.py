@@ -104,12 +104,13 @@ def interactive_translation(inputs):
                     logger.info("unsupported model id: {} for given input".format(i['id']))
                     raise Exception("unsupported model id: {} for given input".format(i['id']))      
 
+                tagged_tgt = translation
                 translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)
             logger.info("interactive translation-experiment-{} output: {}".format(i['id'],translation))    
             tgt.append(translation)
 
         out['status'] = statusCode["SUCCESS"]
-        out['response_body'] = [{"tgt": tgt[i]}
+        out['response_body'] = [{"tgt": tgt[i],"tagged_tgt":tagged_tgt}
                 for i in range(len(tgt))]
     except Exception as e:
         out['status'] = statusCode["SYSTEM_ERR"]
