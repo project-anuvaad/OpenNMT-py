@@ -56,6 +56,7 @@ def encode_itranslate_decode(i,sp_encoder,sp_decoder):
 
         if 'target_prefix' in i and len(i['target_prefix']) > 0 and i['target_prefix'].isspace() == False:
             logger.info("target prefix: {}".format(i['target_prefix']))
+            i['target_prefix'] = i['target_prefix'].strip() 
             i['target_prefix'] = anuvada.indic_tokenizer(i['target_prefix'])
             i['target_prefix'] = str(sp.encode_line(sp_decoder,i['target_prefix']))
             tp_final = format_converter(i['target_prefix'])

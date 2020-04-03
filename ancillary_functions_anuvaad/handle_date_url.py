@@ -1,5 +1,6 @@
 import re
 import ancillary_functions_anuvaad.common_util_functions as common_utils
+from config.regex_patterns import patterns, hindi_numbers
 from onmt.utils.logging import logger
 
 
@@ -68,8 +69,6 @@ def replace_tags_with_original(text,date_original,url_original):
     print(e)
     pass
 
-# res,date_original,url_original = tag_number_date_url('Precedent Issue 81 July/August 2007. Available at http://www.austlii.edu.au/au/journals/PrecedentAULA/2007/66.pdf.')
-# replace_tags_with_original('प्राथमिक अंक DdAaTtEe0 जुलाई / अगस्त DdAaTtEe1 UuRrLl0 Ut उपलब्ध है',date_original,url_original)
 "merge below two functions and above two, when training for tamil again..above two are used in tamil 2108, rest all will use below one"
 
 def tag_number_date_url_1(text):
@@ -81,11 +80,7 @@ def tag_number_date_url_1(text):
     url_original = list()
     count_number = 0
     # number_original = list()
-
-    hindi_numbers = ['०', '१', '२', '३','४','५','६','७','८','९','१०','११','१२','१३','१४','१५','	१६','	१७','	१८','१९','२०','२१','२२','२३','२४','२५','२६','२७','२८','२९','३०']
-
-    num_array = re.findall(r'\d+',text) 
-    # print("num_arr",num_array)  
+    num_array = re.findall(patterns['p3']['regex'],text)
     num_array = list(map(int, num_array)) 
     num_array.sort(reverse = True)
     for j in num_array:
@@ -127,17 +122,16 @@ def tag_number_date_url_1(text):
         resultant_str.append(word)   
         s = [str(i) for i in resultant_str] 
         res = str(" ".join(s))   
-    logger.info("tagged response:{} and date:{} and url:{}".format(res,date_original,url_original))   
-
+    logger.info("tagged response:{} and date:{} and url:{}".format(res,date_original,url_original)) 
     return res,date_original,url_original,num_array 
   except Exception as e:
-    logger.error("In handle_date_url:tag_num function parent except block:{}".format(e))   
+    logger.error("In handle_date_url:tag_num function parent except block:{}".format(e))
+    return text,[],[],(num_array or []) 
 
 def replace_tags_with_original_1(text,date_original,url_original,num_array):
   try:
     resultant_str = list()
-    hindi_numbers = ['०', '१', '२', '३','४','५','६','७','८','९','१०','११','१२','१३','१४','१५','	१६','	१७','	१८','१९','२०','२१','२२','२३','२४','२५','२६','२७','२८','२९','३०']
-    
+      
     if len(text) == 0:
       return ""
     for word in text.split():
@@ -170,22 +164,25 @@ def replace_tags_with_original_1(text,date_original,url_original,num_array):
           res = res.replace(j,str(num_array[index]),1)
       
       except Exception as e:
-        logger.error("inside str.replace error,but handling it:{}".format(e))
+        logger.info("inside str.replace error,but handling it:{}".format(e))
         res = res.replace(j,"",1)
-        
-    # for word in text.split():
-    #   if word[:-1] == 'DdAaTtEe':
-    #     word = date_original[int(word[-1])]
-    #     print(word,"date")
-    #   elif word[:-1] == 'UuRrLl':
-    #     word = url_original[int(word[-1])]  
-    #     print("url",word)        
 
-    #   resultant_str.append(word)
-    #   s = [str(i) for i in resultant_str] 
-    #   res = str(" ".join(s))
-
-    logger.info("response after tags replacement:{}".format(res))
-    return res    
+    f_out = regex_pass(res)
+    logger.info("response after tags replacement:{}".format(f_out))
+    return f_out    
   except Exception as e:
-    logger.error("in parent except block of replace tag function:{}".format(e))
+    logger.error("Error in parent except block of replace_tags_with_original_1 function, returning tagged output:{}".format(e))
+    return text
+
+
+def regex_pass(text):
+  try:
+    regex_list = [patterns['p1']['regex'],patterns['p2']['regex']]
+    for pattern in regex_list:
+      text = re.sub(pattern,r'\1\2',text)
+
+    return text
+    
+  except Exception as e:
+    logger.error("Error in regex_pass: handle_date_url function:{}".format(e))
+    return text
