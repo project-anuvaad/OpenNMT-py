@@ -5,6 +5,7 @@ import ancillary_functions_anuvaad.ancillary_functions as ancillary_functions
 import ancillary_functions_anuvaad.handle_date_url as date_url_util
 from config import sentencepiece_model_loc as sp_model
 from config.config import statusCode
+from config.regex_patterns import patterns
 from onmt.utils.logging import init_logger
 import json 
 import sys
@@ -105,8 +106,10 @@ def interactive_translation(inputs):
                     logger.info("unsupported model id: {} for given input".format(i['id']))
                     raise Exception("unsupported model id: {} for given input".format(i['id']))      
 
+                translation = date_url_util.regex_pass(translation,[patterns['p4']['regex'],patterns['p5']['regex']])
                 tagged_tgt = translation
                 translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)
+                print(len(tagged_tgt.split()),len(translation.split()))
             logger.info("interactive translation-experiment-{} output: {}".format(i['id'],translation))    
             tgt.append(translation)
 

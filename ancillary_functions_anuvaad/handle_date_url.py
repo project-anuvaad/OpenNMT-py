@@ -167,7 +167,6 @@ def replace_tags_with_original_1(text,date_original,url_original,num_array):
         logger.info("inside str.replace error,but handling it:{}".format(e))
         res = res.replace(j,"",1)
 
-    f_out = regex_pass(res)
     logger.info("response after tags replacement:{}".format(res))
     return res    
   except Exception as e:
@@ -175,9 +174,9 @@ def replace_tags_with_original_1(text,date_original,url_original,num_array):
     return text
 
 
-def regex_pass(text):
+def regex_pass(text,regex_list):
   try:
-    regex_list = [patterns['p1']['regex'],patterns['p2']['regex']]
+    regex_list = regex_list
     for pattern in regex_list:
       text = re.sub(pattern,r'\1\2',text)
 
