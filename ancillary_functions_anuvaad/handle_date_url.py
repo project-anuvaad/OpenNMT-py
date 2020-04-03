@@ -168,8 +168,8 @@ def replace_tags_with_original_1(text,date_original,url_original,num_array):
         res = res.replace(j,"",1)
 
     f_out = regex_pass(res)
-    logger.info("response after tags replacement:{}".format(f_out))
-    return f_out    
+    logger.info("response after tags replacement:{}".format(res))
+    return res    
   except Exception as e:
     logger.error("Error in parent except block of replace_tags_with_original_1 function, returning tagged output:{}".format(e))
     return text
