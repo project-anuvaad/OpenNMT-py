@@ -112,7 +112,7 @@ def interactive_translation(inputs):
                 translation = date_url_util.regex_pass(translation,[patterns['p4']['regex'],patterns['p5']['regex']])
                 tag_tgt = translation
                 translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)
-                logger.info(len(tag_tgt.split()),len(translation.split()))
+                print(len(tag_tgt.split()),len(translation.split()))
             logger.info("interactive translation-experiment-{} output: {}".format(i['id'],translation))    
             tgt.append(translation)
             tagged_tgt.append(tag_tgt)
