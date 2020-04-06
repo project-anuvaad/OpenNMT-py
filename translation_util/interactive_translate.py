@@ -79,6 +79,8 @@ def encode_itranslate_decode(i,sp_encoder,sp_decoder):
 def interactive_translation(inputs):
     out = {}
     tgt = list()
+    tagged_tgt = list()
+    tagged_src = list()
 
     try:
         for i in inputs:            
@@ -95,7 +97,8 @@ def interactive_translation(inputs):
 
             else:
                 logger.info("Performing interactive translation on:{}".format(i['id']))
-                i['src'],date_original,url_original,num_array = date_url_util.tag_number_date_url_1(i['src'])  
+                i['src'],date_original,url_original,num_array = date_url_util.tag_number_date_url_1(i['src'])
+                tag_src = i['src']  
 
                 if i['id'] == 56:
                     i['src'] = anuvada.moses_tokenizer(i['src'])
@@ -107,14 +110,17 @@ def interactive_translation(inputs):
                     raise Exception("unsupported model id: {} for given input".format(i['id']))      
 
                 translation = date_url_util.regex_pass(translation,[patterns['p4']['regex'],patterns['p5']['regex']])
-                tagged_tgt = translation
+                tag_tgt = translation
                 translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)
-                print(len(tagged_tgt.split()),len(translation.split()))
+                logger.info(len(tag_tgt.split()),len(translation.split()))
             logger.info("interactive translation-experiment-{} output: {}".format(i['id'],translation))    
             tgt.append(translation)
+            tagged_tgt.append(tag_tgt)
+            tagged_src.append(tag_src)
 
         out['status'] = statusCode["SUCCESS"]
-        out['response_body'] = [{"tgt": tgt[i],"tagged_tgt":tagged_tgt}
+        out['response_body'] = [{"tgt": tgt[i],"tagged_tgt":tagged_tgt[i],
+                                "tagged_src":tagged_src[i]}
                 for i in range(len(tgt))]
     except Exception as e:
         out['status'] = statusCode["SYSTEM_ERR"]
