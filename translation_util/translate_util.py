@@ -12,6 +12,7 @@ import datetime
 from onmt.translate import ServerModelError
 import sys
 from config import sentencepiece_model_loc as sp_model
+from config.regex_patterns import patterns
 
 def encode_translate_decode(i,translation_server,sp_encoder,sp_decoder):
     try:
@@ -490,6 +491,7 @@ def translate_func(inputs, translation_server):
 
                 # translation = (prefix+" "+translation+" "+suffix).strip()
                 translation = translation.replace("▁"," ")
+                translation = date_url_util.regex_pass(translation,[patterns['p4']['regex'],patterns['p5']['regex'],patterns['p6']['regex'],patterns['p7']['regex']])
                 translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)
             logger.info("trans_function-experiment-{} output: {}".format(i['id'],translation))    
             tgt.append(translation)

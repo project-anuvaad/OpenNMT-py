@@ -79,10 +79,15 @@ def tag_number_date_url_1(text):
     count_url = 0
     url_original = list()
     count_number = 0
-    # number_original = list()
+    
     num_array = re.findall(patterns['p3']['regex'],text)
-    num_array = list(map(int, num_array)) 
+    num_array_orignal = num_array
+    i_zero = get_indices_of_num_with_zero_prefix(num_array)
+    num_array = list(map(int, num_array))
+    zero_prefix_num = [num_array[i] for i in i_zero] 
     num_array.sort(reverse = True)
+    num_array = update_num_arr(num_array,zero_prefix_num,i_zero,num_array_orignal)
+ 
     for j in num_array:
       text = text.replace(str(j),'NnUuMm'+str(hindi_numbers[count_number]),1)
       count_number +=1
@@ -185,3 +190,19 @@ def regex_pass(text,regex_list):
   except Exception as e:
     logger.error("Error in regex_pass: handle_date_url function:{}".format(e))
     return text
+
+def get_indices_of_num_with_zero_prefix(num_arr):
+  '''  eg. '000','049' '''
+  i = [i for i,j in enumerate(num_arr) if j.startswith(str(0))]
+  return i
+
+def update_num_arr(num_array,zero_prefix_num,i_zero,num_array_orignal):
+  ind = list()
+  for i in zero_prefix_num:
+    for j,m in enumerate(num_array):
+      if m == i:
+        ind.append(j)
+
+  for k,l in enumerate(ind):
+    num_array[l] = num_array_orignal[i_zero[k]]
+  return num_array
