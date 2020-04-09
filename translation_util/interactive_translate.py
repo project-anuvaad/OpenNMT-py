@@ -150,12 +150,10 @@ def replace_num_target_prefix(i_,num_map):
     try:
         for i in num_tp:
             replacement_tag =  [pair['tag'] for pair in num_map if str(pair['no.'])== i]
-            if len(replacement_tag) == 0:
-                return i_['target_prefix']
-
-            replacement_tag = replacement_tag[0]
-            i_['target_prefix'] = i_['target_prefix'].replace(i,replacement_tag)
-            logger.info("tp after replacing numbers with tag: {}".format(i_['target_prefix']))
+            if len(replacement_tag) > 0:
+                replacement_tag = replacement_tag[0]
+                i_['target_prefix'] = i_['target_prefix'].replace(i,replacement_tag)
+        logger.info("tp after replacing numbers with tag: {}".format(i_['target_prefix']))
         return i_['target_prefix']
     except Exception as e:
         logger.error("Error in interavtive translation-replace_num_target_prefix:{}".format(e))
