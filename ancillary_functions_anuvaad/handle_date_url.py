@@ -79,6 +79,7 @@ def tag_number_date_url_1(text):
     count_url = 0
     url_original = list()
     count_number = 0
+    num_map = list()
     
     num_array = re.findall(patterns['p3']['regex'],text)
     num_array_orignal = num_array
@@ -90,11 +91,13 @@ def tag_number_date_url_1(text):
  
     for j in num_array:
       text = text.replace(str(j),'NnUuMm'+str(hindi_numbers[count_number]),1)
+      num_map.append({"no.":j,"tag":'NnUuMm'+str(hindi_numbers[count_number])})
       count_number +=1
       if count_number >30:
         print("count exceeding 30")
         count_number = 30
 
+    logger.info("number-tag mappings-{}".format(num_map))
     logger.info("Number tagging done")
     for word in text.split():
         # if len(word)>4 and len(word)<12 and token_is_date(word):
@@ -128,7 +131,7 @@ def tag_number_date_url_1(text):
         s = [str(i) for i in resultant_str] 
         res = str(" ".join(s))   
     logger.info("tagged response:{} and date:{} and url:{}".format(res,date_original,url_original)) 
-    return res,date_original,url_original,num_array 
+    return res,date_original,url_original,num_array,num_map 
   except Exception as e:
     logger.error("In handle_date_url:tag_num function parent except block:{}".format(e))
     return text,[],[],(num_array or []) 

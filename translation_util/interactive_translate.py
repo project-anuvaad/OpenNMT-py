@@ -10,6 +10,7 @@ from onmt.utils.logging import init_logger
 import json 
 import sys
 import os
+import re
 
 ICONFG_FILE = "available_models/interactive_models/iconf.json"
 INTERACTIVE_LOG_FILE = 'intermediate_data/interactive_log_file.txt'
@@ -47,7 +48,7 @@ def model_conversion(inputs):
     return (out)    
 
 
-def encode_itranslate_decode(i,sp_encoder,sp_decoder):
+def encode_itranslate_decode(i,sp_encoder,sp_decoder,num_map):
     try:
         logger.info("Inside encode_itranslate_decode function")
         model_path = get_model_path(i['id'])
@@ -56,8 +57,9 @@ def encode_itranslate_decode(i,sp_encoder,sp_decoder):
         i_final = format_converter(i['src'])
 
         if 'target_prefix' in i and len(i['target_prefix']) > 0 and i['target_prefix'].isspace() == False:
-            logger.info("target prefix: {}".format(i['target_prefix']))
+            logger.info("target prefix: {}".format(i['target_prefix'])) 
             i['target_prefix'] = i['target_prefix'].strip() 
+            i['target_prefix'] = replace_num_target_prefix(i,num_map)
             i['target_prefix'] = anuvada.indic_tokenizer(i['target_prefix'])
             i['target_prefix'] = str(sp.encode_line(sp_decoder,i['target_prefix']))
             tp_final = format_converter(i['target_prefix'])
@@ -97,12 +99,12 @@ def interactive_translation(inputs):
 
             else:
                 logger.info("Performing interactive translation on:{}".format(i['id']))
-                i['src'],date_original,url_original,num_array = date_url_util.tag_number_date_url_1(i['src'])
-                tag_src = i['src']  
+                i['src'],date_original,url_original,num_array,num_map = date_url_util.tag_number_date_url_1(i['src'])
+                tag_src = i['src'] 
 
                 if i['id'] == 56:
                     i['src'] = anuvada.moses_tokenizer(i['src'])
-                    translation = encode_itranslate_decode(i,sp_model.english_hindi["ENG_EXP_5.6"],sp_model.english_hindi["HIN_EXP_5.6"])
+                    translation = encode_itranslate_decode(i,sp_model.english_hindi["ENG_EXP_5.6"],sp_model.english_hindi["HIN_EXP_5.6"],num_map)
                     translation = anuvada.indic_detokenizer(translation)
                                                                    
                 else:
@@ -142,3 +144,20 @@ def get_model_path(model_id):
         path = [ model["path"] for model in models if model["id"] == model_id]
         final_path =  os.path.join(model_root, path[0])
         return final_path
+
+def replace_num_target_prefix(i_,num_map):
+    num_tp = re.findall(patterns['p3']['regex'],i_['target_prefix'])
+    try:
+        for i in num_tp:
+            replacement_tag =  [pair['tag'] for pair in num_map if str(pair['no.'])== i]
+            if len(replacement_tag) == 0:
+                return i_['target_prefix']
+
+            replacement_tag = replacement_tag[0]
+            i_['target_prefix'] = i_['target_prefix'].replace(i,replacement_tag)
+            logger.info("tp after replacing numbers with tag: {}".format(i_['target_prefix']))
+        return i_['target_prefix']
+    except Exception as e:
+        logger.error("Error in interavtive translation-replace_num_target_prefix:{}".format(e))
+        return i_['target_prefix']
+    

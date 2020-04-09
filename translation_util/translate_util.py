@@ -329,7 +329,7 @@ def translate_func(inputs, translation_server):
             else:
                 logger.info("translating using NMT-model:{}".format(i['id']))
                 # prefix,suffix, i['src'] = ancillary_functions.separate_alphanumeric_and_symbol(i['src'])
-                i['src'],date_original,url_original,num_array = date_url_util.tag_number_date_url_1(i['src'])        
+                i['src'],date_original,url_original,num_array,num_map = date_url_util.tag_number_date_url_1(i['src'])        
                 if i['id'] == 7:  
                     "english-tamil"
                     translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_tamil["ENG_230919"],sp_model.english_tamil["TAM_230919"])
