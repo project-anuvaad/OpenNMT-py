@@ -48,7 +48,7 @@ def model_conversion(inputs):
     return (out)    
 
 
-def encode_itranslate_decode(i,sp_encoder,sp_decoder,num_map):
+def encode_itranslate_decode(i,sp_encoder,sp_decoder,num_map,tp_tokenizer):
     try:
         logger.info("Inside encode_itranslate_decode function")
         model_path = get_model_path(i['id'])
@@ -60,7 +60,9 @@ def encode_itranslate_decode(i,sp_encoder,sp_decoder,num_map):
             logger.info("target prefix: {}".format(i['target_prefix'])) 
             i['target_prefix'] = i['target_prefix'].strip() 
             i['target_prefix'] = replace_num_target_prefix(i,num_map)
-            i['target_prefix'] = anuvada.indic_tokenizer(i['target_prefix'])
+            # i['target_prefix'] = anuvada.indic_tokenizer(i['target_prefix'])
+            if tp_tokenizer is not None:
+                i['target_prefix'] = tp_tokenizer(i['target_prefix'])
             i['target_prefix'] = str(sp.encode_line(sp_decoder,i['target_prefix']))
             tp_final = format_converter(i['target_prefix'])
             tp_final[-1] = tp_final[-1].replace(']',",")
@@ -83,6 +85,7 @@ def interactive_translation(inputs):
     tgt = list()
     tagged_tgt = list()
     tagged_src = list()
+    tp_tokenizer = None
 
     try:
         for i in inputs:            
@@ -103,10 +106,13 @@ def interactive_translation(inputs):
                 tag_src = i['src'] 
 
                 if i['id'] == 56:
+                    tp_tokenizer = anuvada.indic_tokenizer
                     i['src'] = anuvada.moses_tokenizer(i['src'])
-                    translation = encode_itranslate_decode(i,sp_model.english_hindi["ENG_EXP_5.6"],sp_model.english_hindi["HIN_EXP_5.6"],num_map)
+                    translation = encode_itranslate_decode(i,sp_model.english_hindi["ENG_EXP_5.6"],sp_model.english_hindi["HIN_EXP_5.6"],num_map,tp_tokenizer)
                     translation = anuvada.indic_detokenizer(translation)
-                                                                   
+                elif i['id'] == 17:  
+                    "english-malayalam"
+                    translation = encode_itranslate_decode(i,sp_model.english_malayalam["ENG_200919"],sp_model.english_malayalam["MALAYALAM_200919"],num_map,tp_tokenizer)                                                
                 else:
                     logger.info("unsupported model id: {} for given input".format(i['id']))
                     raise Exception("unsupported model id: {} for given input".format(i['id']))      
