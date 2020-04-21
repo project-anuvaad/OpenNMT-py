@@ -110,6 +110,12 @@ def interactive_translation(inputs):
                     i['src'] = anuvada.moses_tokenizer(i['src'])
                     translation = encode_itranslate_decode(i,sp_model.english_hindi["ENG_EXP_5.6"],sp_model.english_hindi["HIN_EXP_5.6"],num_map,tp_tokenizer)
                     translation = anuvada.indic_detokenizer(translation)
+                elif i['id'] == 7:
+                    "english-tamil"
+                    translation = encode_itranslate_decode(i,sp_model.english_tamil["ENG_230919"],sp_model.english_tamil["TAM_230919"],num_map,tp_tokenizer)
+                elif i['id'] == 15:  
+                    "english-kannada"
+                    translation = encode_itranslate_decode(i,sp_model.english_kannada["ENG_200919"],sp_model.english_kannada["KANNADA_200919"],num_map,tp_tokenizer)
                 elif i['id'] == 17:  
                     "english-malayalam"
                     translation = encode_itranslate_decode(i,sp_model.english_malayalam["ENG_200919"],sp_model.english_malayalam["MALAYALAM_200919"],num_map,tp_tokenizer)                                                

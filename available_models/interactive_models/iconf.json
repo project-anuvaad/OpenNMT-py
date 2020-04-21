@@ -8,6 +8,14 @@
         {
             "id": 17,
             "path":"en-ml"
+        },
+        {
+            "id": 7,
+            "path":"en-ta"
+        },
+        {
+            "id": 15,
+            "path":"en-kn"
         }
     ]
 }
