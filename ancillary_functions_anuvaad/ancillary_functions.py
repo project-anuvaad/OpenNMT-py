@@ -135,7 +135,8 @@ def replace_hindi_numbers(text):
 def special_case_fits(text):
     if util.token_is_date(text):
         return True
-    elif util.token_is_url(text):
+    elif len(text.split()) == 1 and util.token_is_url(text):
+        "this will handle single URL and return the same i.e single token-url"
         return True
     elif len(text.split()) == 1 and len(handle_single_token(text))>0:  
         return True  
@@ -157,8 +158,8 @@ def handle_special_cases(text,model_id):
 
             logger.info('handling dates before model in long alpha-numeric format')
             return text
-        elif util.token_is_url(text):
-            logger.info('handling url before model')
+        elif len(text.split()) == 1 and util.token_is_url(text):
+            logger.info('handling single token-url before model and returning as it is')
             return text   
         elif len(text.split()) == 1 and len(handle_single_token(text))>0:
             return handle_single_token(text) 
