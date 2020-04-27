@@ -105,4 +105,5 @@ def nmt_translation(translation_server,c,p,producer_topic):
             logger.info("*******************msg sent count*********:{}".format(msg_sent))
     except Exception  as e:
         logger.error("Error in kafka_document_translator:nmt_translation: %s"% sys.exc_info()[0])
-        logger.error("Error in kafka_document_translator:nmt_translation: {}".format(e))    
+        logger.error("Error in kafka_document_translator:nmt_translation: {}".format(e))  
+        raise  
