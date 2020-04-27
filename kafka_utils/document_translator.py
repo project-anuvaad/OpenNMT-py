@@ -19,7 +19,11 @@ import translation_util.translate_util as translate_util
 
 
 def doc_translator(translation_server,c_topic,p_topic):
-    logger.info('doc_translator')   
+    logger.info('doc_translator')  
+    iq =0
+    out = {}
+    msg_count = 0
+    msg_sent = 0 
     c = get_consumer(c_topic)
     p = get_producer()
     try:
