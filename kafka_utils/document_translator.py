@@ -18,66 +18,16 @@ import sys
 import translation_util.translate_util as translate_util
 
 
-def doc_translator(translation_server):
+def doc_translator(translation_server,c_topic,p_topic):
     logger.info('doc_translator')   
-    c = get_consumer(consumer_topics['DOCUMENT_REQ'])
-    _c = get_consumer(consumer_topics['new_topic'])
+    c = get_consumer(c_topic)
     p = get_producer()
-    try:
-        nmt_translation(translation_server,c,p,producer_topics['TO_DOCUMENT'])
-        nmt_translation(translation_server,_c,p,producer_topics['new_topic'])
-        # for msg in c:
-        #     msg_count +=1
-        #     logger.info("*******************msg receive count*********:{}".format(msg_count))
-        #     iq = iq +1
-        #     inputs = (msg.value)
-
-        #     if inputs is not None and len(inputs) is not 0:
-        #         if inputs['url_end_point'] == 'translation_en':
-        #             logger.info("Running kafka on  {}".format(inputs['url_end_point']))
-        #             logger.info("Running kafka-translation on  {}".format(inputs['message']))
-        #             out = translate_util.from_en(inputs['message'], translation_server)
-        #         elif inputs['url_end_point'] == 'translation_hi':
-        #             logger.info("Running kafka on  {}".format(inputs['url_end_point']))
-        #             logger.info("Running kafka-translation on  {}".format(inputs['message']))
-        #             out = translate_util.from_hindi(inputs['message'], translation_server)
-        #             logger.info("final output kafka-translation_hi:{}".format(out))  
-        #         elif inputs['url_end_point'] == "translate-anuvaad":
-        #             logger.info("Running kafka on  {}".format(inputs['url_end_point']))
-        #             logger.info("Running kafka-translation on  {}".format(inputs['message']))  
-        #             out = translate_util.translate_func(inputs['message'], translation_server)
-        #             logger.info("final output kafka-translate-anuvaad:{}".format(out)) 
-        #         else:
-        #             logger.info("Incorrect url_end_point for KAFKA")
-        #             out['status'] = statusCode["KAFKA_INVALID_REQUEST"]
-        #             out['response_body'] = []
-
-                
-        #     p.send(producer_topics['TO_DOCUMENT'], value={'out':out})
-        #     p.flush()
-        #     msg_sent += 1
-        #     logger.info("*******************msg sent count*********:{}".format(msg_sent))
-            
-    except ValueError:  # includes simplejson.decoder.JSONDecodeError
-        logger.error("Decoding JSON has failed in document_translator: %s"% sys.exc_info()[0])
-        doc_translator(translation_server)  
-    except Exception  as e:
-        logger.error("Unexpected error: %s"% sys.exc_info()[0])
-        logger.error("error in doc_translator: {}".format(e))
-        doc_translator(translation_server)
-
-def nmt_translation(translation_server,c,p,producer_topic):
-    iq =0
-    out = {}
-    msg_count = 0
-    msg_sent = 0
     try:
         for msg in c:
             msg_count +=1
             logger.info("*******************msg receive count*********:{}".format(msg_count))
             iq = iq +1
             inputs = (msg.value)
-            logger.info(inputs)
 
             if inputs is not None and len(inputs) is not 0:
                 if inputs['url_end_point'] == 'translation_en':
@@ -100,11 +50,58 @@ def nmt_translation(translation_server,c,p,producer_topic):
                     out['response_body'] = []
 
                 
-            p.send(producer_topic, value={'out':out})
+            p.send(p_topic, value={'out':out})
             p.flush()
             msg_sent += 1
             logger.info("*******************msg sent count*********:{}".format(msg_sent))
+            
+    except ValueError:  # includes simplejson.decoder.JSONDecodeError
+        logger.error("Decoding JSON has failed in document_translator: %s"% sys.exc_info()[0])
+        doc_translator(translation_server,c_topic,p_topic)  
     except Exception  as e:
-        logger.error("Error in kafka_document_translator:nmt_translation: %s"% sys.exc_info()[0])
-        logger.error("Error in kafka_document_translator:nmt_translation: {}".format(e))  
-        raise  
+        logger.error("Unexpected error: %s"% sys.exc_info()[0])
+        logger.error("error in doc_translator: {}".format(e))
+        doc_translator(translation_server,c_topic,p_topic)
+
+# def nmt_translation(translation_server,c,p,producer_topic):
+#     iq =0
+#     out = {}
+#     msg_count = 0
+#     msg_sent = 0
+#     try:
+#         for msg in c:
+#             msg_count +=1
+#             logger.info("*******************msg receive count*********:{}".format(msg_count))
+#             iq = iq +1
+#             inputs = (msg.value)
+#             logger.info(inputs)
+
+#             if inputs is not None and len(inputs) is not 0:
+#                 if inputs['url_end_point'] == 'translation_en':
+#                     logger.info("Running kafka on  {}".format(inputs['url_end_point']))
+#                     logger.info("Running kafka-translation on  {}".format(inputs['message']))
+#                     out = translate_util.from_en(inputs['message'], translation_server)
+#                 elif inputs['url_end_point'] == 'translation_hi':
+#                     logger.info("Running kafka on  {}".format(inputs['url_end_point']))
+#                     logger.info("Running kafka-translation on  {}".format(inputs['message']))
+#                     out = translate_util.from_hindi(inputs['message'], translation_server)
+#                     logger.info("final output kafka-translation_hi:{}".format(out))  
+#                 elif inputs['url_end_point'] == "translate-anuvaad":
+#                     logger.info("Running kafka on  {}".format(inputs['url_end_point']))
+#                     logger.info("Running kafka-translation on  {}".format(inputs['message']))  
+#                     out = translate_util.translate_func(inputs['message'], translation_server)
+#                     logger.info("final output kafka-translate-anuvaad:{}".format(out)) 
+#                 else:
+#                     logger.info("Incorrect url_end_point for KAFKA")
+#                     out['status'] = statusCode["KAFKA_INVALID_REQUEST"]
+#                     out['response_body'] = []
+
+                
+#             p.send(producer_topic, value={'out':out})
+#             p.flush()
+#             msg_sent += 1
+#             logger.info("*******************msg sent count*********:{}".format(msg_sent))
+#     except Exception  as e:
+#         logger.error("Error in kafka_document_translator:nmt_translation: %s"% sys.exc_info()[0])
+#         logger.error("Error in kafka_document_translator:nmt_translation: {}".format(e))  
+#         raise  
