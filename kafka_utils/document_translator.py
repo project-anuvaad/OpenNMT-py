@@ -77,6 +77,7 @@ def nmt_translation(translation_server,c,p,producer_topic):
             logger.info("*******************msg receive count*********:{}".format(msg_count))
             iq = iq +1
             inputs = (msg.value)
+            logger.info(inputs)
 
             if inputs is not None and len(inputs) is not 0:
                 if inputs['url_end_point'] == 'translation_en':
