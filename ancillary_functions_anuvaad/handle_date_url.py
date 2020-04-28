@@ -74,6 +74,9 @@ def replace_tags_with_original(text,date_original,url_original):
 
 def tag_number_date_url_1(text):
   try: 
+    if len(text) == 0:
+      return "","","","",""
+    
     resultant_str = list()
     count_date = 0
     date_original = list()

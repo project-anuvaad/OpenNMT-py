@@ -304,6 +304,8 @@ def translate_func(inputs, translation_server):
     node_id = list()
     input_subwords = list()
     output_subwords = list()
+    i_src = list()
+
     s_id = [0000]
     n_id = [0000]
 
@@ -318,7 +320,8 @@ def translate_func(inputs, translation_server):
                 logger.info("either id or src missing in some input")
                 return (out) 
 
-            logger.info("input sentences:{}".format(i['src']))    
+            logger.info("input sentences:{}".format(i['src'])) 
+            i_src.append(i['src'])   
             i['src'] = i['src'].strip()    
             if ancillary_functions.special_case_fits(i['src']):
                 logger.info("sentence fits in special case, returning accordingly and not going to model")
@@ -510,7 +513,7 @@ def translate_func(inputs, translation_server):
         out['status'] = statusCode["SUCCESS"]
         out['response_body'] = [{"tgt": tgt[i],
                 "pred_score": pred_score[i], "s_id": sentence_id[i],"input_subwords": input_subwords[i],
-                "output_subwords":output_subwords[i],"n_id":node_id[i]}
+                "output_subwords":output_subwords[i],"n_id":node_id[i],"src":i_src[i]}
                 for i in range(len(tgt))]
     except ServerModelError as e:
         out['status'] = statusCode["SEVER_MODEL_ERR"]

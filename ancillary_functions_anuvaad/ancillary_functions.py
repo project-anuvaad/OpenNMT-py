@@ -133,7 +133,9 @@ def replace_hindi_numbers(text):
 
 "below is for handling dates which are splitted in more than 1 token and other special cases"
 def special_case_fits(text):
-    if util.token_is_date(text):
+    if len(text) == 0 :
+        return True
+    elif util.token_is_date(text):
         return True
     elif len(text.split()) == 1 and util.token_is_url(text):
         "this will handle single URL and return the same i.e single token-url"
@@ -143,7 +145,10 @@ def special_case_fits(text):
 
 def handle_special_cases(text,model_id):
     try:
-        if util.token_is_date(text):
+        if len(text) == 0 :
+            logger.info("Null src for this request")
+            return ""
+        elif util.token_is_date(text):
             hindi_months = ['जनवरी', 'फ़रवरी', 'मार्च', 'अप्रैल','मई','जून','जुलाई','अगस्त','सितंबर','अक्टूबर','नवंबर','दिसंबर']
             tamil_months = ['ஜனவரி', 'பிப்ரவரி', 'மார்ச்', 'ஏப்ரல்','மே','ஜூன்','ஜூலை','ஆகஸ்ட்','செப்டம்பர்','அக்டோபர்','நவம்பர்','டிசம்பர்']
             eng_months = ['january','february','march','april','may','june','july','august','september','october','november','december'] 
