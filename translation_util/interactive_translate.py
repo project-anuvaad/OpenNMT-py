@@ -123,7 +123,8 @@ def interactive_translation(inputs):
                     logger.info("unsupported model id: {} for given input".format(i['id']))
                     raise Exception("unsupported model id: {} for given input".format(i['id']))      
 
-                translation = date_url_util.regex_pass(translation,[patterns['p4']['regex'],patterns['p5']['regex'],patterns['p6']['regex'],patterns['p7']['regex']])
+                translation = date_url_util.regex_pass(translation,[patterns['p8'],patterns['p9'],patterns['p4'],patterns['p5'],
+                                            patterns['p6'],patterns['p7']])
                 tag_tgt = translation
                 translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)
                 logger.info("len tag_tgt-{} and len translation-{}".format(len(tag_tgt.split()),len(translation.split())))
