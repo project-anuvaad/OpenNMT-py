@@ -2,6 +2,7 @@ import re
 import ancillary_functions_anuvaad.common_util_functions as common_utils
 from config.regex_patterns import patterns, hindi_numbers
 from onmt.utils.logging import logger
+import numpy as np
 
 
 def tag_number_date_url(text):
@@ -87,7 +88,7 @@ def tag_number_date_url_1(text):
     num_array = list(map(int, num_array))
     zero_prefix_num = [num_array[i] for i in i_zero] 
     num_array.sort(reverse = True)
-    num_array = update_num_arr(num_array,zero_prefix_num,i_zero,num_array_orignal)
+    # num_array = update_num_arr(num_array,zero_prefix_num,i_zero,num_array_orignal)
  
     for j in num_array:
       text = text.replace(str(j),'NnUuMm'+str(hindi_numbers[count_number]),1)
@@ -186,7 +187,7 @@ def regex_pass(text,regex_list):
   try:
     regex_list = regex_list
     for pattern in regex_list:
-      text = re.sub(pattern,r'\1\2',text)
+      text = re.sub(pattern['regex'],pattern['replacement'],text)
 
     return text
     
@@ -200,12 +201,27 @@ def get_indices_of_num_with_zero_prefix(num_arr):
   return i
 
 def update_num_arr(num_array,zero_prefix_num,i_zero,num_array_orignal):
-  ind = list()
-  for i in zero_prefix_num:
-    for j,m in enumerate(num_array):
-      if m == i:
-        ind.append(j)
+  '''
+  This is function is meant to handle zero prefix numbers like 09 or 000 which are converted to 9 or 0 during processing, We want them in original form i.e 09
+  zero_prefix_num: this is the num that has to be transformed back with zero prefix(from 9 to 09, or, 0 to 000 originally)
+  i_zero: indices of numbers with zero prefix in num_array_orignal
+  ind: indices of zero prefix numbers in num_array descending
 
-  for k,l in enumerate(ind):
-    num_array[l] = num_array_orignal[i_zero[k]]
-  return num_array
+  Note: this function needs some fixing
+  '''
+  try:
+    num_array_o = None
+    num_array_o = num_array[:]
+        
+    ind = list()
+    zero_prefix_num = np.unique(np.array(zero_prefix_num))
+    for i in zero_prefix_num:
+      for j,m in enumerate(num_array):
+        if m == i:
+          ind.append(j)
+    for k,l in enumerate(ind):
+      num_array[l] = num_array_orignal[i_zero[k]]
+    return num_array
+  except Exception as e:
+    logger.error("Error in handle_date_url:update_num_arr,returning incoming num_array:{}".format(e))
+    return num_array_o
