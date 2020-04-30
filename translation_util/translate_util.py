@@ -219,7 +219,7 @@ def translate_func(inputs, translation_server):
                 logger.info("sentence fits in special case, returning accordingly and not going to model")
                 translation = ancillary_functions.handle_special_cases(i['src'],i['id'])
                 scores = [1] 
-                input_sw,output_sw = "",""
+                input_sw,output_sw,tag_tgt,tag_src = "","",translation,i['src']
 
             else:
                 logger.info("translating using NMT-model:{}".format(i['id']))
