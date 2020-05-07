@@ -50,6 +50,19 @@
             }
         },
         {
+            "id": 6,
+            "model": "model_en-hi_exp-2_2020-05-05-model_step_230000.pt",
+            "timeout": 600,
+            "on_timeout": "to_cpu",
+            "load": true,
+            "opt": {
+                "beam_size": 5,
+                "log_file":"log_file.txt",
+                "log_file_level":"INFO",
+                "gpu":0
+            }
+        },
+        {
             "id": 7,
             "model": "model_tamil_2019-09-23-model_step_100000.pt",
             "timeout": 600,

@@ -230,7 +230,13 @@ def translate_func(inputs, translation_server):
                     "hi-en exp-1"
                     i['src'] = anuvada.indic_tokenizer(i['src'])
                     translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.hindi_english["HIN_EXP_1_291019"],sp_model.hindi_english["ENG_EXP_1_291019"])
-                    translation = anuvada.moses_detokenizer(translation)        
+                    translation = anuvada.moses_detokenizer(translation)
+                elif i['id'] == 6:
+                    "hi-en_exp-2 05-05-20"
+                    i['src'] = anuvada.indic_tokenizer(i['src'])
+                    translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.hindi_english["HIN_EXP_2_050520"],sp_model.hindi_english["ENG_EXP_2_050520"])
+                    translation = anuvada.moses_detokenizer(translation)
+
                 elif i['id'] == 7:  
                     "english-tamil"
                     translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_tamil["ENG_230919"],sp_model.english_tamil["TAM_230919"])

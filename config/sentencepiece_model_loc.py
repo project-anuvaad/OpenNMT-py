@@ -91,4 +91,6 @@ hindi_english = {
     "ENGLISH_280619": "model/sentencepiece_models/en-28062019-10k.model",
     "HIN_EXP_1_291019":"model/sentencepiece_models/hi_exp_h-1-2019-10-29-24k.model",
     "ENG_EXP_1_291019":"model/sentencepiece_models/en_exp_h-1-2019-10-29-24k.model",
+    "HIN_EXP_2_050520":"model/sentencepiece_models/hi_hi-en-exp-2-2020-05-05-24k.model",
+    "ENG_EXP_2_050520":"model/sentencepiece_models/en_hi-en-exp-2-2020-05-05-24k.model",
 }
