@@ -224,6 +224,7 @@ def translate_func(inputs, translation_server):
             else:
                 logger.info("translating using NMT-model:{}".format(i['id']))
                 # prefix,suffix, i['src'] = ancillary_functions.separate_alphanumeric_and_symbol(i['src'])
+                prefix, i['src'] = ancillary_functions.prefix_handler(i['src'])
                 i['src'],date_original,url_original,num_array,num_map = date_url_util.tag_number_date_url_1(i['src'])
                 tag_src = i['src'] 
                 if i['id'] == 5:
@@ -397,6 +398,7 @@ def translate_func(inputs, translation_server):
                     raise Exception("unsupported model id: {} for given input".format(i['id']))      
 
                 # translation = (prefix+" "+translation+" "+suffix).strip()
+                translation = prefix+" "+translation
                 translation = translation.replace("▁"," ")
                 translation = date_url_util.regex_pass(translation,[patterns['p8'],patterns['p9'],patterns['p4'],patterns['p5'],
                                             patterns['p6'],patterns['p7']])

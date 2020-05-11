@@ -3,6 +3,7 @@ from indic_transliteration import sanscript
 from indic_transliteration.sanscript import SchemeMap, SCHEMES, transliterate
 from onmt.utils.logging import logger
 import ancillary_functions_anuvaad.common_util_functions as util
+from config.regex_patterns import patterns
 
 def handle_single_token(token):
    try:
@@ -171,18 +172,30 @@ def handle_special_cases(text,model_id):
     except Exception as e:
         logger.info("error when handling special cases :{}".format(e))
         return text
-    
-# "lookup table"
-# def lookup_table(model_id,token):
-#     if model_id in [1]:
-#         with open("lookup_dictionary_eng_hin.txt",encoding ='utf-16') as xh:
-#             xlines = xh.readlines()
-#             for i in range(len(xlines)):
-#                 if xlines[i].split('|||')[0] == token.strip():
-#                     token = xlines[i].split('|||')[1].strip()
-#                 else:
-#                     token = ""    
-#     else:
-#         token = ""                
-    
-#     return token                
+
+def prefix_handler(text):
+    '''
+    Currently this function is only handling different numeric prefixes in the first token of an input eg. 1., 12.1, (1.),(12.1),1,(12) etc.
+    '''
+    try:
+        prefix = ""
+        tokens = text.split()
+        token_p = tokens[0]
+        regex_list = [patterns['p10'],patterns['p11']]
+        matches = [re.match(pattern['regex'], token_p) for pattern in regex_list]
+        if not all(v is None for v in matches):
+            prefix = token_p
+            text = str(" ".join(tokens[1:]))
+        logger.info("Returning from prefix_handler")    
+        return prefix,text
+    except Exception as e:
+        logger.error("Error in prefix handler, returning original text,error:{}".format(e))
+        return "",text
+
+def suffix_handler(text):
+    "in progress"
+    try:
+        tokens = text.split()
+    except Exception as e:
+        print(e)
+
