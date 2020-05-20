@@ -214,7 +214,7 @@ def translate_func(inputs, translation_server):
 
             logger.info("input sentences:{}".format(i['src'])) 
             i_src.append(i['src'])   
-            i['src'] = i['src'].strip()    
+            i['src'] = i['src'].strip()
             if ancillary_functions.special_case_fits(i['src']):
                 logger.info("sentence fits in special case, returning accordingly and not going to model")
                 translation = ancillary_functions.handle_special_cases(i['src'],i['id'])
@@ -226,7 +226,7 @@ def translate_func(inputs, translation_server):
                 # prefix,suffix, i['src'] = ancillary_functions.separate_alphanumeric_and_symbol(i['src'])
                 prefix, i['src'] = ancillary_functions.prefix_handler(i['src'])
                 i['src'],date_original,url_original,num_array,num_map = date_url_util.tag_number_date_url_1(i['src'])
-                tag_src = i['src'] 
+                tag_src = prefix +" "+ i['src'] 
                 if i['id'] == 5:
                     "hi-en exp-1"
                     i['src'] = anuvada.indic_tokenizer(i['src'])
