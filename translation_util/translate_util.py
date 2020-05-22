@@ -152,14 +152,6 @@ def from_hindi(inputs, translation_server):
                     translation = anuvada.moses_detokenizer(translation)
                     translation = anuvada.detruecaser(translation)
                  
-                elif i['id'] == 4:
-                    i['src'] = anuvada.indic_tokenizer(i['src'])
-                    i['src'] = anuvada.apply_bpe('codesSrc1005.bpe',i['src'])
-                    input_sw,output_sw = i['src'],""
-                    translation, scores, n_best, times = translation_server.run([i])
-                    translation = anuvada.decode_bpe(translation[0])
-                    translation = anuvada.moses_detokenizer(translation)
-                    translation = anuvada.detruecaser(translation)
                 else:
                     logger.info("unsupported model id: {} for given hindi input for translation".format(i['id']))
                     translation = ""
