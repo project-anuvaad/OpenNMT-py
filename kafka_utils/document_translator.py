@@ -10,7 +10,6 @@ from config.config import statusCode,benchmark_types, language_supported, file_l
 from config.kafka_topics import consumer_topics,producer_topics
 from onmt.utils.logging import init_logger,logger
 import os
-from mongo_model import db,Benchmarks
 import datetime
 from onmt.translate import ServerModelError
 import sys

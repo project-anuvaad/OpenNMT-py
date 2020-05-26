@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 import configargparse
 import sys
 from config.config import statusCode,benchmark_types, language_supported, file_location
-import bleu_results as bleu_results
+import config.bleu_results as bleu_results
 import anuvada
 import tools.sp_enc_dec as sp
 import ancillary_functions_anuvaad.ancillary_functions as ancillary_functions
@@ -22,7 +22,7 @@ from onmt.translate.translator import build_translator
 import os
 import onmt.opts as opts
 from onmt.utils.parse import ArgumentParser
-from mongo_model import db,Benchmarks
+from config.mongo_model import db,Benchmarks
 import datetime
 from kafka_utils.document_translator import doc_translator
 import threading

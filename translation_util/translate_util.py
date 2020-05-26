@@ -7,7 +7,6 @@ import ancillary_functions_anuvaad.handle_date_url as date_url_util
 from config.config import statusCode, benchmark_types, language_supported, file_location
 from onmt.utils.logging import init_logger, logger
 import os
-from mongo_model import db, Benchmarks
 import datetime
 from onmt.translate import ServerModelError
 import sys

@@ -39,10 +39,11 @@ def handle_single_token(token):
           
 
 def replace_from_LC_table(token):
+    lookup_file = "config/lookup_table.txt"
     hindi_number=list()
     for char in token:
         if char.isdigit():
-            with open("lookup_table.txt", "r") as f:
+            with open(lookup_file, "r") as f:
                             for line in f:
                                 if line.startswith(char):
                                     char = line.split('|||')[1].strip() 
