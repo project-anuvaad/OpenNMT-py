@@ -1,6 +1,6 @@
 import ctranslate2
-import anuvada
 import tools.sp_enc_dec as sp
+import ancillary_functions_anuvaad.sentence_processor as sentence_processor
 import ancillary_functions_anuvaad.ancillary_functions as ancillary_functions
 import ancillary_functions_anuvaad.handle_date_url as date_url_util
 from config import sentencepiece_model_loc as sp_model
@@ -60,7 +60,6 @@ def encode_itranslate_decode(i,sp_encoder,sp_decoder,num_map,tp_tokenizer):
             logger.info("target prefix: {}".format(i['target_prefix'])) 
             i['target_prefix'] = i['target_prefix'].strip() 
             i['target_prefix'] = replace_num_target_prefix(i,num_map)
-            # i['target_prefix'] = anuvada.indic_tokenizer(i['target_prefix'])
             if tp_tokenizer is not None:
                 i['target_prefix'] = tp_tokenizer(i['target_prefix'])
             i['target_prefix'] = str(sp.encode_line(sp_decoder,i['target_prefix']))
@@ -107,19 +106,34 @@ def interactive_translation(inputs):
                 tag_src = i['src'] 
 
                 if i['id'] == 56:
-                    tp_tokenizer = anuvada.indic_tokenizer
-                    i['src'] = anuvada.moses_tokenizer(i['src'])
+                    tp_tokenizer = sentence_processor.indic_tokenizer
+                    i['src'] = sentence_processor.moses_tokenizer(i['src'])
                     translation = encode_itranslate_decode(i,sp_model.english_hindi["ENG_EXP_5.6"],sp_model.english_hindi["HIN_EXP_5.6"],num_map,tp_tokenizer)
-                    translation = anuvada.indic_detokenizer(translation)
+                    translation = sentence_processor.indic_detokenizer(translation)
                 elif i['id'] == 7:
                     "english-tamil"
                     translation = encode_itranslate_decode(i,sp_model.english_tamil["ENG_230919"],sp_model.english_tamil["TAM_230919"],num_map,tp_tokenizer)
+                elif i['id'] == 10:  
+                    "english-gujarati"
+                    translation = encode_itranslate_decode(i,sp_model.english_gujarati["ENG_100919"],sp_model.english_gujarati["GUJ_100919"],num_map,tp_tokenizer)
+                elif i['id'] == 11:  
+                    "english-bengali"
+                    translation = encode_itranslate_decode(i,sp_model.english_bengali["ENG_120919"],sp_model.english_bengali["BENG_120919"],num_map,tp_tokenizer)
                 elif i['id'] == 15:  
                     "english-kannada"
                     translation = encode_itranslate_decode(i,sp_model.english_kannada["ENG_200919"],sp_model.english_kannada["KANNADA_200919"],num_map,tp_tokenizer)
+                elif i['id'] == 16:  
+                    "english-telugu"
+                    translation = encode_itranslate_decode(i,sp_model.english_telugu["ENG_200919"],sp_model.english_telugu["TELGU_200919"],num_map,tp_tokenizer)
                 elif i['id'] == 17:  
                     "english-malayalam"
                     translation = encode_itranslate_decode(i,sp_model.english_malayalam["ENG_200919"],sp_model.english_malayalam["MALAYALAM_200919"],num_map,tp_tokenizer)                                                
+                elif i['id'] == 18:  
+                    "english-punjabi"
+                    translation = encode_itranslate_decode(i,sp_model.english_punjabi["ENG_200919"],sp_model.english_punjabi["PUNJABI_200919"],num_map,tp_tokenizer)
+                elif i['id'] == 42:  
+                    "english-marathi"
+                    translation = encode_itranslate_decode(i,sp_model.english_marathi["ENG_071119"],sp_model.english_marathi["MARATHI_071119"],num_map,tp_tokenizer)
                 else:
                     logger.info("unsupported model id: {} for given input".format(i['id']))
                     raise Exception("unsupported model id: {} for given input".format(i['id']))      

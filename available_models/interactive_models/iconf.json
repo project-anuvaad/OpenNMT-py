@@ -16,6 +16,26 @@
         {
             "id": 15,
             "path":"en-kn"
+        },
+        {
+            "id":16,
+            "path":"en-te"
+        },
+        {
+            "id":18,
+            "path":"en-pa"
+        },
+        {
+            "id":11,
+            "path":"en-bn"
+        },
+        {
+            "id":42,
+            "path":"en-mr"
+        },
+        {
+            "id":10,
+            "path":"en-gu"
         }
     ]
 }
