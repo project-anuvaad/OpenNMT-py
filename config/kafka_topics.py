@@ -9,3 +9,22 @@ producer_topics ={
   "TO_DOCUMENT":"listener",
   "new_topic":"nmt_translate_processed"
 }
+
+kafka_topic = [
+  {
+    "consumer":"to-nmt",
+    "producer":"listener",
+    "description":"Document translation,also used in Suvas"
+  },
+  {
+    "consumer":"nmt_translate",
+    "producer":"nmt_translate_processed",
+    "description":"Pdf dev environment translation"
+  },
+  {
+    "consumer":"nmt_translate_production",
+    "producer":"nmt_translate_processed_production",
+    "description":"Pdf production translation"
+  }
+
+  ]

@@ -27,7 +27,7 @@ from kafka_utils.document_translator import doc_translator
 import threading
 import translation_util.translate_util as translate_util
 import translation_util.interactive_translate as interactive_translation
-from config.kafka_topics import consumer_topics,producer_topics
+from config.kafka_topics import consumer_topics,producer_topics,kafka_topic
 
 STATUS_OK = "ok"
 STATUS_ERROR = "error"
@@ -62,17 +62,12 @@ def start(config_file,
     translation_server.start(config_file)
 
     def kafka_function():
-        logger.info('starting kafka from nmt-server')
-        doc_translator(translation_server,consumer_topics['DOCUMENT_REQ'],producer_topics['TO_DOCUMENT'])
-    def kafka_function_1():
-        logger.info('starting kafka on new topic from nmt-server')
-        doc_translator(translation_server,consumer_topics['new_topic'],producer_topics['new_topic'])     
+        logger.info('starting kafka from nmt-server on thread-1')
+        doc_translator(translation_server,[kafka_topic[0]['consumer'],kafka_topic[1]['consumer'],kafka_topic[2]['consumer']])     
 
     if bootstrap_server_boolean:
         t1 = threading.Thread(target=kafka_function)
-        t2 = threading.Thread(target=kafka_function_1)
         t1.start()
-        t2.start()
 
     @app.route('/models', methods=['GET'])
     def get_models():

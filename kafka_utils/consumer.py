@@ -9,7 +9,7 @@ bootstrap_server = os.environ.get(KAFKA_IP_HOST, default_value)
 group_id = 'anuvaad'
 
 
-def get_consumer(topic):
+def get_consumer(topics):
     try:
         # consumer = KafkaConsumer(
         #            topic,
@@ -19,16 +19,13 @@ def get_consumer(topic):
         #            group_id=group_id,
         #            value_deserializer=lambda x: json.loads(x.decode('utf-8')))
         consumer = KafkaConsumer(
-            topic,
             bootstrap_servers=[bootstrap_server],
             value_deserializer=lambda x: json.loads(x.decode('utf-8')))
-        
-
-        logger.info('get_consumer : consumer returned for topic = ' + topic)
+    
+        consumer.subscribe(topics)    
+        logger.info('get_consumer : consumer returned for topics:{}'.format(topics))
         return consumer
     except Exception as e:
-        logger.error(
-            'get_consumer : ERROR OCCURRED for getting consumer with topic = ' + topic)
+        logger.error('ERROR OCCURRED for getting consumer with topics:{}'.format(topics))
         logger.error('get_consumer : ERROR = ' + str(e))
-        print('error')
         return None

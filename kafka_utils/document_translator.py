@@ -6,7 +6,7 @@ import ancillary_functions_anuvaad.ancillary_functions as ancillary_functions
 import ancillary_functions_anuvaad.sc_preface_handler as sc_preface_handler
 import ancillary_functions_anuvaad.handle_date_url as date_url_util
 from config.config import statusCode,benchmark_types, language_supported, file_location
-from config.kafka_topics import consumer_topics,producer_topics
+from config.kafka_topics import consumer_topics,producer_topics,kafka_topic
 from onmt.utils.logging import init_logger,logger
 import os
 import datetime
@@ -16,7 +16,7 @@ import sys
 import translation_util.translate_util as translate_util
 
 
-def doc_translator(translation_server,c_topic,p_topic):
+def doc_translator(translation_server,c_topic):
     logger.info('doc_translator')  
     iq =0
     out = {}
@@ -26,6 +26,8 @@ def doc_translator(translation_server,c_topic,p_topic):
     p = get_producer()
     try:
         for msg in c:
+            producer_topic = [ topic["producer"] for topic in kafka_topic if topic["consumer"] == msg.topic][0]
+            logger.info("Producer for current consumer:{} is-{}".format(msg.topic,producer_topic))
             msg_count +=1
             logger.info("*******************msg receive count*********:{}".format(msg_count))
             iq = iq +1
@@ -52,15 +54,14 @@ def doc_translator(translation_server,c_topic,p_topic):
                     out['response_body'] = []
 
                 
-            p.send(p_topic, value={'out':out})
+            p.send(producer_topic, value={'out':out})
             p.flush()
             msg_sent += 1
             logger.info("*******************msg sent count*********:{}".format(msg_sent))
-            
     except ValueError:  # includes simplejson.decoder.JSONDecodeError
         logger.error("Decoding JSON has failed in document_translator: %s"% sys.exc_info()[0])
-        doc_translator(translation_server,c_topic,p_topic)  
+        doc_translator(translation_server,c_topic)  
     except Exception  as e:
-        logger.error("Unexpected error: %s"% sys.exc_info()[0])
+        logger.error("Unexpected error in kafak doc_translator: %s"% sys.exc_info()[0])
         logger.error("error in doc_translator: {}".format(e))
-        doc_translator(translation_server,c_topic,p_topic)
+        doc_translator(translation_server,c_topic)
