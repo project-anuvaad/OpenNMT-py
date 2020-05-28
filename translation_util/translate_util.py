@@ -1,6 +1,6 @@
 import json
-import anuvada
 import tools.sp_enc_dec as sp
+import ancillary_functions_anuvaad.sentence_processor as sentence_processor
 import ancillary_functions_anuvaad.ancillary_functions as ancillary_functions
 import ancillary_functions_anuvaad.sc_preface_handler as sc_preface_handler
 import ancillary_functions_anuvaad.handle_date_url as date_url_util
@@ -67,21 +67,11 @@ def from_en(inputs, translation_server):
                     logger.info("translating using NMT-model:{}".format(i['id']))
                     logger.info("translating this sentences:{}".format(i['src']))
                     # prefix,suffix, i['src'] = ancillary_functions.separate_alphanumeric_and_symbol(i['src'])
-                    # print("prefix :{},suffix :{},i[src] :{}".format(prefix,suffix,i['src']))
                     if i['id'] == 1:
-                        i['src'] = anuvada.moses_tokenizer(i['src'])
+                        i['src'] = sentence_processor.moses_tokenizer(i['src'])
                         translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_hindi["ENG_220519"],sp_model.english_hindi["HIN_220519"])
-                        translation = anuvada.indic_detokenizer(translation)
-                        logger.info("final output from model-1: {}".format(translation))
-                             
-                    elif i['id'] == 30:
-                        "25/10/2019 experiment 10, Old data + dictionary,BPE-24k, nolowercasing,pretok,shuffling,50k nmt"                        
-                        i['src'],date_original,url_original,num_array = date_url_util.tag_number_date_url_1(i['src'])
-                        i['src'] = anuvada.moses_tokenizer(i['src'])
-                        translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_hindi["ENG_EXP_10"],sp_model.english_hindi["HIN_EXP_10"])                      
-                        translation = anuvada.indic_detokenizer(translation)
-                        translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)  
-                        logger.info("experiment-{} output: {}".format(i['id'],translation))    
+                        translation = sentence_processor.indic_detokenizer(translation)
+                        logger.info("final output from model-1: {}".format(translation))  
                     else:
                         logger.info("unsupported model id: {} for given english translation".format(i['id']))
                         logger.error("unsupported model id: {} for given english translation".format(i['id']))
@@ -146,10 +136,10 @@ def from_hindi(inputs, translation_server):
 
             else:
                 if i['id'] == 2:
-                    i['src'] = anuvada.indic_tokenizer(i['src'])
+                    i['src'] = sentence_processor.indic_tokenizer(i['src'])
                     translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_hindi["HIN_220519"],sp_model.english_hindi["ENG_220519"])
-                    translation = anuvada.moses_detokenizer(translation)
-                    translation = anuvada.detruecaser(translation)
+                    translation = sentence_processor.moses_detokenizer(translation)
+                    translation = sentence_processor.detruecaser(translation)
                  
                 else:
                     logger.info("unsupported model id: {} for given hindi input for translation".format(i['id']))
@@ -220,14 +210,14 @@ def translate_func(inputs, translation_server):
                 tag_src = prefix +" "+ i['src'] 
                 if i['id'] == 5:
                     "hi-en exp-1"
-                    i['src'] = anuvada.indic_tokenizer(i['src'])
+                    i['src'] = sentence_processor.indic_tokenizer(i['src'])
                     translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.hindi_english["HIN_EXP_1_291019"],sp_model.hindi_english["ENG_EXP_1_291019"])
-                    translation = anuvada.moses_detokenizer(translation)
+                    translation = sentence_processor.moses_detokenizer(translation)
                 elif i['id'] == 6:
                     "hi-en_exp-2 05-05-20"
-                    i['src'] = anuvada.indic_tokenizer(i['src'])
+                    i['src'] = sentence_processor.indic_tokenizer(i['src'])
                     translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.hindi_english["HIN_EXP_2_050520"],sp_model.hindi_english["ENG_EXP_2_050520"])
-                    translation = anuvada.moses_detokenizer(translation)
+                    translation = sentence_processor.moses_detokenizer(translation)
 
                 elif i['id'] == 7:  
                     "english-tamil"
@@ -258,132 +248,132 @@ def translate_func(inputs, translation_server):
                     translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_punjabi["ENG_200919"],sp_model.english_punjabi["PUNJABI_200919"])
                 elif i['id'] == 21:  
                     "exp-1 BPE model with varying vocab size 15k for both hindi and english +tokenization"
-                    i['src'] = anuvada.moses_tokenizer(i['src'])
+                    i['src'] = sentence_processor.moses_tokenizer(i['src'])
                     translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_hindi["ENG_EXP_1"],sp_model.english_hindi["HIN_EXP_1"])                      
-                    translation = anuvada.indic_detokenizer(translation)  
+                    translation = sentence_processor.indic_detokenizer(translation)  
                 elif i['id'] == 30:
                     "25/10/2019 experiment 10, Old data + dictionary,BPE-24k, nolowercasing,pretok,shuffling,50k nmt"
-                    i['src'] = anuvada.moses_tokenizer(i['src'])
+                    i['src'] = sentence_processor.moses_tokenizer(i['src'])
                     translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_hindi["ENG_EXP_10"],sp_model.english_hindi["HIN_EXP_10"])                      
-                    translation = anuvada.indic_detokenizer(translation)   
+                    translation = sentence_processor.indic_detokenizer(translation)   
                 elif i['id'] == 32:
                     "29/10/2019 Exp-12: old_data_original+lc_cleaned+ ik names translated from google(100k)+shabdkosh(appended 29k new),BPE-24K,50knmt,shuff,pretok"
-                    i['src'] = anuvada.moses_tokenizer(i['src'])
+                    i['src'] = sentence_processor.moses_tokenizer(i['src'])
                     translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_hindi["ENG_EXP_12"],sp_model.english_hindi["HIN_EXP_12"])                      
-                    translation = anuvada.indic_detokenizer(translation)
+                    translation = sentence_processor.indic_detokenizer(translation)
                 elif i['id'] == 54:
                     "29-30/10/19Exp-5.4: -data same as 5.1 exp...old data+ india kanoon 830k(including 1.5 lakhs names n no learned counsel)+72192k shabkosh, BPE 24k, nolowercasing,pretok,shuffling"
-                    i['src'] = anuvada.moses_tokenizer(i['src'])
+                    i['src'] = sentence_processor.moses_tokenizer(i['src'])
                     translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_hindi["ENG_EXP_5.4"],sp_model.english_hindi["HIN_EXP_5.4"])                      
-                    translation = anuvada.indic_detokenizer(translation)
+                    translation = sentence_processor.indic_detokenizer(translation)
                 elif i['id'] == 42:  
                     "english-marathi exp-2"
                     translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_marathi["ENG_071119"],sp_model.english_marathi["MARATHI_071119"])    
                 elif i['id'] == 56:
                     "09/12/19-Exp-5.6:" 
-                    i['src'] = anuvada.moses_tokenizer(i['src'])
+                    i['src'] = sentence_processor.moses_tokenizer(i['src'])
                     translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_hindi["ENG_EXP_5.6"],sp_model.english_hindi["HIN_EXP_5.6"])                      
-                    translation = anuvada.indic_detokenizer(translation)
+                    translation = sentence_processor.indic_detokenizer(translation)
                 elif i['id'] == 8:
                     "ta-en 1st"
-                    i['src'] = anuvada.indic_tokenizer(i['src'])
+                    i['src'] = sentence_processor.indic_tokenizer(i['src'])
                     translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_tamil["TAM_090120"],sp_model.english_tamil["ENG_090120"])
-                    translation = anuvada.moses_detokenizer(translation)  
+                    translation = sentence_processor.moses_detokenizer(translation)  
                 elif i['id'] == 43:
                     "mr-en 1st"
-                    i['src'] = anuvada.indic_tokenizer(i['src'])
+                    i['src'] = sentence_processor.indic_tokenizer(i['src'])
                     translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_marathi["MARATHI_270120"],sp_model.english_marathi["ENG_270120"])
-                    translation = anuvada.moses_detokenizer(translation)  
+                    translation = sentence_processor.moses_detokenizer(translation)  
                 elif i['id'] == 44:
                     "eng-mr-3rd"
-                    i['src'] = anuvada.moses_tokenizer(i['src'])
+                    i['src'] = sentence_processor.moses_tokenizer(i['src'])
                     translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_marathi["ENG_060220"],sp_model.english_marathi["MARATHI_060220"])
-                    translation = anuvada.indic_detokenizer(translation)         
+                    translation = sentence_processor.indic_detokenizer(translation)         
                 elif i['id'] == 45:
                     "en-ta 4th"
-                    i['src'] = anuvada.moses_tokenizer(i['src'])
+                    i['src'] = sentence_processor.moses_tokenizer(i['src'])
                     translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_tamil["ENG_080220"],sp_model.english_tamil["TAM_080220"])
-                    translation = anuvada.indic_detokenizer(translation)  
+                    translation = sentence_processor.indic_detokenizer(translation)  
                 elif i['id'] == 46:
                     "ta-en 2nd"
-                    i['src'] = anuvada.indic_tokenizer(i['src'])
+                    i['src'] = sentence_processor.indic_tokenizer(i['src'])
                     translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_tamil["TAM_100220"],sp_model.english_tamil["ENG_100220"])
-                    translation = anuvada.moses_detokenizer(translation)  
+                    translation = sentence_processor.moses_detokenizer(translation)  
                 elif i['id'] == 47:
                     "en-kn 2nd"
-                    i['src'] = anuvada.moses_tokenizer(i['src'])
+                    i['src'] = sentence_processor.moses_tokenizer(i['src'])
                     translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_kannada["ENG_100220"],sp_model.english_kannada["KANNADA_100220"])
-                    translation = anuvada.indic_detokenizer(translation) 
+                    translation = sentence_processor.indic_detokenizer(translation) 
                 elif i['id'] == 48:
                     "kn-en 1st"
-                    i['src'] = anuvada.indic_tokenizer(i['src'])
+                    i['src'] = sentence_processor.indic_tokenizer(i['src'])
                     translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_kannada["KANNADA_100220"],sp_model.english_kannada["ENG_100220"])
-                    translation = anuvada.moses_detokenizer(translation)
+                    translation = sentence_processor.moses_detokenizer(translation)
                 elif i['id'] == 49:
                     "en-tel 2nd"
-                    i['src'] = anuvada.moses_tokenizer(i['src'])
+                    i['src'] = sentence_processor.moses_tokenizer(i['src'])
                     translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_telugu["ENG_120220"],sp_model.english_telugu["TELUGU_120220"])
-                    translation = anuvada.indic_detokenizer(translation) 
+                    translation = sentence_processor.indic_detokenizer(translation) 
                 elif i['id'] == 50:
                     "tel-en 1st"
-                    i['src'] = anuvada.indic_tokenizer(i['src'])
+                    i['src'] = sentence_processor.indic_tokenizer(i['src'])
                     translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_telugu["TELUGU_120220"],sp_model.english_telugu["ENG_120220"])
-                    translation = anuvada.moses_detokenizer(translation)
+                    translation = sentence_processor.moses_detokenizer(translation)
                 elif i['id'] == 51:
                     "en-guj 2nd"
-                    i['src'] = anuvada.moses_tokenizer(i['src'])
+                    i['src'] = sentence_processor.moses_tokenizer(i['src'])
                     translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_gujarati["ENG_140220"],sp_model.english_gujarati["GUJ_140220"])
-                    translation = anuvada.indic_detokenizer(translation) 
+                    translation = sentence_processor.indic_detokenizer(translation) 
                 elif i['id'] == 52:
                     "guj-en 1st"
-                    i['src'] = anuvada.indic_tokenizer(i['src'])
+                    i['src'] = sentence_processor.indic_tokenizer(i['src'])
                     translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_gujarati["GUJ_140220"],sp_model.english_gujarati["ENG_140220"])
-                    translation = anuvada.moses_detokenizer(translation)
+                    translation = sentence_processor.moses_detokenizer(translation)
                 elif i['id'] == 53:
                     "en-punjabi 2nd"
-                    i['src'] = anuvada.moses_tokenizer(i['src'])
+                    i['src'] = sentence_processor.moses_tokenizer(i['src'])
                     translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_punjabi["ENG_160220"],sp_model.english_punjabi["PUNJABI_160220"])
-                    translation = anuvada.indic_detokenizer(translation) 
+                    translation = sentence_processor.indic_detokenizer(translation) 
                 elif i['id'] == 55:
                     "punjabi-en 1st"
-                    i['src'] = anuvada.indic_tokenizer(i['src'])
+                    i['src'] = sentence_processor.indic_tokenizer(i['src'])
                     translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_punjabi["PUNJABI_160220"],sp_model.english_punjabi["ENG_160220"])
-                    translation = anuvada.moses_detokenizer(translation)
+                    translation = sentence_processor.moses_detokenizer(translation)
                 elif i['id'] == 57:
                     "en-bengali 2nd"
-                    i['src'] = anuvada.moses_tokenizer(i['src'])
+                    i['src'] = sentence_processor.moses_tokenizer(i['src'])
                     translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_bengali["ENG_180220"],sp_model.english_bengali["BENG_180220"])
-                    translation = anuvada.indic_detokenizer(translation) 
+                    translation = sentence_processor.indic_detokenizer(translation) 
                 elif i['id'] == 58:
                     "bengali-en 1st"
-                    i['src'] = anuvada.indic_tokenizer(i['src'])
+                    i['src'] = sentence_processor.indic_tokenizer(i['src'])
                     translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_bengali["BENG_180220"],sp_model.english_bengali["ENG_180220"])
-                    translation = anuvada.moses_detokenizer(translation)
+                    translation = sentence_processor.moses_detokenizer(translation)
                 elif i['id'] == 59:
                     "en-malay 2nd"
-                    i['src'] = anuvada.moses_tokenizer(i['src'])
+                    i['src'] = sentence_processor.moses_tokenizer(i['src'])
                     translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_malayalam["ENG_210220"],sp_model.english_malayalam["MALAYALAM_210220"])
-                    translation = anuvada.indic_detokenizer(translation) 
+                    translation = sentence_processor.indic_detokenizer(translation) 
                 elif i['id'] == 60:
                     "malay-en 1st"
-                    i['src'] = anuvada.indic_tokenizer(i['src'])
+                    i['src'] = sentence_processor.indic_tokenizer(i['src'])
                     translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_malayalam["MALAYALAM_210220"],sp_model.english_malayalam["ENG_210220"])
-                    translation = anuvada.moses_detokenizer(translation)
+                    translation = sentence_processor.moses_detokenizer(translation)
                 elif i['id'] == 61:
                     "ta-to-en 3rd"
-                    i['src'] = anuvada.indic_tokenizer(i['src'])
+                    i['src'] = sentence_processor.indic_tokenizer(i['src'])
                     translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_tamil["TAM_280220"],sp_model.english_tamil["ENG_280220"])
-                    translation = anuvada.moses_detokenizer(translation) 
+                    translation = sentence_processor.moses_detokenizer(translation) 
                 elif i['id'] == 62:
                     "mr-to-en 2nd"
-                    i['src'] = anuvada.indic_tokenizer(i['src'])
+                    i['src'] = sentence_processor.indic_tokenizer(i['src'])
                     translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_marathi["MARATHI_280220"],sp_model.english_marathi["ENG_280220"])
-                    translation = anuvada.moses_detokenizer(translation)
+                    translation = sentence_processor.moses_detokenizer(translation)
                 elif i['id'] == 63:
                     "en-hi exp-13 09-03-20"  
-                    i['src'] = anuvada.moses_tokenizer(i['src'])
+                    i['src'] = sentence_processor.moses_tokenizer(i['src'])
                     translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_hindi["ENG_EXP_13"],sp_model.english_hindi["HIN_EXP_13"])                      
-                    translation = anuvada.indic_detokenizer(translation)                                                     
+                    translation = sentence_processor.indic_detokenizer(translation)                                                     
                 else:
                     logger.info("unsupported model id: {} for given input".format(i['id']))
                     raise Exception("unsupported model id: {} for given input".format(i['id']))      
