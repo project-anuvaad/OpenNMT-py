@@ -32,16 +32,11 @@ from config.kafka_topics import consumer_topics,producer_topics,kafka_topic
 STATUS_OK = "ok"
 STATUS_ERROR = "error"
 
-API_FILE_DIRECTORY = "src_tgt_api_files/"
 mongo_config_dir = "config/mongo_config.py"
 IS_RUN_KAFKA = 'IS_RUN_KAFKA'
 IS_RUN_KAFKA_DEFAULT_VALUE = False
 bootstrap_server_boolean = os.environ.get(IS_RUN_KAFKA, IS_RUN_KAFKA_DEFAULT_VALUE)
 
-if not os.path.exists(API_FILE_DIRECTORY):
-    os.makedirs(os.path.join(API_FILE_DIRECTORY,'source_files/'))
-    os.makedirs(os.path.join(API_FILE_DIRECTORY,'target_files/'))
-    os.makedirs(os.path.join(API_FILE_DIRECTORY,'target_ref_files/'))
 
 def start(config_file,
           url_root="/translator",
@@ -169,7 +164,6 @@ def start(config_file,
     @app.route('/save_benchmark', methods=['POST'])
     def save_benchmark():
         out = {}
-        # print(inputs = request.get_json(force=True))
         if 'file' not in request.files:
             out['status'] = statusCode["FILE_MISSING"]
             return jsonify(out)
@@ -193,7 +187,8 @@ def start(config_file,
             if not os.path.exists(os.path.join(file_location['FILE_LOC'],'%s/'%language)):
                 os.makedirs(os.path.join(file_location['FILE_LOC'],'%s/'%language)) 
             file_loc =  os.path.join(file_location["FILE_LOC"], language,db_filename)
-            Benchmarks(type = file_type,language = request.form['language'],user_filename = user_filename,db_filename = db_filename,version = 0 ,created_by = "", path = file_loc).save()
+            Benchmarks(type = file_type,language = request.form['language'],user_filename = user_filename,db_filename = db_filename,version = 0 \
+                       ,created_by = "", path = file_loc).save()
 
             file.save(file_loc)
             
@@ -203,7 +198,7 @@ def start(config_file,
         except Exception as e:
             out['status'] = statusCode["SYSTEM_ERR"]
             out['status']['errObj'] = str(e)
-            logger.info("Unexpected error: %s"% sys.exc_info()[0]) 
+            logger.info("Unexpected error while saving benchmark file: %s"% sys.exc_info()[0]) 
         
         return jsonify(out)
 
@@ -248,6 +243,10 @@ def start(config_file,
             else:
                 out['status'] =  statusCode["No_File_DB"]           
             
+        except FileNotFoundError as e:
+            out['status'] = statusCode["No_File_DB"]
+            out['status']['errObj'] = str(e)
+            logger.error("File exist in database but not found on server")
         except Exception as e:
             out['status'] = statusCode["SYSTEM_ERR"]
             out['status']['errObj'] = str(e)
@@ -289,67 +288,6 @@ def start(config_file,
             out['status']['errObj'] = str(e)
             logger.info("Unexpected error: %s"% sys.exc_info()[0])
         return jsonify(out)
-
-    @app.route("/download-src", methods=['GET'])
-    def get_file():
-        """Download a file."""
-        out = {}
-        type = request.args.get('type')
-        print(type)
-        if  not type:
-            out['status'] = statusCode["TYPE_MISSING"]
-            return jsonify(out)
-        if type not in ['Gen','LC','GoI','TB']:
-            out['status'] = statusCode["INVALID_TYPE"]
-            return jsonify(out)  
-
-        try:
-            logger.info("downloading the src %s.txt file" % type)
-            return send_file(os.path.join(API_FILE_DIRECTORY,'source_files/', '%s.txt' % type), as_attachment=True)
-        except:
-            out['status'] = statusCode["SYSTEM_ERR"]
-            logger.info("Unexpected error: %s"% sys.exc_info()[0])
-            return jsonify(out) 
-
-    @app.route("/upload-tgt", methods=["POST"])
-    def post_file():
-        """Upload a file."""
-        print(request.files)
-        out = {}
-        if 'file' not in request.files:
-            out['status'] = statusCode["FILE_MISSING"]
-            return jsonify(out)
-        print(request.form)    
-        if 'type' not in request.form:
-            out['status'] = statusCode["TYPE_MISSING"]
-            return jsonify(out)  
-        if request.form['type'] not in ['Gen','LC','GoI','TB']:
-            out['status'] = statusCode["INVALID_TYPE"]
-            return jsonify(out)  
-
-        try:
-            file = request.files['file']
-            tgt_file_loc = os.path.join(API_FILE_DIRECTORY,'target_files/', '%s.txt' % request.form['type'])
-            tgt_ref_file_loc = os.path.join(API_FILE_DIRECTORY,'target_ref_files/', '%s.txt' % request.form['type'])
-            file.save(tgt_file_loc)
-
-            if os.path.exists("bleu_out.txt"):
-               os.remove("bleu_out.txt")
-            
-            os.system("perl ./tools/multi-bleu-detok.perl ./%s < ./%s > bleu-detok.txt" %(tgt_ref_file_loc,tgt_file_loc))
-            os.system("python ./tools/calculatebleu.py ./%s ./%s" %(tgt_file_loc,tgt_ref_file_loc))            
-            os.remove(tgt_file_loc)
-            logger.info("Bleu calculated and file removed")
-            with open("bleu-detok.txt") as zh:
-                out['status'] = statusCode["SUCCESS"]
-                out['response_body'] = {'bleu_for_uploaded_file':float(', '.join(zh.readlines())),
-                                        'openNMT_custom':bleu_results.OpenNMT_Custom, 'google_api': bleu_results.GOOGLE_API 
-                                        }
-        except:
-            out['status'] = statusCode["SYSTEM_ERR"]
-            logger.info("Unexpected error: %s"% sys.exc_info()[0])
-        
-        return jsonify(out)    
 
     @app.route('/to_cpu/<int:model_id>', methods=['GET'])
     def to_cpu(model_id):

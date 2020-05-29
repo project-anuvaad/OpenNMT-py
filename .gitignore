@@ -53,6 +53,8 @@ corpus/original_data/english_hindi/exp_5.4_ik_no_learned_counsel
 corpusfiles
 available_models/interactive_models/*
 !available_models/interactive_models/iconf.json
+benchmark/*
+!benchmark/.gitkeep
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
