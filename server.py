@@ -187,8 +187,8 @@ def start(config_file,
             if not os.path.exists(os.path.join(file_location['FILE_LOC'],'%s/'%language)):
                 os.makedirs(os.path.join(file_location['FILE_LOC'],'%s/'%language)) 
             file_loc =  os.path.join(file_location["FILE_LOC"], language,db_filename)
-            Benchmarks(type = file_type,language = request.form['language'],user_filename = user_filename,db_filename = db_filename,version = 0 \
-                       ,created_by = "", path = file_loc).save()
+            Benchmarks(type = file_type,language = request.form['language'],user_filename = user_filename,db_filename = db_filename,version = 0 ,\
+                       created_by = "", path = file_loc).save()
 
             file.save(file_loc)
             

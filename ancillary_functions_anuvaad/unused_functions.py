@@ -12,8 +12,9 @@ def lookup_table(model_id,token):
         token = ""                
     
     return token                
+
 '''
-    @app.route("/download-src", methods=['GET'])
+@app.route("/download-src", methods=['GET'])
     def get_file():
         """Download a file."""
         out = {}
@@ -72,5 +73,5 @@ def lookup_table(model_id,token):
             out['status'] = statusCode["SYSTEM_ERR"]
             logger.info("Unexpected error: %s"% sys.exc_info()[0])
         
-        return jsonify(out)
-'''
+        return jsonify(out) 
+'''    
