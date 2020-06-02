@@ -4,6 +4,7 @@ import ancillary_functions_anuvaad.sentence_processor as sentence_processor
 import ancillary_functions_anuvaad.ancillary_functions as ancillary_functions
 import ancillary_functions_anuvaad.sc_preface_handler as sc_preface_handler
 import ancillary_functions_anuvaad.handle_date_url as date_url_util
+import ancillary_functions_anuvaad.output_cleaner as oc
 from config.config import statusCode, benchmark_types, language_supported, file_location
 from onmt.utils.logging import init_logger, logger
 import os
@@ -385,6 +386,7 @@ def translate_func(inputs, translation_server):
                                             patterns['p6'],patterns['p7']])
                 tag_tgt = translation                            
                 translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)
+                translation = oc.cleaner(tag_src,translation,i['id'])
             logger.info("trans_function-experiment-{} output: {}".format(i['id'],translation))    
             tgt.append(translation)
             pred_score.append(scores[0])
