@@ -36,6 +36,42 @@
         {
             "id":10,
             "path":"en-gu"
+        },
+        {
+            "id":50,
+            "path":"te-en"
+        },
+        {
+            "id":6,
+            "path":"hi-en"
+        },
+        {
+            "id":62,
+            "path":"mr-en"
+        },
+        {
+            "id":58,
+            "path":"bn-en"
+        },
+        {
+            "id":8,
+            "path":"ta-en"
+        },
+        {
+            "id":55,
+            "path":"pa-en"
+        },
+        {
+            "id":48,
+            "path":"kn-en"
+        },
+        {
+            "id":60,
+            "path":"ml-en"
+        },
+        {
+            "id":52,
+            "path":"gu-en"
         }
     ]
 }

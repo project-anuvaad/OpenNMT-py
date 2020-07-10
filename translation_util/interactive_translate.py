@@ -134,6 +134,61 @@ def interactive_translation(inputs):
                 elif i['id'] == 42:  
                     "english-marathi"
                     translation = encode_itranslate_decode(i,sp_model.english_marathi["ENG_071119"],sp_model.english_marathi["MARATHI_071119"],num_map,tp_tokenizer)
+                elif i['id'] == 50:
+                    "telugu-english"
+                    tp_tokenizer = sentence_processor.moses_tokenizer
+                    i['src'] = sentence_processor.indic_tokenizer(i['src'])
+                    translation = encode_itranslate_decode(i,sp_model.english_telugu["TELUGU_120220"],sp_model.english_telugu["ENG_120220"],num_map,tp_tokenizer)
+                    translation = sentence_processor.moses_detokenizer(translation)
+                elif i['id'] == 6:
+                    "hindi-english"
+                    tp_tokenizer = sentence_processor.moses_tokenizer
+                    i['src'] = sentence_processor.indic_tokenizer(i['src'])
+                    translation = encode_itranslate_decode(i,sp_model.hindi_english["HIN_EXP_2_050520"],sp_model.hindi_english["ENG_EXP_2_050520"],num_map,tp_tokenizer)
+                    translation = sentence_processor.moses_detokenizer(translation)
+                elif i['id'] == 62:
+                    "marathi-english"
+                    tp_tokenizer = sentence_processor.moses_tokenizer
+                    i['src'] = sentence_processor.indic_tokenizer(i['src'])
+                    translation = encode_itranslate_decode(i,sp_model.english_marathi["MARATHI_280220"],sp_model.english_marathi["ENG_280220"],num_map,tp_tokenizer)
+                    translation = sentence_processor.moses_detokenizer(translation)
+                elif i['id'] == 58:
+                    "bengali-english"
+                    tp_tokenizer = sentence_processor.moses_tokenizer 
+                    i['src'] = sentence_processor.indic_tokenizer(i['src'])
+                    translation = encode_itranslate_decode(i,sp_model.english_bengali["BENG_180220"],sp_model.english_bengali["ENG_180220"],num_map,tp_tokenizer)
+                    translation = sentence_processor.moses_detokenizer(translation)
+                elif i['id'] == 8:
+                    "tamil-english"
+                    tp_tokenizer = sentence_processor.moses_tokenizer 
+                    i['src'] = sentence_processor.indic_tokenizer(i['src'])
+                    translation = encode_itranslate_decode(i,sp_model.english_tamil["TAM_090120"],sp_model.english_tamil["ENG_090120"],num_map,tp_tokenizer)
+                    translation = sentence_processor.moses_detokenizer(translation) 
+                elif i['id'] == 55:
+                    "punjabi-english"
+                    tp_tokenizer = sentence_processor.moses_tokenizer 
+                    i['src'] = sentence_processor.indic_tokenizer(i['src'])
+                    translation = encode_itranslate_decode(i,sp_model.english_punjabi["PUNJABI_160220"],sp_model.english_punjabi["ENG_160220"],num_map,tp_tokenizer)
+                    translation = sentence_processor.moses_detokenizer(translation)  
+                elif i['id'] == 48:
+                    "kannada-english"
+                    tp_tokenizer = sentence_processor.moses_tokenizer 
+                    i['src'] = sentence_processor.indic_tokenizer(i['src'])
+                    translation = encode_itranslate_decode(i,sp_model.english_kannada["KANNADA_100220"],sp_model.english_kannada["ENG_100220"],num_map,tp_tokenizer)
+                    translation = sentence_processor.moses_detokenizer(translation)
+                elif i['id'] == 60:
+                    "malayalam-english"
+                    tp_tokenizer = sentence_processor.moses_tokenizer 
+                    i['src'] = sentence_processor.indic_tokenizer(i['src'])
+                    translation = encode_itranslate_decode(i,sp_model.english_malayalam["MALAYALAM_210220"],sp_model.english_malayalam["ENG_210220"],num_map,tp_tokenizer)
+                    translation = sentence_processor.moses_detokenizer(translation) 
+                elif i['id'] == 52:
+                    "gujarati-english"
+                    tp_tokenizer = sentence_processor.moses_tokenizer 
+                    i['src'] = sentence_processor.indic_tokenizer(i['src'])
+                    translation = encode_itranslate_decode(i,sp_model.english_gujarati["GUJ_140220"],sp_model.english_gujarati["ENG_140220"],num_map,tp_tokenizer)
+                    translation = sentence_processor.moses_detokenizer(translation)                   
+
                 else:
                     logger.info("unsupported model id: {} for given input".format(i['id']))
                     raise Exception("unsupported model id: {} for given input".format(i['id']))      
