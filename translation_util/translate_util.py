@@ -272,6 +272,8 @@ def translate_func(inputs, translation_server):
                     translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_marathi["ENG_071119"],sp_model.english_marathi["MARATHI_071119"])    
                 elif i['id'] == 56:
                     "09/12/19-Exp-5.6:" 
+                    if i['src'].isupper():
+                        i['src'] = i['src'].title()
                     i['src'] = sentence_processor.moses_tokenizer(i['src'])
                     translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_hindi["ENG_EXP_5.6"],sp_model.english_hindi["HIN_EXP_5.6"])                      
                     translation = sentence_processor.indic_detokenizer(translation)
