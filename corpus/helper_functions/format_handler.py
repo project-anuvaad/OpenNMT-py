@@ -107,7 +107,6 @@ def tag_number_date_url(in_file,out_file):
               ext_url.append(word)
               word = 'UuRrLl'+str(count_url)
               count_url +=1
-              # print("kkk")
             # elif isfloat(word):
             #   ext_num.append(word)
             #   word = 'NnUuMm'+str(count_number) 
@@ -120,8 +119,6 @@ def tag_number_date_url(in_file,out_file):
           zh.write('\n')  
         print("dates: ",ext_date)
         print("url: ",ext_url)
-        # print("numbers: ",ext_num)     
-
     
   except Exception as e:
     print("in error pass format_handler: ",e)
@@ -141,7 +138,6 @@ def token_is_date(token):
     try: 
         parse(token, fuzzy=False)
         return True
-
     except ValueError:
         return False
     except OverflowError:
@@ -192,9 +188,3 @@ def shuffle_file(in_file,out_file):
   except Exception as e:
     print("Error: while shuffling file,in format_handler",e)
 
-
-# tag_number_date_url('corpus/original_data/SC_specific_eng_020819.txt','corpus/test3.txt')
-
-# token_with_numbers("जो संख्या किसी भी संख्या के समान भाग करती है उसे गुणन खंड कहेते है. उदाहरण स्वरूप 6, इस संख्या के 1,2,3 और 6 यह गुणन खंड है. 4 यह संख्या 6 का गुणन खंड नही है क्यांेकी 6 यह संख्या 4 समान भांगो में नही बॉट सकते. आप गुणक की तुलना किसी भी परिवार से और गुणनखंड की तुलना उस परिवार के व्यक्ती से कर सकते है. इसलिये 1,2,3 और 6 यह 6 इस परिवार के सदस्य है लेकिन 4 यह संख्या दुसरे परिवार की सदस्य. बोर्डपर घुमने के लिये कि-बोर्डके ऍरो किज्का उपयोग करे. ट्र्ॉगल्स से बचे. नंबर खाने के लिये स्पेस बार दबाये. ")
-                    # जो संख्या किसी भी संख्या के समान भाग करती है उसे गुणन खंड कहेते है. उदाहरण स्वरूप NnUuMm0, इस संख्या के NnUuMmNnUuMm143,NnUuMm11,NnUuMm9 और NnUuMm1 यह गुणन खंड है. NnUuMm6 यह संख्या NnUuMmNnUuMm12 का गुणन खंड नही है क्यांेकी NnUuMmNnUuMm10 यह संख्या NnUuMm7 समान भांगो में नही बॉट सकते. आप गुणक की तुलना किसी भी परिवार से और गुणनखंड की तुलना उस परिवार के व्यक्ती से कर सकते है. इसलिये 1,2,3 और NnUuMmNnUuMm8 यह NnUuMm5 इस परिवार के सदस्य है लेकिन 4 यह संख्या दुसरे परिवार की सदस्य. बोर्डपर घुमने के लिये कि-बोर्डके ऍरो किज्का उपयोग करे. ट्र्ॉगल्स से बचे. नंबर खाने के लिये स्पेस बार दबाये.
-# token_with_numbers("1,2,3,4,5,1,1")                    

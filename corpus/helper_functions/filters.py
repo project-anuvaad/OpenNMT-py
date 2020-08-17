@@ -23,11 +23,3 @@ def line_containing_link(in_file,out_file,out_file2):
           outfile2.write(line)            
     outfile.close()
 
-# "below is for lowercasing"
-# with open("corpus/original_data/eng_orders_170919.txt") as xh:
-#     with open("corpus/original_data/eng_orders_lowercased_170919.txt","w") as zh:
-#       xlines = xh.readlines()   
-#       #Write to third file
-#       for i in range(len(xlines)):
-#         line = xlines[i].lower()
-#         zh.write(line)
