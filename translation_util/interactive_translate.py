@@ -48,7 +48,7 @@ def model_conversion(inputs):
     return (out)    
 
 
-def encode_itranslate_decode(i,sp_encoder,sp_decoder,num_map,tp_tokenizer):
+def encode_itranslate_decode(i,sp_encoder,sp_decoder,num_map,tp_tokenizer,num_hypotheses=3):
     try:
         logger.info("Inside encode_itranslate_decode function")
         model_path = get_model_path(i['id'])
@@ -65,14 +65,11 @@ def encode_itranslate_decode(i,sp_encoder,sp_decoder,num_map,tp_tokenizer):
             i['target_prefix'] = str(sp.encode_line(sp_decoder,i['target_prefix']))
             tp_final = format_converter(i['target_prefix'])
             tp_final[-1] = tp_final[-1].replace(']',",")
-            m_out = translator.translate_batch([i_final],beam_size = 5, target_prefix = [tp_final])
+            m_out = translator.translate_batch([i_final],beam_size = 5, target_prefix = [tp_final],num_hypotheses=num_hypotheses)
         else:
-            m_out = translator.translate_batch([i_final],beam_size = 5)
+            m_out = translator.translate_batch([i_final],beam_size = 5,num_hypotheses=num_hypotheses)
 
-        m_tok = m_out[0][0]['tokens']  
-        translation = " ".join(m_tok)
-        translation = sp.decode_line(sp_decoder,translation)
-        
+        translation = multiple_hypothesis_decoding(m_out[0],sp_decoder)        
         return translation
         
     except Exception as e:
@@ -106,10 +103,11 @@ def interactive_translation(inputs):
                 tag_src = i['src'] 
 
                 if i['id'] == 56:
+                    "english-hindi"
                     tp_tokenizer = sentence_processor.indic_tokenizer
                     i['src'] = sentence_processor.moses_tokenizer(i['src'])
                     translation = encode_itranslate_decode(i,sp_model.english_hindi["ENG_EXP_5.6"],sp_model.english_hindi["HIN_EXP_5.6"],num_map,tp_tokenizer)
-                    translation = sentence_processor.indic_detokenizer(translation)
+                    translation = [sentence_processor.indic_detokenizer(i) for i in translation]
                 elif i['id'] == 7:
                     "english-tamil"
                     translation = encode_itranslate_decode(i,sp_model.english_tamil["ENG_230919"],sp_model.english_tamil["TAM_230919"],num_map,tp_tokenizer)
@@ -139,65 +137,64 @@ def interactive_translation(inputs):
                     tp_tokenizer = sentence_processor.moses_tokenizer
                     i['src'] = sentence_processor.indic_tokenizer(i['src'])
                     translation = encode_itranslate_decode(i,sp_model.english_telugu["TELUGU_120220"],sp_model.english_telugu["ENG_120220"],num_map,tp_tokenizer)
-                    translation = sentence_processor.moses_detokenizer(translation)
+                    translation = [sentence_processor.moses_detokenizer(i) for i in translation]
                 elif i['id'] == 6:
                     "hindi-english"
                     tp_tokenizer = sentence_processor.moses_tokenizer
                     i['src'] = sentence_processor.indic_tokenizer(i['src'])
                     translation = encode_itranslate_decode(i,sp_model.hindi_english["HIN_EXP_2_050520"],sp_model.hindi_english["ENG_EXP_2_050520"],num_map,tp_tokenizer)
-                    translation = sentence_processor.moses_detokenizer(translation)
+                    translation = [sentence_processor.moses_detokenizer(i) for i in translation]
                 elif i['id'] == 62:
                     "marathi-english"
                     tp_tokenizer = sentence_processor.moses_tokenizer
                     i['src'] = sentence_processor.indic_tokenizer(i['src'])
                     translation = encode_itranslate_decode(i,sp_model.english_marathi["MARATHI_280220"],sp_model.english_marathi["ENG_280220"],num_map,tp_tokenizer)
-                    translation = sentence_processor.moses_detokenizer(translation)
+                    translation = [sentence_processor.moses_detokenizer(i) for i in translation]
                 elif i['id'] == 58:
                     "bengali-english"
                     tp_tokenizer = sentence_processor.moses_tokenizer 
                     i['src'] = sentence_processor.indic_tokenizer(i['src'])
                     translation = encode_itranslate_decode(i,sp_model.english_bengali["BENG_180220"],sp_model.english_bengali["ENG_180220"],num_map,tp_tokenizer)
-                    translation = sentence_processor.moses_detokenizer(translation)
+                    translation = [sentence_processor.moses_detokenizer(i) for i in translation]
                 elif i['id'] == 8:
                     "tamil-english"
                     tp_tokenizer = sentence_processor.moses_tokenizer 
                     i['src'] = sentence_processor.indic_tokenizer(i['src'])
                     translation = encode_itranslate_decode(i,sp_model.english_tamil["TAM_090120"],sp_model.english_tamil["ENG_090120"],num_map,tp_tokenizer)
-                    translation = sentence_processor.moses_detokenizer(translation) 
+                    translation = [sentence_processor.moses_detokenizer(i) for i in translation] 
                 elif i['id'] == 55:
                     "punjabi-english"
                     tp_tokenizer = sentence_processor.moses_tokenizer 
                     i['src'] = sentence_processor.indic_tokenizer(i['src'])
                     translation = encode_itranslate_decode(i,sp_model.english_punjabi["PUNJABI_160220"],sp_model.english_punjabi["ENG_160220"],num_map,tp_tokenizer)
-                    translation = sentence_processor.moses_detokenizer(translation)  
+                    translation = [sentence_processor.moses_detokenizer(i) for i in translation]  
                 elif i['id'] == 48:
                     "kannada-english"
                     tp_tokenizer = sentence_processor.moses_tokenizer 
                     i['src'] = sentence_processor.indic_tokenizer(i['src'])
                     translation = encode_itranslate_decode(i,sp_model.english_kannada["KANNADA_100220"],sp_model.english_kannada["ENG_100220"],num_map,tp_tokenizer)
-                    translation = sentence_processor.moses_detokenizer(translation)
+                    translation = [sentence_processor.moses_detokenizer(i) for i in translation]
                 elif i['id'] == 60:
                     "malayalam-english"
                     tp_tokenizer = sentence_processor.moses_tokenizer 
                     i['src'] = sentence_processor.indic_tokenizer(i['src'])
                     translation = encode_itranslate_decode(i,sp_model.english_malayalam["MALAYALAM_210220"],sp_model.english_malayalam["ENG_210220"],num_map,tp_tokenizer)
-                    translation = sentence_processor.moses_detokenizer(translation) 
+                    translation = [sentence_processor.moses_detokenizer(i) for i in translation] 
                 elif i['id'] == 52:
                     "gujarati-english"
                     tp_tokenizer = sentence_processor.moses_tokenizer 
                     i['src'] = sentence_processor.indic_tokenizer(i['src'])
                     translation = encode_itranslate_decode(i,sp_model.english_gujarati["GUJ_140220"],sp_model.english_gujarati["ENG_140220"],num_map,tp_tokenizer)
-                    translation = sentence_processor.moses_detokenizer(translation)                   
+                    translation = [sentence_processor.moses_detokenizer(i) for i in translation]                   
 
                 else:
                     logger.info("unsupported model id: {} for given input".format(i['id']))
                     raise Exception("unsupported model id: {} for given input".format(i['id']))      
 
-                translation = date_url_util.regex_pass(translation,[patterns['p8'],patterns['p9'],patterns['p4'],patterns['p5'],
-                                            patterns['p6'],patterns['p7']])
+                translation = [date_url_util.regex_pass(i,[patterns['p8'],patterns['p9'],patterns['p4'],patterns['p5'],
+                                            patterns['p6'],patterns['p7']]) for i in translation]
                 tag_tgt = translation
-                translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)
-                logger.info("len tag_tgt-{} and len translation-{}".format(len(tag_tgt.split()),len(translation.split())))
+                translation = [date_url_util.replace_tags_with_original_1(i,date_original,url_original,num_array) for i in translation]
             logger.info("interactive translation-experiment-{} output: {}".format(i['id'],translation))    
             tgt.append(translation)
             tagged_tgt.append(tag_tgt)
@@ -241,4 +238,15 @@ def replace_num_target_prefix(i_,num_map):
     except Exception as e:
         logger.error("Error in interavtive translation-replace_num_target_prefix:{}".format(e))
         return i_['target_prefix']
-    
+
+def multiple_hypothesis_decoding(hypotheses,sp_decoder):
+    try:
+        translations = list()
+        for i in hypotheses:
+            translation = " ".join(i['tokens'])
+            translation = sp.decode_line(sp_decoder,translation)
+            translations.append(translation)
+        return translations
+    except Exception as e:
+        logger.error("Error in interavtive translation-multiple_hypothesis_decoding:{}".format(e))
+        raise
