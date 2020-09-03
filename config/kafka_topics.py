@@ -25,6 +25,11 @@ kafka_topic = [
     "consumer":"nmt_translate_production",
     "producer":"nmt_translate_processed_production",
     "description":"Pdf production translation"
+  },
+  {
+    "consumer":"anuvaad_nmt_translate",
+    "producer":"anuvaad_nmt_translate_processed",
+    "description":"kafka topics for"
   }
 
   ]
