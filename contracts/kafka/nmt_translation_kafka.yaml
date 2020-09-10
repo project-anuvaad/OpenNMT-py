@@ -48,7 +48,7 @@ definitions:
         
   translation_response:
     type: object
-    description: Output from NMT after translation. The output is pushed to the output_topic
+    description: Output from NMT after translation. The output is pushed to the output_topic under key "out"
     properties:        
       response_body:
         type: array
