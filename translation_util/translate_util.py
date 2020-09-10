@@ -95,7 +95,7 @@ def from_en(inputs, translation_server):
                     for i in range(len(tgt))]
         except ServerModelError as e:
             out['status'] = statusCode["SEVER_MODEL_ERR"]
-            out['status']['errObj'] = str(e)
+            out['status']['errObj'] = {"message":str(e)}
             logger.error("ServerModelError error in TRANSLATE_UTIL-FROM_ENGLISH: {} and {}".format(e,sys.exc_info()[0]))
         except Exception as e:
             out['status'] = statusCode["SYSTEM_ERR"]
@@ -162,11 +162,11 @@ def from_hindi(inputs, translation_server):
                 for i in range(len(tgt))]
     except ServerModelError as e:
         out['status'] = statusCode["SEVER_MODEL_ERR"]
-        out['status']['errObj'] = str(e)
+        out['status']['errObj'] = {"message":str(e)}
         logger.error("ServerModelError error in TRANSLATE_UTIL-FROM_HINDI: {} and {}".format(e,sys.exc_info()[0]))
     except Exception as e:
         out['status'] = statusCode["SYSTEM_ERR"]
-        out['status']['errObj'] = str(e)
+        out['status']['errObj'] = {"message":str(e)}
         logger.error("Unexpected error:%s and %s"% (e,sys.exc_info()[0]))   
 
     return (out)
@@ -191,6 +191,7 @@ def translate_func(inputs, translation_server):
                 
             if  any(v not in i for v in ['src','id']):
                 out['status'] = statusCode["ID_OR_SRC_MISSING"]
+                out['response_body'] = []
                 logger.info("either id or src missing in some input")
                 return (out) 
 
@@ -404,11 +405,13 @@ def translate_func(inputs, translation_server):
                 for i in range(len(tgt))]
     except ServerModelError as e:
         out['status'] = statusCode["SEVER_MODEL_ERR"]
-        out['status']['errObj'] = str(e)
+        out['status']['errObj'] = {"message":str(e)}
+        out['response_body'] = []
         logger.error("ServerModelError error in TRANSLATE_UTIL-translate_func: {} and {}".format(e,sys.exc_info()[0]))
     except Exception as e:
         out['status'] = statusCode["SYSTEM_ERR"]
-        out['status']['errObj'] = str(e)
+        out['status']['errObj'] = {"message":str(e)}
+        out['response_body'] = []
         logger.error("Unexpected error:%s and %s"% (e,sys.exc_info()[0]))   
 
     return (out)
