@@ -4,6 +4,7 @@ import ancillary_functions_anuvaad.sentence_processor as sentence_processor
 import ancillary_functions_anuvaad.ancillary_functions as ancillary_functions
 import ancillary_functions_anuvaad.sc_preface_handler as sc_preface_handler
 import ancillary_functions_anuvaad.handle_date_url as date_url_util
+import ancillary_functions_anuvaad.output_cleaner as oc
 from config.config import statusCode, benchmark_types, language_supported, file_location
 from onmt.utils.logging import init_logger, logger
 import os
@@ -94,7 +95,7 @@ def from_en(inputs, translation_server):
                     for i in range(len(tgt))]
         except ServerModelError as e:
             out['status'] = statusCode["SEVER_MODEL_ERR"]
-            out['status']['errObj'] = str(e)
+            out['status']['errObj'] = {"message":str(e)}
             logger.error("ServerModelError error in TRANSLATE_UTIL-FROM_ENGLISH: {} and {}".format(e,sys.exc_info()[0]))
         except Exception as e:
             out['status'] = statusCode["SYSTEM_ERR"]
@@ -161,11 +162,11 @@ def from_hindi(inputs, translation_server):
                 for i in range(len(tgt))]
     except ServerModelError as e:
         out['status'] = statusCode["SEVER_MODEL_ERR"]
-        out['status']['errObj'] = str(e)
+        out['status']['errObj'] = {"message":str(e)}
         logger.error("ServerModelError error in TRANSLATE_UTIL-FROM_HINDI: {} and {}".format(e,sys.exc_info()[0]))
     except Exception as e:
         out['status'] = statusCode["SYSTEM_ERR"]
-        out['status']['errObj'] = str(e)
+        out['status']['errObj'] = {"message":str(e)}
         logger.error("Unexpected error:%s and %s"% (e,sys.exc_info()[0]))   
 
     return (out)
@@ -190,6 +191,7 @@ def translate_func(inputs, translation_server):
                 
             if  any(v not in i for v in ['src','id']):
                 out['status'] = statusCode["ID_OR_SRC_MISSING"]
+                out['response_body'] = []
                 logger.info("either id or src missing in some input")
                 return (out) 
 
@@ -207,7 +209,7 @@ def translate_func(inputs, translation_server):
                 # prefix,suffix, i['src'] = ancillary_functions.separate_alphanumeric_and_symbol(i['src'])
                 prefix, i['src'] = ancillary_functions.prefix_handler(i['src'])
                 i['src'],date_original,url_original,num_array,num_map = date_url_util.tag_number_date_url_1(i['src'])
-                tag_src = prefix +" "+ i['src'] 
+                tag_src = (prefix +" "+ i['src']).lstrip() 
                 if i['id'] == 5:
                     "hi-en exp-1"
                     i['src'] = sentence_processor.indic_tokenizer(i['src'])
@@ -271,6 +273,8 @@ def translate_func(inputs, translation_server):
                     translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_marathi["ENG_071119"],sp_model.english_marathi["MARATHI_071119"])    
                 elif i['id'] == 56:
                     "09/12/19-Exp-5.6:" 
+                    if i['src'].isupper():
+                        i['src'] = i['src'].title()
                     i['src'] = sentence_processor.moses_tokenizer(i['src'])
                     translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_hindi["ENG_EXP_5.6"],sp_model.english_hindi["HIN_EXP_5.6"])                      
                     translation = sentence_processor.indic_detokenizer(translation)
@@ -379,12 +383,13 @@ def translate_func(inputs, translation_server):
                     raise Exception("unsupported model id: {} for given input".format(i['id']))      
 
                 # translation = (prefix+" "+translation+" "+suffix).strip()
-                translation = prefix+" "+translation
+                translation = (prefix+" "+translation).lstrip()
                 translation = translation.replace("▁"," ")
                 translation = date_url_util.regex_pass(translation,[patterns['p8'],patterns['p9'],patterns['p4'],patterns['p5'],
                                             patterns['p6'],patterns['p7']])
                 tag_tgt = translation                            
                 translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)
+                translation = oc.cleaner(tag_src,translation,i['id'])
             logger.info("trans_function-experiment-{} output: {}".format(i['id'],translation))    
             tgt.append(translation)
             pred_score.append(scores[0])
@@ -400,11 +405,13 @@ def translate_func(inputs, translation_server):
                 for i in range(len(tgt))]
     except ServerModelError as e:
         out['status'] = statusCode["SEVER_MODEL_ERR"]
-        out['status']['errObj'] = str(e)
+        out['status']['errObj'] = {"message":str(e)}
+        out['response_body'] = []
         logger.error("ServerModelError error in TRANSLATE_UTIL-translate_func: {} and {}".format(e,sys.exc_info()[0]))
     except Exception as e:
         out['status'] = statusCode["SYSTEM_ERR"]
-        out['status']['errObj'] = str(e)
+        out['status']['errObj'] = {"message":str(e)}
+        out['response_body'] = []
         logger.error("Unexpected error:%s and %s"% (e,sys.exc_info()[0]))   
 
     return (out)

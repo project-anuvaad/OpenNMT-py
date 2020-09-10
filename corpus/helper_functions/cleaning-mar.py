@@ -1,3 +1,7 @@
+'''
+Helper functions to clean corpus file- removing specific junk tokens
+'''
+
 def token_finder(input_file,token):
     try:
         out_file = "file_with-19_{}".format("1")
@@ -63,19 +67,6 @@ def get_indices_for_same_lines_among_files(file_1,file_2):
         print(e)
     
 
-# index_array = token_finder("corpus/intermediate_data/file_shuffler/en-ta-19-mar/eng_corpus.txt", "* * *" )
-# line_extracter_using_index("corpus/master_corpus/english_hindi/eng_train_corpus_final.txt",index_array,"test_en.txt")
-# line_extracter_using_index("corpus/intermediate_data/file_shuffler/en-ta-19-mar/tamil_corpus.txt",index_array,"ta19-1.txt")
-# lines_without_token("test3.txt","ADV","test4.txt")
-
-# index_array = token_finder("test_hi.txt-1","एक खंड" )
-# line_extracter_using_index("test_en.txt-1",index_array,"positive_persual_en-1.txt")
-# line_extracter_using_index("test_hi.txt-1",index_array,"positive_perusual_hi-1.txt")
-
-# indices_1 = get_indices_for_same_lines_among_files('test12.txt',"corpus/master_corpus/english_hindi/hindi_train_corpus_final.txt-1")
-# line_extracter_using_index("corpus/master_corpus/english_hindi/eng_train_corpus_final.txt-1",indices_1,"xxxx.txt")
-# line_extracter_using_index("corpus/master_corpus/english_hindi/hindi_train_corpus_final.txt-1",indices_1,"yyy.txt")
-
 def clean_file(input_file):
     try:
         out_file = "clean-file-19_{}".format("en")
@@ -134,4 +125,4 @@ def clean_source(text):
     return text
 
 
-clean_file("corpus/intermediate_data/file_shuffler/en-kn-19-mar/en-19mar.txt")    
+# clean_file("corpus/intermediate_data/file_shuffler/en-kn-19-mar/en-19mar.txt")    

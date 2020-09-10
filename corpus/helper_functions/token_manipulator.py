@@ -67,11 +67,3 @@ index_array = token_finder("corpus/master_corpus/english_hindi/eng_train_corpus_
 # line_extracter_using_index("corpus/master_corpus/english_hindi/eng_train_corpus_final.txt",index_array,"test_en.txt")
 line_extracter_using_index("corpus/master_corpus/english_hindi/hindi_train_corpus_final.txt-1-1",index_array,"test.txt")
 # lines_without_token("test3.txt","ADV","test4.txt")
-
-# index_array = token_finder("test_hi.txt-1","एक खंड" )
-# line_extracter_using_index("test_en.txt-1",index_array,"positive_persual_en-1.txt")
-# line_extracter_using_index("test_hi.txt-1",index_array,"positive_perusual_hi-1.txt")
-
-# indices_1 = get_indices_for_same_lines_among_files('test12.txt',"corpus/master_corpus/english_hindi/hindi_train_corpus_final.txt-1")
-# line_extracter_using_index("corpus/master_corpus/english_hindi/eng_train_corpus_final.txt-1",indices_1,"xxxx.txt")
-# line_extracter_using_index("corpus/master_corpus/english_hindi/hindi_train_corpus_final.txt-1",indices_1,"yyy.txt")

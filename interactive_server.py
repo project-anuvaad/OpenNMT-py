@@ -20,6 +20,10 @@ def translate():
         logger.info("Making interactive-translation API call")
         logger.info("inputs---{}".format(inputs))
         out = interactive_translation.interactive_translation(inputs)
+        complete_response = out['response_body']
+        out['response_body'] = [{"tgt": complete_response[i]['tgt'][0],"tagged_tgt":complete_response[i]['tagged_tgt'][0],
+                                "tagged_src":complete_response[i]['tagged_src']}
+                for i in range(len(complete_response))]
         logger.info("out from interactive-translation done{}".format(out))
         return jsonify(out)
     else:
@@ -36,6 +40,19 @@ def model_converter():
     else:
         logger.info("null inputs in request in interactive-translation API")
         return jsonify({'status':statusCode["INVALID_API_REQUEST"]}) 
+
+@app.route('/v1/interactive-translation', methods=['POST'])
+def multiple_translate():
+    inputs = request.get_json(force=True)
+    if len(inputs)>0:
+        logger.info("Making v1/interactive-translation API call")
+        logger.info("inputs---{}".format(inputs))
+        out = interactive_translation.interactive_translation(inputs)
+        logger.info("out from v1/interactive-translation done{}".format(out))
+        return jsonify(out)
+    else:
+        logger.info("null inputs in request in v1/interactive-translation API")
+        return jsonify({'status':statusCode["INVALID_API_REQUEST"]})
 
 
 if __name__ == '__main__':

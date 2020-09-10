@@ -33,7 +33,7 @@ def doc_translator(translation_server,c_topic):
             iq = iq +1
             inputs = (msg.value)
 
-            if inputs is not None and len(inputs) is not 0:
+            if inputs is not None and all(v in inputs for v in ['url_end_point','message']) and len(inputs) is not 0:
                 if inputs['url_end_point'] == 'translation_en':
                     logger.info("Running kafka on  {}".format(inputs['url_end_point']))
                     logger.info("Running kafka-translation on  {}".format(inputs['message']))
@@ -52,13 +52,17 @@ def doc_translator(translation_server,c_topic):
                     logger.info("Incorrect url_end_point for KAFKA")
                     out['status'] = statusCode["KAFKA_INVALID_REQUEST"]
                     out['response_body'] = []
-
-                
+            
+            else:
+                out = {}
+                logger.info("Null input request or key parameter missing in KAFKA request: document_translator")       
+          
             p.send(producer_topic, value={'out':out})
             p.flush()
             msg_sent += 1
             logger.info("*******************msg sent count*********:{}".format(msg_sent))
-    except ValueError:  # includes simplejson.decoder.JSONDecodeError
+    except ValueError:  
+        '''includes simplejson.decoder.JSONDecodeError '''
         logger.error("Decoding JSON has failed in document_translator: %s"% sys.exc_info()[0])
         doc_translator(translation_server,c_topic)  
     except Exception  as e:
