@@ -43,7 +43,7 @@ def model_conversion(inputs):
     except Exception as e:
         logger.error("Error in model_conversion interactive translate: {} and {}".format(e,sys.exc_info()[0]))
         out['status'] = statusCode["SYSTEM_ERR"]
-        out['status']['errObj'] = str(e)
+        out['status']['why'] = str(e)
 
     return (out)    
 
@@ -189,7 +189,7 @@ def interactive_translation(inputs):
 
                 else:
                     logger.info("unsupported model id: {} for given input".format(i['id']))
-                    raise Exception("unsupported model id: {} for given input".format(i['id']))      
+                    raise Exception("Unsupported Model ID - id: {} for given input".format(i['id']))      
 
                 translation = [date_url_util.regex_pass(i,[patterns['p8'],patterns['p9'],patterns['p4'],patterns['p5'],
                                             patterns['p6'],patterns['p7']]) for i in translation]
@@ -206,7 +206,8 @@ def interactive_translation(inputs):
                 for i in range(len(tgt))]
     except Exception as e:
         out['status'] = statusCode["SYSTEM_ERR"]
-        out['status']['errObj'] = str(e)
+        out['status']['why'] = str(e)
+        out['response_body'] = []
         logger.error("Unexpected error:%s and %s"% (e,sys.exc_info()[0]))   
 
     return (out)

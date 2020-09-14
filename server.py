@@ -197,7 +197,7 @@ def start(config_file,
             out['response_body'] = {}
         except Exception as e:
             out['status'] = statusCode["SYSTEM_ERR"]
-            out['status']['errObj'] = str(e)
+            out['status']['why'] = str(e)
             logger.info("Unexpected error while saving benchmark file: %s"% sys.exc_info()[0]) 
         
         return jsonify(out)
@@ -220,7 +220,7 @@ def start(config_file,
             out['response_body'] = {"list_benchmark":list_benchmark}
         except Exception as e:
             out['status'] = statusCode["SYSTEM_ERR"]
-            out['status']['errObj'] = str(e)
+            out['status']['why'] = str(e)
             logger.info("Unexpected error: %s"% sys.exc_info()[0])
         
         return jsonify(out)
@@ -245,11 +245,11 @@ def start(config_file,
             
         except FileNotFoundError as e:
             out['status'] = statusCode["No_File_DB"]
-            out['status']['errObj'] = str(e)
+            out['status']['why'] = str(e)
             logger.error("File exist in database but not found on server")
         except Exception as e:
             out['status'] = statusCode["SYSTEM_ERR"]
-            out['status']['errObj'] = str(e)
+            out['status']['why'] = str(e)
             logger.info("Unexpected error: %s"% sys.exc_info()[0])
         return jsonify(out)
     
@@ -285,7 +285,7 @@ def start(config_file,
 
         except Exception as e:
             out['status'] = statusCode["SYSTEM_ERR"]
-            out['status']['errObj'] = str(e)
+            out['status']['why'] = str(e)
             logger.info("Unexpected error: %s"% sys.exc_info()[0])
         return jsonify(out)
 

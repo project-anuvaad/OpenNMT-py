@@ -95,7 +95,7 @@ def from_en(inputs, translation_server):
                     for i in range(len(tgt))]
         except ServerModelError as e:
             out['status'] = statusCode["SEVER_MODEL_ERR"]
-            out['status']['errObj'] = {"message":str(e)}
+            out['status']['why'] = str(e)
             logger.error("ServerModelError error in TRANSLATE_UTIL-FROM_ENGLISH: {} and {}".format(e,sys.exc_info()[0]))
         except Exception as e:
             out['status'] = statusCode["SYSTEM_ERR"]
@@ -162,11 +162,11 @@ def from_hindi(inputs, translation_server):
                 for i in range(len(tgt))]
     except ServerModelError as e:
         out['status'] = statusCode["SEVER_MODEL_ERR"]
-        out['status']['errObj'] = {"message":str(e)}
+        out['status']['why'] = str(e)
         logger.error("ServerModelError error in TRANSLATE_UTIL-FROM_HINDI: {} and {}".format(e,sys.exc_info()[0]))
     except Exception as e:
         out['status'] = statusCode["SYSTEM_ERR"]
-        out['status']['errObj'] = {"message":str(e)}
+        out['status']['why'] = str(e)
         logger.error("Unexpected error:%s and %s"% (e,sys.exc_info()[0]))   
 
     return (out)
@@ -379,8 +379,8 @@ def translate_func(inputs, translation_server):
                     translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_hindi["ENG_EXP_13"],sp_model.english_hindi["HIN_EXP_13"])                      
                     translation = sentence_processor.indic_detokenizer(translation)                                                     
                 else:
-                    logger.info("unsupported model id: {} for given input".format(i['id']))
-                    raise Exception("unsupported model id: {} for given input".format(i['id']))      
+                    logger.info("Unsupported model id: {} for given input".format(i['id']))
+                    raise Exception("Unsupported Model ID - id: {} for given input".format(i['id']))      
 
                 # translation = (prefix+" "+translation+" "+suffix).strip()
                 translation = (prefix+" "+translation).lstrip()
@@ -405,12 +405,12 @@ def translate_func(inputs, translation_server):
                 for i in range(len(tgt))]
     except ServerModelError as e:
         out['status'] = statusCode["SEVER_MODEL_ERR"]
-        out['status']['errObj'] = {"message":str(e)}
+        out['status']['why'] = str(e)
         out['response_body'] = []
         logger.error("ServerModelError error in TRANSLATE_UTIL-translate_func: {} and {}".format(e,sys.exc_info()[0]))
     except Exception as e:
         out['status'] = statusCode["SYSTEM_ERR"]
-        out['status']['errObj'] = {"message":str(e)}
+        out['status']['why'] = str(e)
         out['response_body'] = []
         logger.error("Unexpected error:%s and %s"% (e,sys.exc_info()[0]))   
 
