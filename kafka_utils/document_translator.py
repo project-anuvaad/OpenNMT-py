@@ -17,7 +17,7 @@ import translation_util.translate_util as translate_util
 
 
 def doc_translator(translation_server,c_topic):
-    logger.info('doc_translator')  
+    logger.info('Kafka utils: document_translator')  
     iq =0
     out = {}
     msg_count = 0
@@ -34,6 +34,7 @@ def doc_translator(translation_server,c_topic):
             inputs = (msg.value)
 
             if inputs is not None and all(v in inputs for v in ['url_end_point','message']) and len(inputs) is not 0:
+                record_id =  inputs.get("record_id")
                 if inputs['url_end_point'] == 'translation_en':
                     logger.info("Running kafka on  {}".format(inputs['url_end_point']))
                     logger.info("Running kafka-translation on  {}".format(inputs['message']))
@@ -52,6 +53,8 @@ def doc_translator(translation_server,c_topic):
                     logger.info("Incorrect url_end_point for KAFKA")
                     out['status'] = statusCode["KAFKA_INVALID_REQUEST"]
                     out['response_body'] = []
+                
+                if record_id: out['record_id'] = record_id  
             
             else:
                 out = {}
