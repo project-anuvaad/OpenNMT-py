@@ -6,7 +6,7 @@ from flask_cors import CORS
 from onmt.utils.logging import init_logger
 from config.config import statusCode
 
-INTERACTIVE_LOG_FILE = 'intermediate_data/interactive_log_file.txt'
+INTERACTIVE_LOG_FILE = 'available_models/models/interactive_log_file.txt'
 
 logger = init_logger(INTERACTIVE_LOG_FILE)
 

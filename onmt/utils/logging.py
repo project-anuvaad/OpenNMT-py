@@ -26,11 +26,11 @@ class ColorFormatter(logging.Formatter):
         return super(ColorFormatter, self).format(new_record, *args, **kwargs)
 
 def init_logger(log_file=None, log_file_level=logging.NOTSET):
-    log_format = logging.Formatter("[%(asctime)s %(levelname)s %(filename)s %(lineno)d] %(message)s")
+    log_format = logging.Formatter("%(asctime)s %(levelname)s %(filename)s %(lineno)d %(message)s")
     logger = logging.getLogger()
     logger.setLevel(logging.INFO)
 
-    formatter = ColorFormatter("[%(asctime)s %(levelname)s %(filename)s %(lineno)d] %(message)s")
+    formatter = ColorFormatter("%(asctime)s %(levelname)s %(filename)s %(lineno)d %(message)s")
     console_handler = logging.StreamHandler()
     console_handler.setFormatter(formatter)
     logger.handlers = [console_handler]

@@ -13,7 +13,7 @@ import os
 import re
 
 ICONFG_FILE = "available_models/interactive_models/iconf.json"
-INTERACTIVE_LOG_FILE = 'intermediate_data/interactive_log_file.txt'
+INTERACTIVE_LOG_FILE = 'available_models/models/interactive_log_file.txt'
 
 logger = init_logger(INTERACTIVE_LOG_FILE)
 
@@ -234,7 +234,7 @@ def replace_num_target_prefix(i_,num_map):
             if len(replacement_tag) > 0:
                 replacement_tag = replacement_tag[0]
                 i_['target_prefix'] = i_['target_prefix'].replace(i,replacement_tag)
-        logger.info("tp after replacing numbers with tag: {}".format(i_['target_prefix']))
+        logger.info("target_prefix after replacing numbers with tag: {}".format(i_['target_prefix']))
         return i_['target_prefix']
     except Exception as e:
         logger.error("Error in interavtive translation-replace_num_target_prefix:{}".format(e))
@@ -249,5 +249,5 @@ def multiple_hypothesis_decoding(hypotheses,sp_decoder):
             translations.append(translation)
         return translations
     except Exception as e:
-        logger.error("Error in interavtive translation-multiple_hypothesis_decoding:{}".format(e))
+        logger.error("Error in interactive translation-multiple_hypothesis_decoding:{}".format(e))
         raise
