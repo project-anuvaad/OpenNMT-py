@@ -15,7 +15,7 @@ from onmt.translate import TranslationServer, ServerModelError
 
 from itertools import repeat
 
-from onmt.utils.logging import init_logger,logger
+from onmt.utils.logging import init_logger,logger,entry_exit_log,LOG_TAGS
 from onmt.utils.misc import split_corpus
 from onmt.translate.translator import build_translator
 import os
@@ -116,8 +116,10 @@ def start(config_file,
         inputs = request.get_json(force=True)
         if len(inputs)>0:
             logger.info("Making translate-anuvaad API call")
+            logger.info(entry_exit_log(LOG_TAGS["input"],inputs))
             out = translate_util.translate_func(inputs, translation_server)
             logger.info("out from translate_func-trans_util done{}".format(out))
+            logger.info(entry_exit_log(LOG_TAGS["output"],out))
             return jsonify(out)
         else:
             logger.info("null inputs in request in translate-anuvaad API")

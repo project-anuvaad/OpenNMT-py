@@ -6,7 +6,7 @@ import ancillary_functions_anuvaad.handle_date_url as date_url_util
 from config import sentencepiece_model_loc as sp_model
 from config.config import statusCode
 from config.regex_patterns import patterns
-from onmt.utils.logging import init_logger
+from onmt.utils.logging import init_logger,log_with_request_info, LOG_TAGS
 import json 
 import sys
 import os
@@ -86,6 +86,7 @@ def interactive_translation(inputs):
 
     try:
         for i in inputs:  
+            logger.info(log_with_request_info(i.get("s_id"),LOG_TAGS["input"],i))
             sentence_id.append(i.get("s_id") or "NA")
             if  any(v not in i for v in ['src','id']):
                 out['status'] = statusCode["ID_OR_SRC_MISSING"]
@@ -200,6 +201,7 @@ def interactive_translation(inputs):
                 tag_tgt = translation
                 translation = [date_url_util.replace_tags_with_original_1(i,date_original,url_original,num_array) for i in translation]
             logger.info("interactive translation-experiment-{} output: {}".format(i['id'],translation))    
+            logger.info(log_with_request_info(i.get("s_id"),LOG_TAGS["output"],translation))
             tgt.append(translation)
             tagged_tgt.append(tag_tgt)
             tagged_src.append(tag_src)

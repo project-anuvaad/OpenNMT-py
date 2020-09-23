@@ -6,7 +6,7 @@ import ancillary_functions_anuvaad.sc_preface_handler as sc_preface_handler
 import ancillary_functions_anuvaad.handle_date_url as date_url_util
 import ancillary_functions_anuvaad.output_cleaner as oc
 from config.config import statusCode, benchmark_types, language_supported, file_location
-from onmt.utils.logging import init_logger, logger
+from onmt.utils.logging import init_logger, logger,log_with_request_info,LOG_TAGS
 import os
 import datetime
 from onmt.translate import ServerModelError
@@ -185,6 +185,7 @@ def translate_func(inputs, translation_server):
 
     try:
         for i in inputs:
+            logger.info(log_with_request_info(i.get("s_id"),LOG_TAGS["input"],i))
             if all(v in i for v in ['s_id','n_id']):
                 s_id = [i['s_id']]
                 n_id = [i['n_id']]  
@@ -390,7 +391,8 @@ def translate_func(inputs, translation_server):
                 tag_tgt = translation                            
                 translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)
                 translation = oc.cleaner(tag_src,translation,i['id'])
-            logger.info("trans_function-experiment-{} output: {}".format(i['id'],translation))    
+            logger.info("trans_function-experiment-{} output: {}".format(i['id'],translation))   
+            logger.info(log_with_request_info(i.get("s_id"),LOG_TAGS["output"],translation)) 
             tgt.append(translation)
             pred_score.append(scores[0])
             sentence_id.append(s_id[0]), node_id.append(n_id[0])

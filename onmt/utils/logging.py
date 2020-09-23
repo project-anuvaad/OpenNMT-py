@@ -6,11 +6,13 @@ import colorama
 import copy
 
 logger = logging.getLogger()
+LOG_TAGS = {"input":"[INPUT]","output":"[OUTPUT]"}
 
 LOG_COLORS = {
     logging.ERROR: colorama.Fore.RED,
     logging.WARNING: colorama.Fore.YELLOW
 }
+
 '''
 Using different color logs for console output
 '''
@@ -42,3 +44,22 @@ def init_logger(log_file=None, log_file_level=logging.NOTSET):
         logger.addHandler(file_handler)
 
     return logger
+
+def log_with_request_info(request_info_value,tag,message):
+    '''
+    request_info_value : request_id for document translation and s_id for interactive translation
+    tag: INPUT or OUTPUT tag of the log
+    '''
+    final_log = "<"+str(request_info_value)+">" + " "+ tag + " " + str(message)
+    return final_log
+
+def entry_exit_log(tag,message):
+    final_log = tag + " " + str(message)
+    return final_log
+
+def log_with_record_id(record_id,tag,message):
+    '''
+    record_id: record_id of request from WFM
+    '''
+    final_log = "{"+str(record_id)+"}" + " "+ tag + " " + str(message)
+    return final_log
