@@ -22,7 +22,8 @@ def translate():
         out = interactive_translation.interactive_translation(inputs)
         complete_response = out['response_body']
         out['response_body'] = [{"tgt": complete_response[i]['tgt'][0],"tagged_tgt":complete_response[i]['tagged_tgt'][0],
-                                "tagged_src":complete_response[i]['tagged_src']}
+                                "tagged_src":complete_response[i]['tagged_src'],"s_id":complete_response[i]['s_id'],
+                                "src":complete_response[i]["src"]}
                 for i in range(len(complete_response))]
         logger.info("out from interactive-translation done{}".format(out))
         return jsonify(out)

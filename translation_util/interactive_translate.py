@@ -78,19 +78,23 @@ def encode_itranslate_decode(i,sp_encoder,sp_decoder,num_map,tp_tokenizer,num_hy
 
 def interactive_translation(inputs):
     out = {}
-    tgt = list()
+    i_src, tgt = list(), list()
     tagged_tgt = list()
     tagged_src = list()
+    sentence_id = list()
     tp_tokenizer = None
 
     try:
-        for i in inputs:            
+        for i in inputs:  
+            sentence_id.append(i.get("s_id") or "NA")
             if  any(v not in i for v in ['src','id']):
                 out['status'] = statusCode["ID_OR_SRC_MISSING"]
+                out['response_body'] = []
                 logger.info("either id or src missing in some input")
                 return (out) 
 
-            logger.info("input sentences:{}".format(i['src']))    
+            logger.info("input sentence:{}".format(i['src'])) 
+            i_src.append(i['src'])   
             i['src'] = i['src'].strip()    
             if ancillary_functions.special_case_fits(i['src']):
                 logger.info("sentence fits in special case, returning accordingly and not going to model")
@@ -202,7 +206,7 @@ def interactive_translation(inputs):
 
         out['status'] = statusCode["SUCCESS"]
         out['response_body'] = [{"tgt": tgt[i],"tagged_tgt":tagged_tgt[i],
-                                "tagged_src":tagged_src[i]}
+                                "tagged_src":tagged_src[i],"s_id":sentence_id[i],"src":i_src[i]}
                 for i in range(len(tgt))]
     except Exception as e:
         out['status'] = statusCode["SYSTEM_ERR"]
