@@ -58,7 +58,7 @@ def encode_itranslate_decode(i,sp_encoder,sp_decoder,num_map,tp_tokenizer,num_hy
 
         if 'target_prefix' in i and len(i['target_prefix']) > 0 and i['target_prefix'].isspace() == False:
             logger.info("target prefix: {}".format(i['target_prefix'])) 
-            i['target_prefix'] = i['target_prefix'].strip() 
+            i['target_prefix'] = i['target_prefix']
             i['target_prefix'] = replace_num_target_prefix(i,num_map)
             if tp_tokenizer is not None:
                 i['target_prefix'] = tp_tokenizer(i['target_prefix'])
