@@ -100,6 +100,7 @@ def interactive_translation(inputs):
             if ancillary_functions.special_case_fits(i['src']):
                 logger.info("sentence fits in special case, returning accordingly and not going to model")
                 translation = ancillary_functions.handle_special_cases(i['src'],i['id'])
+                translation = [translation]
                 tag_tgt,tag_src = translation,i['src']
 
             else:
