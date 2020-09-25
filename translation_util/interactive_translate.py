@@ -109,6 +109,9 @@ def interactive_translation(inputs):
 
                 if i['id'] == 56:
                     "english-hindi"
+                    if i['src'].isupper():
+                        logger.info("src all Upper case hence Tital casing it")
+                        i['src'] = i['src'].title()
                     tp_tokenizer = sentence_processor.indic_tokenizer
                     i['src'] = sentence_processor.moses_tokenizer(i['src'])
                     translation = encode_itranslate_decode(i,sp_model.english_hindi["ENG_EXP_5.6"],sp_model.english_hindi["HIN_EXP_5.6"],num_map,tp_tokenizer)
