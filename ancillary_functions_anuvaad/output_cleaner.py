@@ -16,6 +16,8 @@ def purnaviram_applier(src,tgt):
     For english to hindi translation
     '''
     try:
+        if tgt is None or len(tgt.split()) == 0:
+            return tgt
         if len(src.split()) < 5:
             return tgt
         if src.endswith('.') and tgt.endswith('।'):
