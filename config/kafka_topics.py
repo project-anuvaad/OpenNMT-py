@@ -30,6 +30,11 @@ kafka_topic = [
     "consumer":"anuvaad_nmt_translate",
     "producer":"anuvaad_nmt_translate_processed",
     "description":"kafka topics for WFM"
+  },
+  {
+    "consumer":"anuvaad_nmt_prod_translate",
+    "producer":"anuvaad_nmt_prod_translate_processed",
+    "description":"kafka topics for WFM Production"
   }
 
   ]
