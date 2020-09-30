@@ -1,3 +1,5 @@
+import os
+
 consumer_topics ={
   "TEST_TOPIC":"testtopic",
   "DOCUMENT_REQ":"to-nmt",
@@ -10,31 +12,35 @@ producer_topics ={
   "new_topic":"nmt_translate_processed"
 }
 
+## "description":"default topics"
+nmt_input_topic_default = "anuvaad-nmt-input-default"
+nmt_output_topic_default = 'anuvaad-nmt-output-default'
+
 kafka_topic = [
   {
-    "consumer":"to-nmt",
-    "producer":"listener",
+    "consumer":os.environ.get('KAFKA_ANUVAAD_DOC_INPUT_TOPIC', nmt_input_topic_default),
+    "producer":os.environ.get('KAFKA_ANUVAAD_DOC_OUTPUT_TOPIC', nmt_output_topic_default),
     "description":"Document translation,also used in Suvas"
   },
   {
-    "consumer":"nmt_translate",
-    "producer":"nmt_translate_processed",
+    "consumer":os.environ.get('KAFKA_ANUVAAD_PDF_DEV_INPUT_TOPIC', nmt_input_topic_default),
+    "producer":os.environ.get('KAFKA_ANUVAAD_PDF_DEV_OUTPUT_TOPIC', nmt_output_topic_default),
     "description":"Pdf dev environment translation"
   },
   {
-    "consumer":"nmt_translate_production",
-    "producer":"nmt_translate_processed_production",
+    "consumer":os.environ.get('KAFKA_ANUVAAD_PDF_PROD_INPUT_TOPIC', nmt_input_topic_default),
+    "producer":os.environ.get('KAFKA_ANUVAAD_PDF_PROD_OUTPUT_TOPIC', nmt_output_topic_default),
     "description":"Pdf production translation"
   },
   {
-    "consumer":"anuvaad_nmt_translate",
-    "producer":"anuvaad_nmt_translate_processed",
-    "description":"kafka topics for WFM"
+    "consumer":os.environ.get('KAFKA_ANUVAAD_WFM_DEV_INPUT_TOPIC', nmt_input_topic_default),
+    "producer":os.environ.get('KAFKA_ANUVAAD_WFM_DEV_OUTPUT_TOPIC', nmt_output_topic_default),
+    "description":"kafka topics for WFM Dev environment"
   },
   {
-    "consumer":"anuvaad_nmt_prod_translate",
-    "producer":"anuvaad_nmt_prod_translate_processed",
-    "description":"kafka topics for WFM Production"
+    "consumer":os.environ.get('KAFKA_ANUVAAD_WFM_PROD_INPUT_TOPIC', nmt_input_topic_default),
+    "producer":os.environ.get('KAFKA_ANUVAAD_WFM_PROD_OUTPUT_TOPIC', nmt_output_topic_default),
+    "description":"kafka topics for WFM Production environment"
   }
+]
 
-  ]
