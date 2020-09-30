@@ -35,31 +35,12 @@ kafka_topic = [
   {
     "consumer":os.environ.get('KAFKA_ANUVAAD_WFM_DEV_INPUT_TOPIC', nmt_input_topic_default),
     "producer":os.environ.get('KAFKA_ANUVAAD_WFM_DEV_OUTPUT_TOPIC', nmt_output_topic_default),
-    "description":"kafka topics for WFM- Dev environment"
+    "description":"kafka topics for WFM Dev environment"
+  },
+  {
+    "consumer":os.environ.get('KAFKA_ANUVAAD_WFM_PROD_INPUT_TOPIC', nmt_input_topic_default),
+    "producer":os.environ.get('KAFKA_ANUVAAD_WFM_PROD_OUTPUT_TOPIC', nmt_output_topic_default),
+    "description":"kafka topics for WFM Production environment"
   }
 ]
 
-
-
-# kafka_topic = [
-#   {
-#     "consumer":"to-nmt",
-#     "producer":"listener",
-#     "description":"Document translation,also used in Suvas"
-#   },
-#   {
-#     "consumer":"nmt_translate",
-#     "producer":"nmt_translate_processed",
-#     "description":"Pdf dev environment translation"
-#   },
-#   {
-#     "consumer":"nmt_translate_production",
-#     "producer":"nmt_translate_processed_production",
-#     "description":"Pdf production translation"
-#   },
-#   {
-#     "consumer":"anuvaad_nmt_translate",
-#     "producer":"anuvaad_nmt_translate_processed",
-#     "description":"kafka topics for WFM"
-#   }
-# ]
