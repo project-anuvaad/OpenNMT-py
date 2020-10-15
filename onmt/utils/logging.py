@@ -4,6 +4,9 @@ from __future__ import absolute_import
 import logging
 import colorama
 import copy
+import os
+
+log_file_suffix = os.environ.get('INSTANCE_VAR', None)
 
 logger = logging.getLogger()
 LOG_TAGS = {"input":"[INPUT]","output":"[OUTPUT]"}
@@ -38,6 +41,8 @@ def init_logger(log_file=None, log_file_level=logging.NOTSET):
     logger.handlers = [console_handler]
 
     if log_file and log_file != '':
+        if log_file_suffix:
+            log_file = log_file[:-4]+"_"+log_file_suffix+".txt"
         file_handler = logging.FileHandler(log_file)
         file_handler.setLevel(log_file_level)
         file_handler.setFormatter(log_format)
