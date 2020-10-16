@@ -10,7 +10,7 @@ bootstrap_server = os.environ.get(KAFKA_IP_HOST,default_value)
 
 def get_producer():
     try:
-        producer = KafkaProducer(bootstrap_servers=[bootstrap_server],
+        producer = KafkaProducer(bootstrap_servers=list(str(bootstrap_server).split(",")),
                                  value_serializer=lambda x: json.dumps(x).encode('utf-8'))
         logger.info('get_producer : producer returned successfully')
         return producer
