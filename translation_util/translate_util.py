@@ -17,16 +17,15 @@ from config.regex_patterns import patterns
 def encode_translate_decode(i,translation_server,sp_encoder,sp_decoder):
     try:
         logger.info("Inside encode_translate_decode function")
-        # i['src'] = str(sp.encode_line(sp_encoder,i['src']))
-        # logger.info("SP encoded sent: %s"%i['src'])
-        # input_sw = i['src']
-        # translation, scores, n_best, times = translation_server.run([i])
-        # logger.info("output from model: %s"%translation[0])
-        # output_sw = translation[0]
-        # translation = sp.decode_line(sp_decoder,translation[0])
-        # logger.info("SP decoded sent: %s"%translation)
-        # return translation,scores,input_sw,output_sw
-        return "Hard Coded translation", [1],"Hardcoded input subword","Hardcoded Output subword"
+        i['src'] = str(sp.encode_line(sp_encoder,i['src']))
+        logger.info("SP encoded sent: %s"%i['src'])
+        input_sw = i['src']
+        translation, scores, n_best, times = translation_server.run([i])
+        logger.info("output from model: %s"%translation[0])
+        output_sw = translation[0]
+        translation = sp.decode_line(sp_decoder,translation[0])
+        logger.info("SP decoded sent: %s"%translation)
+        return translation,scores,input_sw,output_sw
     except ServerModelError as e:
         logger.error("ServerModelError error in encode_translate_decode: {} and {}".format(e,sys.exc_info()[0]))
         raise
@@ -275,11 +274,11 @@ def translate_func(inputs, translation_server):
                     translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_marathi["ENG_071119"],sp_model.english_marathi["MARATHI_071119"])    
                 elif i['id'] == 56:
                     "09/12/19-Exp-5.6:" 
-                    # if i['src'].isupper():
-                        # i['src'] = i['src'].title()
-                    # i['src'] = sentence_processor.moses_tokenizer(i['src'])
+                    if i['src'].isupper():
+                        i['src'] = i['src'].title()
+                    i['src'] = sentence_processor.moses_tokenizer(i['src'])
                     translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_hindi["ENG_EXP_5.6"],sp_model.english_hindi["HIN_EXP_5.6"])                      
-                    # translation = sentence_processor.indic_detokenizer(translation)
+                    translation = sentence_processor.indic_detokenizer(translation)
                 elif i['id'] == 8:
                     "ta-en 1st"
                     i['src'] = sentence_processor.indic_tokenizer(i['src'])
@@ -387,11 +386,11 @@ def translate_func(inputs, translation_server):
                 # translation = (prefix+" "+translation+" "+suffix).strip()
                 translation = (prefix+" "+translation).lstrip()
                 translation = translation.replace("▁"," ")
-                # translation = date_url_util.regex_pass(translation,[patterns['p8'],patterns['p9'],patterns['p4'],patterns['p5'],
-                                            # patterns['p6'],patterns['p7']])
+                translation = date_url_util.regex_pass(translation,[patterns['p8'],patterns['p9'],patterns['p4'],patterns['p5'],
+                                            patterns['p6'],patterns['p7']])
                 tag_tgt = translation                            
-                # translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)
-                # translation = oc.cleaner(tag_src,translation,i['id'])
+                translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)
+                translation = oc.cleaner(tag_src,translation,i['id'])
             logger.info("trans_function-experiment-{} output: {}".format(i['id'],translation))   
             logger.info(log_with_request_info(i.get("s_id"),LOG_TAGS["output"],translation)) 
             tgt.append(translation)
