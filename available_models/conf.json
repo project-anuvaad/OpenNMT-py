@@ -388,14 +388,15 @@
         },
         {
             "id": 58,
-            "model": "model_enBeng-beng-to-en-1_2020-02-18-model_step_200000.pt",
+            "model": "model_enBeng-bn-to-en-2.2_2020-12-28-model_step_180000.pt",
             "timeout": 600,
             "on_timeout": "to_cpu",
             "load": true,
             "opt": {
                 "beam_size": 5,
                 "log_file":"log_file.txt",
-                "log_file_level":"INFO"
+                "log_file_level":"INFO",
+                "gpu":0
             }
         },
         {

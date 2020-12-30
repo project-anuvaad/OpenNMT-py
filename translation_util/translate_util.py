@@ -360,7 +360,7 @@ def translate_func(inputs, translation_server):
                 elif i['id'] == 58:
                     "bengali-en 2nd"
                     i['src'] = sentence_processor.indic_tokenizer(i['src'])
-                    translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_bengali["BENG_180220"],sp_model.english_bengali["ENG_180220"])
+                    translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_bengali["BENG_281220_2.2"],sp_model.english_bengali["ENG_281220_2.2"])
                     translation = sentence_processor.moses_detokenizer(translation)
                 elif i['id'] == 59:
                     "en-malay 2nd"
