@@ -43,6 +43,8 @@ english_bengali = {
     "BENG_120919": "model/sentencepiece_models/beng-2019-09-12-10k.model",
     "ENG_180220": "model/sentencepiece_models/enBeng-en-to-beng-2-2020-02-18-24k.model",
     "BENG_180220": "model/sentencepiece_models/bengali-en-to-beng-2-2020-02-18-24k.model",
+    "ENG_281220": "model/sentencepiece_models/enBeng-en-to-bn-3.2-2020-12-28-24k.model",
+    "BENG_281220": "model/sentencepiece_models/bengali-en-to-bn-3.2-2020-12-28-24k.model",
 }
 
 english_marathi = {
