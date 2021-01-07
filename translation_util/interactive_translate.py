@@ -6,14 +6,14 @@ import ancillary_functions_anuvaad.handle_date_url as date_url_util
 from config import sentencepiece_model_loc as sp_model
 from config.config import statusCode
 from config.regex_patterns import patterns
-from onmt.utils.logging import init_logger
+from onmt.utils.logging import init_logger,log_with_request_info, LOG_TAGS
 import json 
 import sys
 import os
 import re
 
 ICONFG_FILE = "available_models/interactive_models/iconf.json"
-INTERACTIVE_LOG_FILE = 'intermediate_data/interactive_log_file.txt'
+INTERACTIVE_LOG_FILE = 'available_models/models/interactive_log_file.txt'
 
 logger = init_logger(INTERACTIVE_LOG_FILE)
 
@@ -43,7 +43,7 @@ def model_conversion(inputs):
     except Exception as e:
         logger.error("Error in model_conversion interactive translate: {} and {}".format(e,sys.exc_info()[0]))
         out['status'] = statusCode["SYSTEM_ERR"]
-        out['status']['errObj'] = str(e)
+        out['status']['why'] = str(e)
 
     return (out)    
 
@@ -58,7 +58,7 @@ def encode_itranslate_decode(i,sp_encoder,sp_decoder,num_map,tp_tokenizer,num_hy
 
         if 'target_prefix' in i and len(i['target_prefix']) > 0 and i['target_prefix'].isspace() == False:
             logger.info("target prefix: {}".format(i['target_prefix'])) 
-            i['target_prefix'] = i['target_prefix'].strip() 
+            i['target_prefix'] = i['target_prefix']
             i['target_prefix'] = replace_num_target_prefix(i,num_map)
             if tp_tokenizer is not None:
                 i['target_prefix'] = tp_tokenizer(i['target_prefix'])
@@ -78,23 +78,29 @@ def encode_itranslate_decode(i,sp_encoder,sp_decoder,num_map,tp_tokenizer,num_hy
 
 def interactive_translation(inputs):
     out = {}
-    tgt = list()
+    i_src, tgt = list(), list()
     tagged_tgt = list()
     tagged_src = list()
+    sentence_id = list()
     tp_tokenizer = None
 
     try:
-        for i in inputs:            
+        for i in inputs:  
+            logger.info(log_with_request_info(i.get("s_id"),LOG_TAGS["input"],i))
+            sentence_id.append(i.get("s_id") or "NA")
             if  any(v not in i for v in ['src','id']):
                 out['status'] = statusCode["ID_OR_SRC_MISSING"]
+                out['response_body'] = []
                 logger.info("either id or src missing in some input")
                 return (out) 
 
-            logger.info("input sentences:{}".format(i['src']))    
+            logger.info("input sentence:{}".format(i['src'])) 
+            i_src.append(i['src'])   
             i['src'] = i['src'].strip()    
             if ancillary_functions.special_case_fits(i['src']):
                 logger.info("sentence fits in special case, returning accordingly and not going to model")
                 translation = ancillary_functions.handle_special_cases(i['src'],i['id'])
+                translation = [translation]
                 tag_tgt,tag_src = translation,i['src']
 
             else:
@@ -104,6 +110,9 @@ def interactive_translation(inputs):
 
                 if i['id'] == 56:
                     "english-hindi"
+                    if i['src'].isupper():
+                        logger.info("src all Upper case hence Tital casing it")
+                        i['src'] = i['src'].title()
                     tp_tokenizer = sentence_processor.indic_tokenizer
                     i['src'] = sentence_processor.moses_tokenizer(i['src'])
                     translation = encode_itranslate_decode(i,sp_model.english_hindi["ENG_EXP_5.6"],sp_model.english_hindi["HIN_EXP_5.6"],num_map,tp_tokenizer)
@@ -189,24 +198,26 @@ def interactive_translation(inputs):
 
                 else:
                     logger.info("unsupported model id: {} for given input".format(i['id']))
-                    raise Exception("unsupported model id: {} for given input".format(i['id']))      
+                    raise Exception("Unsupported Model ID - id: {} for given input".format(i['id']))      
 
                 translation = [date_url_util.regex_pass(i,[patterns['p8'],patterns['p9'],patterns['p4'],patterns['p5'],
                                             patterns['p6'],patterns['p7']]) for i in translation]
                 tag_tgt = translation
                 translation = [date_url_util.replace_tags_with_original_1(i,date_original,url_original,num_array) for i in translation]
             logger.info("interactive translation-experiment-{} output: {}".format(i['id'],translation))    
+            logger.info(log_with_request_info(i.get("s_id"),LOG_TAGS["output"],translation))
             tgt.append(translation)
             tagged_tgt.append(tag_tgt)
             tagged_src.append(tag_src)
 
         out['status'] = statusCode["SUCCESS"]
         out['response_body'] = [{"tgt": tgt[i],"tagged_tgt":tagged_tgt[i],
-                                "tagged_src":tagged_src[i]}
+                                "tagged_src":tagged_src[i],"s_id":sentence_id[i],"src":i_src[i]}
                 for i in range(len(tgt))]
     except Exception as e:
         out['status'] = statusCode["SYSTEM_ERR"]
-        out['status']['errObj'] = str(e)
+        out['status']['why'] = str(e)
+        out['response_body'] = []
         logger.error("Unexpected error:%s and %s"% (e,sys.exc_info()[0]))   
 
     return (out)
@@ -233,7 +244,7 @@ def replace_num_target_prefix(i_,num_map):
             if len(replacement_tag) > 0:
                 replacement_tag = replacement_tag[0]
                 i_['target_prefix'] = i_['target_prefix'].replace(i,replacement_tag)
-        logger.info("tp after replacing numbers with tag: {}".format(i_['target_prefix']))
+        logger.info("target_prefix after replacing numbers with tag: {}".format(i_['target_prefix']))
         return i_['target_prefix']
     except Exception as e:
         logger.error("Error in interavtive translation-replace_num_target_prefix:{}".format(e))
@@ -248,5 +259,5 @@ def multiple_hypothesis_decoding(hypotheses,sp_decoder):
             translations.append(translation)
         return translations
     except Exception as e:
-        logger.error("Error in interavtive translation-multiple_hypothesis_decoding:{}".format(e))
+        logger.error("Error in interactive translation-multiple_hypothesis_decoding:{}".format(e))
         raise

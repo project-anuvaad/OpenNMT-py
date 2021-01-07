@@ -3,10 +3,10 @@ from flask import Flask, render_template, request, jsonify
 from flask import Flask
 import translation_util.interactive_translate as interactive_translation
 from flask_cors import CORS
-from onmt.utils.logging import init_logger
+from onmt.utils.logging import init_logger,entry_exit_log,LOG_TAGS
 from config.config import statusCode
 
-INTERACTIVE_LOG_FILE = 'intermediate_data/interactive_log_file.txt'
+INTERACTIVE_LOG_FILE = 'available_models/models/interactive_log_file.txt'
 
 logger = init_logger(INTERACTIVE_LOG_FILE)
 
@@ -19,12 +19,15 @@ def translate():
     if len(inputs)>0:
         logger.info("Making interactive-translation API call")
         logger.info("inputs---{}".format(inputs))
+        logger.info(entry_exit_log(LOG_TAGS["input"],inputs))
         out = interactive_translation.interactive_translation(inputs)
         complete_response = out['response_body']
         out['response_body'] = [{"tgt": complete_response[i]['tgt'][0],"tagged_tgt":complete_response[i]['tagged_tgt'][0],
-                                "tagged_src":complete_response[i]['tagged_src']}
+                                "tagged_src":complete_response[i]['tagged_src'],"s_id":complete_response[i]['s_id'],
+                                "src":complete_response[i]["src"]}
                 for i in range(len(complete_response))]
         logger.info("out from interactive-translation done{}".format(out))
+        logger.info(entry_exit_log(LOG_TAGS["output"],out))
         return jsonify(out)
     else:
         logger.info("null inputs in request in interactive-translation API")
@@ -47,8 +50,10 @@ def multiple_translate():
     if len(inputs)>0:
         logger.info("Making v1/interactive-translation API call")
         logger.info("inputs---{}".format(inputs))
+        logger.info(entry_exit_log(LOG_TAGS["input"],inputs))
         out = interactive_translation.interactive_translation(inputs)
         logger.info("out from v1/interactive-translation done{}".format(out))
+        logger.info(entry_exit_log(LOG_TAGS["output"],out))
         return jsonify(out)
     else:
         logger.info("null inputs in request in v1/interactive-translation API")

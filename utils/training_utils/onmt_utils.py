@@ -26,11 +26,11 @@ def onmt_train(f_in):
         os.system('rm -f {0} {1} {2} {3}'.format(f_in['train_src'],f_in['train_tgt'],f_in['valid_src'],f_in['valid_tgt']))
         logger.info("removed files, starting training for epoch:{}".format(f_in['epoch']))
         
-        os.system('python train.py -data {0} -save_model {1} -layers 6 -rnn_size 512 -word_vec_size 512 -transformer_ff 2048 -heads 8 \
+        os.system('nohup python train.py -data {0} -save_model {1} -layers 6 -rnn_size 512 -word_vec_size 512 -transformer_ff 2048 -heads 8 \
                   -encoder_type transformer -decoder_type transformer -position_encoding -train_steps {2} -max_generator_batches 2 -dropout 0.1  \
                   -batch_size 6000 -batch_type tokens -normalization tokens  -accum_count 2 -optim adam -adam_beta2 0.998 -decay_method noam \
                   -warmup_steps 8000 -learning_rate 0.25 -max_grad_norm 0 -param_init 0  -param_init_glorot  -label_smoothing 0.1 -valid_steps 10000 \
-                  -save_checkpoint_steps 10000 -world_size 1 -gpu_ranks 0'.format(f_in['nmt_processed_data'],f_in['nmt_model_path'],f_in['epoch']))
+                  -save_checkpoint_steps 10000 -world_size 1 -gpu_ranks 0 &'.format(f_in['nmt_processed_data'],f_in['nmt_model_path'],f_in['epoch']))
 
     except Exception as e:
         logger.error("error in onmt_train utils-anuvaad script: {}".format(e))

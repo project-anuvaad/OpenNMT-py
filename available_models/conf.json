@@ -46,8 +46,7 @@
             "opt": {
                 "beam_size": 5,
                 "log_file":"log_file.txt",
-                "log_file_level":"INFO",
-                "gpu":0
+                "log_file_level":"INFO"
             }
         },
         {
@@ -71,8 +70,7 @@
             "opt": {
                 "beam_size": 5,
                 "log_file":"log_file.txt",
-                "log_file_level":"INFO",
-                "replace_unk":true
+                "log_file_level":"INFO"
             }
         },
         {
@@ -192,8 +190,7 @@
             "opt": {
                 "beam_size": 5,
                 "log_file":"log_file.txt",
-                "log_file_level":"INFO",
-                "replace_unk":true
+                "log_file_level":"INFO"
             }
         },
         {
@@ -205,8 +202,7 @@
             "opt": {
                 "beam_size": 5,
                 "log_file":"log_file.txt",
-                "log_file_level":"INFO",
-                "replace_unk":true
+                "log_file_level":"INFO"
             }
         },
         {
@@ -218,8 +214,7 @@
             "opt": {
                 "beam_size": 5,
                 "log_file":"log_file.txt",
-                "log_file_level":"INFO",
-                "replace_unk":true
+                "log_file_level":"INFO"
             }
         },
         {
@@ -231,8 +226,7 @@
             "opt": {
                 "beam_size": 5,
                 "log_file":"log_file.txt",
-                "log_file_level":"INFO",
-                "replace_unk":true
+                "log_file_level":"INFO"
             }
         },
         {
@@ -244,8 +238,7 @@
             "opt": {
                 "beam_size": 5,
                 "log_file":"log_file.txt",
-                "log_file_level":"INFO",
-                "replace_unk":true
+                "log_file_level":"INFO"
             }
         },
         {
@@ -257,8 +250,7 @@
             "opt": {
                 "beam_size": 5,
                 "log_file":"log_file.txt",
-                "log_file_level":"INFO",
-                "replace_unk":true
+                "log_file_level":"INFO"
             }
         },
         {
@@ -270,8 +262,7 @@
             "opt": {
                 "beam_size": 5,
                 "log_file":"log_file.txt",
-                "log_file_level":"INFO",
-                "replace_unk":true
+                "log_file_level":"INFO"
             }
         },
         {
@@ -283,8 +274,7 @@
             "opt": {
                 "beam_size": 5,
                 "log_file":"log_file.txt",
-                "log_file_level":"INFO",
-                "replace_unk":true
+                "log_file_level":"INFO"
             }
         },
         {
@@ -296,8 +286,7 @@
             "opt": {
                 "beam_size": 5,
                 "log_file":"log_file.txt",
-                "log_file_level":"INFO",
-                "replace_unk":true
+                "log_file_level":"INFO"
             }
         },
         {
@@ -309,8 +298,7 @@
             "opt": {
                 "beam_size": 5,
                 "log_file":"log_file.txt",
-                "log_file_level":"INFO",
-                "replace_unk":true
+                "log_file_level":"INFO"
             }
         },
         {
@@ -322,8 +310,7 @@
             "opt": {
                 "beam_size": 5,
                 "log_file":"log_file.txt",
-                "log_file_level":"INFO",
-                "replace_unk":true
+                "log_file_level":"INFO"
             }
         },
         {
@@ -335,8 +322,7 @@
             "opt": {
                 "beam_size": 5,
                 "log_file":"log_file.txt",
-                "log_file_level":"INFO",
-                "replace_unk":true
+                "log_file_level":"INFO"
             }
         },
         {
@@ -348,8 +334,7 @@
             "opt": {
                 "beam_size": 5,
                 "log_file":"log_file.txt",
-                "log_file_level":"INFO",
-                "replace_unk":true
+                "log_file_level":"INFO"
             }
         },
         {
@@ -361,8 +346,7 @@
             "opt": {
                 "beam_size": 5,
                 "log_file":"log_file.txt",
-                "log_file_level":"INFO",
-                "replace_unk":true
+                "log_file_level":"INFO"
             }
         },
         {
@@ -374,8 +358,7 @@
             "opt": {
                 "beam_size": 5,
                 "log_file":"log_file.txt",
-                "log_file_level":"INFO",
-                "replace_unk":true
+                "log_file_level":"INFO"
             }
         },
         {
@@ -387,13 +370,12 @@
             "opt": {
                 "beam_size": 5,
                 "log_file":"log_file.txt",
-                "log_file_level":"INFO",
-                "replace_unk":true
+                "log_file_level":"INFO"
             }
         },
         {
             "id": 57,
-            "model": "model_enBeng-en-to-beng-2_2020-02-18-model_step_200000.pt",
+            "model": "model_enBeng-en-to-bn-3.2_2020-12-28-model_step_190000.pt",
             "timeout": 600,
             "on_timeout": "to_cpu",
             "load": true,
@@ -401,12 +383,12 @@
                 "beam_size": 5,
                 "log_file":"log_file.txt",
                 "log_file_level":"INFO",
-                "replace_unk":true
+                "gpu":0
             }
         },
         {
             "id": 58,
-            "model": "model_enBeng-beng-to-en-1_2020-02-18-model_step_200000.pt",
+            "model": "model_enBeng-bn-to-en-2.2_2020-12-28-model_step_180000.pt",
             "timeout": 600,
             "on_timeout": "to_cpu",
             "load": true,
@@ -414,7 +396,7 @@
                 "beam_size": 5,
                 "log_file":"log_file.txt",
                 "log_file_level":"INFO",
-                "replace_unk":true
+                "gpu":0
             }
         },
         {
@@ -426,8 +408,7 @@
             "opt": {
                 "beam_size": 5,
                 "log_file":"log_file.txt",
-                "log_file_level":"INFO",
-                "replace_unk":true
+                "log_file_level":"INFO"
             }
         },
         {
@@ -439,8 +420,7 @@
             "opt": {
                 "beam_size": 5,
                 "log_file":"log_file.txt",
-                "log_file_level":"INFO",
-                "replace_unk":true
+                "log_file_level":"INFO"
             }
         },
         {
@@ -452,8 +432,7 @@
             "opt": {
                 "beam_size": 5,
                 "log_file":"log_file.txt",
-                "log_file_level":"INFO",
-                "replace_unk":true
+                "log_file_level":"INFO"
             }
         },
         {
@@ -465,8 +444,7 @@
             "opt": {
                 "beam_size": 5,
                 "log_file":"log_file.txt",
-                "log_file_level":"INFO",
-                "replace_unk":true
+                "log_file_level":"INFO"
             }
         },
         {
@@ -478,8 +456,7 @@
             "opt": {
                 "beam_size": 5,
                 "log_file":"log_file.txt",
-                "log_file_level":"INFO",
-                "replace_unk":true
+                "log_file_level":"INFO"
             }
         }
     ]

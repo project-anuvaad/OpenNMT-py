@@ -7,7 +7,7 @@ import ancillary_functions_anuvaad.sc_preface_handler as sc_preface_handler
 import ancillary_functions_anuvaad.handle_date_url as date_url_util
 from config.config import statusCode,benchmark_types, language_supported, file_location
 from config.kafka_topics import consumer_topics,producer_topics,kafka_topic
-from onmt.utils.logging import init_logger,logger
+from onmt.utils.logging import init_logger,logger,log_with_record_id,LOG_TAGS
 import os
 import datetime
 from onmt.translate import ServerModelError
@@ -17,7 +17,7 @@ import translation_util.translate_util as translate_util
 
 
 def doc_translator(translation_server,c_topic):
-    logger.info('doc_translator')  
+    logger.info('Kafka utils: document_translator')  
     iq =0
     out = {}
     msg_count = 0
@@ -34,6 +34,8 @@ def doc_translator(translation_server,c_topic):
             inputs = (msg.value)
 
             if inputs is not None and all(v in inputs for v in ['url_end_point','message']) and len(inputs) is not 0:
+                record_id =  inputs.get("record_id")
+                logger.info(log_with_record_id(record_id,LOG_TAGS["input"],inputs))
                 if inputs['url_end_point'] == 'translation_en':
                     logger.info("Running kafka on  {}".format(inputs['url_end_point']))
                     logger.info("Running kafka-translation on  {}".format(inputs['message']))
@@ -48,10 +50,13 @@ def doc_translator(translation_server,c_topic):
                     logger.info("Running kafka-translation on  {}".format(inputs['message']))  
                     out = translate_util.translate_func(inputs['message'], translation_server)
                     logger.info("final output kafka-translate-anuvaad:{}".format(out)) 
+                    logger.info(log_with_record_id(record_id,LOG_TAGS["output"],out))
                 else:
                     logger.info("Incorrect url_end_point for KAFKA")
                     out['status'] = statusCode["KAFKA_INVALID_REQUEST"]
                     out['response_body'] = []
+                
+                if record_id: out['record_id'] = record_id  
             
             else:
                 out = {}

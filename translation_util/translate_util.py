@@ -6,7 +6,7 @@ import ancillary_functions_anuvaad.sc_preface_handler as sc_preface_handler
 import ancillary_functions_anuvaad.handle_date_url as date_url_util
 import ancillary_functions_anuvaad.output_cleaner as oc
 from config.config import statusCode, benchmark_types, language_supported, file_location
-from onmt.utils.logging import init_logger, logger
+from onmt.utils.logging import init_logger, logger,log_with_request_info,LOG_TAGS
 import os
 import datetime
 from onmt.translate import ServerModelError
@@ -95,7 +95,7 @@ def from_en(inputs, translation_server):
                     for i in range(len(tgt))]
         except ServerModelError as e:
             out['status'] = statusCode["SEVER_MODEL_ERR"]
-            out['status']['errObj'] = {"message":str(e)}
+            out['status']['why'] = str(e)
             logger.error("ServerModelError error in TRANSLATE_UTIL-FROM_ENGLISH: {} and {}".format(e,sys.exc_info()[0]))
         except Exception as e:
             out['status'] = statusCode["SYSTEM_ERR"]
@@ -162,11 +162,11 @@ def from_hindi(inputs, translation_server):
                 for i in range(len(tgt))]
     except ServerModelError as e:
         out['status'] = statusCode["SEVER_MODEL_ERR"]
-        out['status']['errObj'] = {"message":str(e)}
+        out['status']['why'] = str(e)
         logger.error("ServerModelError error in TRANSLATE_UTIL-FROM_HINDI: {} and {}".format(e,sys.exc_info()[0]))
     except Exception as e:
         out['status'] = statusCode["SYSTEM_ERR"]
-        out['status']['errObj'] = {"message":str(e)}
+        out['status']['why'] = str(e)
         logger.error("Unexpected error:%s and %s"% (e,sys.exc_info()[0]))   
 
     return (out)
@@ -182,9 +182,13 @@ def translate_func(inputs, translation_server):
     i_src,tgt = list(),list()
     tagged_tgt,tagged_src = list(),list()
     s_id,n_id = [0000],[0000]
+    i_s0_src,i_s0_tgt,i_save = list(),list(),list()
+    
 
     try:
         for i in inputs:
+            s0_src,s0_tgt,save = "NA","NA",False
+            logger.info(log_with_request_info(i.get("s_id"),LOG_TAGS["input"],i))
             if all(v in i for v in ['s_id','n_id']):
                 s_id = [i['s_id']]
                 n_id = [i['n_id']]  
@@ -194,7 +198,12 @@ def translate_func(inputs, translation_server):
                 out['response_body'] = []
                 logger.info("either id or src missing in some input")
                 return (out) 
-
+            
+            if any(v in i for v in ['s0_src','s0_tgt','save']):
+                s0_src,s0_tgt,save = handle_custome_input(i,s0_src,s0_tgt,save)
+                
+            i_s0_src.append(s0_src),i_s0_tgt.append(s0_tgt),i_save.append(save)
+                
             logger.info("input sentences:{}".format(i['src'])) 
             i_src.append(i['src'])   
             i['src'] = i['src'].strip()
@@ -344,14 +353,14 @@ def translate_func(inputs, translation_server):
                     translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_punjabi["PUNJABI_160220"],sp_model.english_punjabi["ENG_160220"])
                     translation = sentence_processor.moses_detokenizer(translation)
                 elif i['id'] == 57:
-                    "en-bengali 2nd"
+                    "en-bengali 3rd"
                     i['src'] = sentence_processor.moses_tokenizer(i['src'])
-                    translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_bengali["ENG_180220"],sp_model.english_bengali["BENG_180220"])
+                    translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_bengali["ENG_281220"],sp_model.english_bengali["BENG_281220"])
                     translation = sentence_processor.indic_detokenizer(translation) 
                 elif i['id'] == 58:
-                    "bengali-en 1st"
+                    "bengali-en 2nd"
                     i['src'] = sentence_processor.indic_tokenizer(i['src'])
-                    translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_bengali["BENG_180220"],sp_model.english_bengali["ENG_180220"])
+                    translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_bengali["BENG_281220_2.2"],sp_model.english_bengali["ENG_281220_2.2"])
                     translation = sentence_processor.moses_detokenizer(translation)
                 elif i['id'] == 59:
                     "en-malay 2nd"
@@ -379,8 +388,8 @@ def translate_func(inputs, translation_server):
                     translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_hindi["ENG_EXP_13"],sp_model.english_hindi["HIN_EXP_13"])                      
                     translation = sentence_processor.indic_detokenizer(translation)                                                     
                 else:
-                    logger.info("unsupported model id: {} for given input".format(i['id']))
-                    raise Exception("unsupported model id: {} for given input".format(i['id']))      
+                    logger.info("Unsupported model id: {} for given input".format(i['id']))
+                    raise Exception("Unsupported Model ID - id: {} for given input".format(i['id']))      
 
                 # translation = (prefix+" "+translation+" "+suffix).strip()
                 translation = (prefix+" "+translation).lstrip()
@@ -390,7 +399,8 @@ def translate_func(inputs, translation_server):
                 tag_tgt = translation                            
                 translation = date_url_util.replace_tags_with_original_1(translation,date_original,url_original,num_array)
                 translation = oc.cleaner(tag_src,translation,i['id'])
-            logger.info("trans_function-experiment-{} output: {}".format(i['id'],translation))    
+            logger.info("trans_function-experiment-{} output: {}".format(i['id'],translation))   
+            logger.info(log_with_request_info(i.get("s_id"),LOG_TAGS["output"],translation)) 
             tgt.append(translation)
             pred_score.append(scores[0])
             sentence_id.append(s_id[0]), node_id.append(n_id[0])
@@ -401,18 +411,27 @@ def translate_func(inputs, translation_server):
         out['response_body'] = [{"tgt": tgt[i],
                 "pred_score": pred_score[i], "s_id": sentence_id[i],"input_subwords": input_subwords[i],
                 "output_subwords":output_subwords[i],"n_id":node_id[i],"src":i_src[i],
-                "tagged_tgt":tagged_tgt[i],"tagged_src":tagged_src[i]}
+                "tagged_tgt":tagged_tgt[i],"tagged_src":tagged_src[i],"save":i_save[i],"s0_src":i_s0_src[i],"s0_tgt":i_s0_tgt[i]}
                 for i in range(len(tgt))]
     except ServerModelError as e:
         out['status'] = statusCode["SEVER_MODEL_ERR"]
-        out['status']['errObj'] = {"message":str(e)}
+        out['status']['why'] = str(e)
         out['response_body'] = []
         logger.error("ServerModelError error in TRANSLATE_UTIL-translate_func: {} and {}".format(e,sys.exc_info()[0]))
     except Exception as e:
         out['status'] = statusCode["SYSTEM_ERR"]
-        out['status']['errObj'] = {"message":str(e)}
+        out['status']['why'] = str(e)
         out['response_body'] = []
         logger.error("Unexpected error:%s and %s"% (e,sys.exc_info()[0]))   
 
     return (out)
 
+def handle_custome_input(i,s0_src,s0_tgt,save):
+    if 'save' in i:
+        save = i["save"]
+    if "s0_src" in i:  
+        s0_src = i["s0_src"]       
+    if "s0_tgt" in i:      
+        s0_tgt = i["s0_tgt"] 
+        
+    return s0_src,s0_tgt,save

@@ -19,7 +19,7 @@ def get_consumer(topics):
         #            group_id=group_id,
         #            value_deserializer=lambda x: json.loads(x.decode('utf-8')))
         consumer = KafkaConsumer(
-            bootstrap_servers=[bootstrap_server],
+            bootstrap_servers=list(str(bootstrap_server).split(",")),
             value_deserializer=lambda x: json.loads(x.decode('utf-8')))
     
         consumer.subscribe(topics)    

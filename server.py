@@ -15,7 +15,7 @@ from onmt.translate import TranslationServer, ServerModelError
 
 from itertools import repeat
 
-from onmt.utils.logging import init_logger,logger
+from onmt.utils.logging import init_logger,logger,entry_exit_log,LOG_TAGS
 from onmt.utils.misc import split_corpus
 from onmt.translate.translator import build_translator
 import os
@@ -58,7 +58,7 @@ def start(config_file,
 
     def kafka_function():
         logger.info('starting kafka from nmt-server on thread-1')
-        doc_translator(translation_server,[kafka_topic[0]['consumer'],kafka_topic[1]['consumer'],kafka_topic[2]['consumer'],kafka_topic[3]['consumer']])     
+        doc_translator(translation_server,[kafka_topic[0]['consumer'],kafka_topic[1]['consumer'],kafka_topic[2]['consumer']])     
 
     if bootstrap_server_boolean:
         t1 = threading.Thread(target=kafka_function)
@@ -116,8 +116,10 @@ def start(config_file,
         inputs = request.get_json(force=True)
         if len(inputs)>0:
             logger.info("Making translate-anuvaad API call")
+            logger.info(entry_exit_log(LOG_TAGS["input"],inputs))
             out = translate_util.translate_func(inputs, translation_server)
             logger.info("out from translate_func-trans_util done{}".format(out))
+            logger.info(entry_exit_log(LOG_TAGS["output"],out))
             return jsonify(out)
         else:
             logger.info("null inputs in request in translate-anuvaad API")
@@ -197,7 +199,7 @@ def start(config_file,
             out['response_body'] = {}
         except Exception as e:
             out['status'] = statusCode["SYSTEM_ERR"]
-            out['status']['errObj'] = str(e)
+            out['status']['why'] = str(e)
             logger.info("Unexpected error while saving benchmark file: %s"% sys.exc_info()[0]) 
         
         return jsonify(out)
@@ -220,7 +222,7 @@ def start(config_file,
             out['response_body'] = {"list_benchmark":list_benchmark}
         except Exception as e:
             out['status'] = statusCode["SYSTEM_ERR"]
-            out['status']['errObj'] = str(e)
+            out['status']['why'] = str(e)
             logger.info("Unexpected error: %s"% sys.exc_info()[0])
         
         return jsonify(out)
@@ -245,11 +247,11 @@ def start(config_file,
             
         except FileNotFoundError as e:
             out['status'] = statusCode["No_File_DB"]
-            out['status']['errObj'] = str(e)
+            out['status']['why'] = str(e)
             logger.error("File exist in database but not found on server")
         except Exception as e:
             out['status'] = statusCode["SYSTEM_ERR"]
-            out['status']['errObj'] = str(e)
+            out['status']['why'] = str(e)
             logger.info("Unexpected error: %s"% sys.exc_info()[0])
         return jsonify(out)
     
@@ -285,7 +287,7 @@ def start(config_file,
 
         except Exception as e:
             out['status'] = statusCode["SYSTEM_ERR"]
-            out['status']['errObj'] = str(e)
+            out['status']['why'] = str(e)
             logger.info("Unexpected error: %s"% sys.exc_info()[0])
         return jsonify(out)
 
