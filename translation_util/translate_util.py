@@ -353,14 +353,14 @@ def translate_func(inputs, translation_server):
                     translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_punjabi["PUNJABI_160220"],sp_model.english_punjabi["ENG_160220"])
                     translation = sentence_processor.moses_detokenizer(translation)
                 elif i['id'] == 57:
-                    "en-bengali 3rd"
+                    "en-bengali 4th"
                     i['src'] = sentence_processor.moses_tokenizer(i['src'])
-                    translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_bengali["ENG_281220"],sp_model.english_bengali["BENG_281220"])
+                    translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_bengali["ENG_EN_to_BN_4"],sp_model.english_bengali["BENG_EN_to_BN_4"])
                     translation = sentence_processor.indic_detokenizer(translation) 
                 elif i['id'] == 58:
-                    "bengali-en 2nd"
+                    "bengali-en 3rd"
                     i['src'] = sentence_processor.indic_tokenizer(i['src'])
-                    translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_bengali["BENG_281220_2.2"],sp_model.english_bengali["ENG_281220_2.2"])
+                    translation,scores,input_sw,output_sw = encode_translate_decode(i,translation_server,sp_model.english_bengali["BENG_BN_to_EN_3"],sp_model.english_bengali["ENG_BN_to_EN_3"])
                     translation = sentence_processor.moses_detokenizer(translation)
                 elif i['id'] == 59:
                     "en-malay 2nd"
