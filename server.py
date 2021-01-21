@@ -62,7 +62,7 @@ def start(config_file,
 
     if bootstrap_server_boolean:
         t1 = threading.Thread(target=kafka_function)
-        t1.start()
+        # t1.start()
 
     @app.route('/models', methods=['GET'])
     def get_models():
