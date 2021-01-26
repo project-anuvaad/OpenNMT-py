@@ -47,6 +47,11 @@ english_bengali = {
     "BENG_281220": "model/sentencepiece_models/bengali-en-to-bn-3.2-2020-12-28-24k.model",
     "ENG_281220_2.2": "model/sentencepiece_models/enBeng-bn-to-en-2.2-2020-12-28-24k.model",
     "BENG_281220_2.2": "model/sentencepiece_models/bengali-bn-to-en-2.2-2020-12-28-24k.model",
+    "ENG_EN_to_BN_4": "model/sentencepiece_models/enBeng-en-to-bn-4-2021-01-19-24k.model",
+    "BENG_EN_to_BN_4": "model/sentencepiece_models/bengali-en-to-bn-4-2021-01-19-24k.model",
+    "ENG_BN_to_EN_3": "model/sentencepiece_models/enBeng-bn-to-en-3-2021-01-19-24k.model",
+    "BENG_BN_to_EN_3": "model/sentencepiece_models/bengali-bn-to-en-3-2021-01-19-24k.model"
+    
 }
 
 english_marathi = {
