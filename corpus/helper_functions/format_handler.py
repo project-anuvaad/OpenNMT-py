@@ -79,7 +79,6 @@ def tag_number_date_url(in_file,out_file):
           count_number = 0
           src_num_array = re.findall(r'\d+,\d+,\d+,\d+,\d+|\d+,\d+,\d+,\d+|\d+,\d+,\d+|\d+,\d+|\d+',xlines[i]) 
           int_num_array = list(map(lambda y:y.replace(',',''), src_num_array))
-          # print("num_arr",num_array)  
           num_array = list(map(int, int_num_array))  
           for k,v in enumerate(src_num_array):
             xlines[i] = xlines[i].replace(v,str(num_array[k]),1)
@@ -125,8 +124,6 @@ def tag_number_date_url(in_file,out_file):
     logger.info("Error in corpus/helper_function/format handler, ignoring it-{}".format(e))
     pass
     
-  
-
 def isfloat(str):
     try: 
         float(str)

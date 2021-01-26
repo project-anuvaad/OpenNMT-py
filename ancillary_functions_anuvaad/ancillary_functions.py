@@ -11,14 +11,7 @@ def handle_single_token(token):
             return (token)
        elif util.token_is_date(token):
            print("returning date")
-           return token     
-    #    elif token.isalnum():
-    #         logger.info("transliterating alphanum")
-    #         return transliterate_text(token)
-    #    elif len(lookup_table(model_id,token))>0:
-    #        token = lookup_table(model_id,token)
-    #        print("handling single token from looku table: ",token)
-    #        return token     
+           return token        
        elif len(token) > 1 and token_is_alphanumeric_char(token):
             if len(token) ==3 and (token[0].isalnum() == False) and (token[1].isalnum() == True):
                 return token 
@@ -37,7 +30,6 @@ def handle_single_token(token):
        logger.info("returning null to allow token to go to model")
        return ""
           
-
 def replace_from_LC_table(token):
     lookup_file = "config/lookup_table.txt"
     hindi_number=list()
@@ -192,11 +184,4 @@ def prefix_handler(text):
     except Exception as e:
         logger.error("Error in prefix handler, returning original text,error:{}".format(e))
         return "",text
-
-def suffix_handler(text):
-    "in progress"
-    try:
-        tokens = text.split()
-    except Exception as e:
-        print(e)
 

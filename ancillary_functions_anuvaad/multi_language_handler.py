@@ -39,7 +39,3 @@ def replace_english_words(text,word_arr):
         return text
     except Exception as e:
         print(e)
-
-# a,b = tag_english_words("பொன்னர்சங்கர் and கோ என்ற கூட்டாண்மை நிறுவனத்தை (Partnership Firm) நடத்தி வருகிறார்கள் என்றும்,")        
-# replace_english_words(a,b)
-# replace_english_words("பொன்னர்சங்கர் UuRrLl0 கோ என்ற கூட்டாண்மை நிறுவனத்தை (UuRrLl1 UuRrLl12) நடத்தி வருகிறார்கள் என்றும்,",['and', 'Partnership', 'Firm','and', 'Partnership', 'Firm','and', 'Partnership', 'Firm','and', 'Partnership', 'Firm','ajitesh'])

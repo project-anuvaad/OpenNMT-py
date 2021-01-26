@@ -40,20 +40,11 @@ def english_tamil(eng_file,tamil_file):
 
         dev_english_tagged = os.path.join(model_master_folder, 'english_dev_final'+unique_id+'.txt')
         dev_tamil_tagged = os.path.join(model_master_folder, 'tamil_dev_final'+unique_id+'.txt')
-        # test_english_tagged = os.path.join(model_master_folder, 'english_test_final.txt')
-        # test_tamil_tagged = os.path.join(model_master_folder, 'tamil_test_final.txt')
 
         if not any ([os.path.exists(model_intermediate_folder),os.path.exists(model_master_folder)]):
             os.makedirs(model_intermediate_folder)
             os.makedirs(model_master_folder)
             logger.info("folder created at {} and {}".format(model_intermediate_folder,model_master_folder))
-        
-        # file_names_english = ocl.english_tamil['FILE_NAMES_ENGLISH']
-        # file_names_tamil = ocl.english_tamil['FILE_NAMES_tamil']
-        # fm.file_merger(file_names_english, english_merged_file_name)
-        # fm.file_merger(file_names_tamil, tamil_merged_file_name)
-        # print("original src and tgt file merged successfully")
-                
 
         fc.tab_separated_parllel_corpus(tamil_file, eng_file, tab_sep_out_file)
         logger.info("tab separated corpus created")
@@ -83,9 +74,6 @@ def english_tamil(eng_file,tamil_file):
         format_handler.tag_number_date_url(tamil_dev_separated, dev_tamil_tagged)
 
         logger.info("url,num and date tagging done, corpus in master folder")
-        # format_handler.tag_number_date_url(ocl.english_tamil['TEST_ENGLISH'], test_english_tagged)
-        # format_handler.tag_number_date_url(ocl.english_tamil['TEST_TAMIL'], test_tamil_tagged)
-        # logger.info("test data taggeg and in master folder : Preprocesssing finished !")
 
         os.system('rm -f {0} {1} {2} {3} {4} {5} {6} {7} {8} {9}'.format(tab_sep_out_file,tab_sep_out_file_no_duplicate,shuffled_tab_sep_file,\
                   replaced_hindi_number_file_name,train_file,dev_file,eng_separated,tamil_separated,eng_dev_separated,tamil_dev_separated))
@@ -97,77 +85,6 @@ def english_tamil(eng_file,tamil_file):
 
     except Exception as e:
         logger.error("error in english_tamil_experiments corpus/scripts- {}".format(e))
-
-def english_hindi():
-    "last-18/09/19 model, not using thi function"
-    try:
-        model_intermediate_folder = os.path.join(INTERMEDIATE_DATA_LOCATION, 'english_hindi')
-        model_master_folder = os.path.join(MASTER_DATA_LOCATION, 'english_hindi')
-        # model_intermediate_folder = datetime.datetime.now().strftime('%Y-%m-%d')
-        english_merged_file_name = os.path.join(model_intermediate_folder, 'english_merged_original.txt')
-        # english_merged_lowercased_file_name = os.path.join(model_intermediate_folder, 'english_merged_lowercased_original.txt')
-        hindi_merged_file_name = os.path.join(model_intermediate_folder, 'hindi_merged_original.txt')
-        tab_sep_out_file = os.path.join(model_intermediate_folder, 'tab_sep_corpus.txt')
-        tab_sep_out_file_no_duplicate = os.path.join(model_intermediate_folder, 'tab_sep_corpus_no_duplicate.txt')
-        replaced_hindi_number_file_name = os.path.join(model_intermediate_folder, 'corpus_no_hindi_num.txt')
-        eng_separated = os.path.join(model_intermediate_folder, 'eng_train_separated.txt')
-        hindi_separated = os.path.join(model_intermediate_folder, 'hindi_train_separated.txt')
-        english_tagged = os.path.join(model_master_folder, 'eng_train_corpus_final.txt')
-        hindi_tagged = os.path.join(model_master_folder, 'hindi_train_corpus_final.txt')
-
-        # dev_english_lowercased = os.path.join(model_intermediate_folder, 'english_dev_lowercased.txt')
-        dev_english_tagged = os.path.join(model_master_folder, 'english_dev_final.txt')
-        dev_hindi_tagged = os.path.join(model_master_folder, 'hindi_dev_final.txt')
-        # test_Gen_english_lowercased = os.path.join(model_intermediate_folder, 'english_test_Gen_lowercased.txt')
-        # test_LC_english_lowercased = os.path.join(model_intermediate_folder, 'english_test_LC_lowercased.txt')
-        # test_TB_english_lowercased = os.path.join(model_intermediate_folder, 'english_test_TB_lowercased.txt')
-        test_Gen_english_tagged = os.path.join(model_master_folder, 'english_test_Gen_final.txt')
-        test_LC_english_tagged = os.path.join(model_master_folder, 'english_test_LC_final.txt')
-        test_TB_english_tagged = os.path.join(model_master_folder, 'english_test_TB_final.txt')
-        test_Gen_hindi_tagged = os.path.join(model_master_folder, 'hindi_test_Gen_final.txt')
-        test_LC_hindi_tagged = os.path.join(model_master_folder, 'hindi_test_LC_final.txt')
-        test_TB_hindi_tagged = os.path.join(model_master_folder, 'hindi_test_TB_final.txt')
-
-        if not any ([os.path.exists(model_intermediate_folder),os.path.exists(model_master_folder)]):
-            os.makedirs(model_intermediate_folder)
-            os.makedirs(model_master_folder)
-            print("folder created at {} and {}".format(model_intermediate_folder,model_master_folder))
-        
-        file_names_english = ocl.english_hindi['FILE_NAMES_ENGLISH']
-        file_names_hindi = ocl.english_hindi['FILE_NAMES_HINDI']
-        fm.file_merger(file_names_english, english_merged_file_name)
-        fm.file_merger(file_names_hindi, hindi_merged_file_name)
-        print("original src and tgt file merged successfully")
-                
-
-        fc.tab_separated_parllel_corpus(hindi_merged_file_name, english_merged_file_name, tab_sep_out_file)
-        print("tab separated corpus created")
-        # fc.drop_duplicate(tab_sep_out_file, tab_sep_out_file_no_duplicate)
-        # print("duplicates removed from combined corpus")
-
-        format_handler.replace_hindi_numbers(tab_sep_out_file,replaced_hindi_number_file_name)
-        print("hindi number replaced")
-
-        fc.separate_corpus(0, replaced_hindi_number_file_name, eng_separated)
-        fc.separate_corpus(1, replaced_hindi_number_file_name, hindi_separated)
-        print("corpus separated into src and tgt")
-
-        format_handler.tag_number_date_url(eng_separated, english_tagged)
-        format_handler.tag_number_date_url(hindi_separated, hindi_tagged)
-        print("url,num and date tagging done, corpus in master folder")
-
-        format_handler.tag_number_date_url(ocl.english_hindi['DEV_ENGLISH'], dev_english_tagged)
-        format_handler.tag_number_date_url(ocl.english_hindi['DEV_HINDI'], dev_hindi_tagged)
-        format_handler.tag_number_date_url(ocl.english_hindi['TEST_ENGLISH_GEN'], test_Gen_english_tagged)
-        format_handler.tag_number_date_url(ocl.english_hindi['TEST_ENGLISH_LC'], test_LC_english_tagged)
-        format_handler.tag_number_date_url(ocl.english_hindi['TEST_ENGLISH_TB'], test_TB_english_tagged)
-        format_handler.tag_number_date_url(ocl.english_hindi['TEST_HINDI_GEN'], test_Gen_hindi_tagged)
-        format_handler.tag_number_date_url(ocl.english_hindi['TEST_HINDI_LC'], test_LC_hindi_tagged)
-        format_handler.tag_number_date_url(ocl.english_hindi['TEST_HINDI_TB'], test_TB_hindi_tagged)
-        print("test and dev data taggeg and in master folder")
-
-    except Exception as e:
-        print(e)
 
 def english_hindi_experiments(eng_file,hindi_file):
     "Exp-5.4: -data same as 5.1 exp...old data+ india kanoon 830k(including 1.5 lakhs names n no learned counsel)+72192k shabkosh, BPE 24k, nolowercasing,pretok,shuffling"
@@ -195,10 +112,6 @@ def english_hindi_experiments(eng_file,hindi_file):
 
         dev_english_tagged = os.path.join(model_master_folder, 'english_dev_final'+unique_id+'.txt')
         dev_hindi_tagged = os.path.join(model_master_folder, 'hindi_dev_final'+unique_id+'.txt')
-        test_Gen_english_tagged = os.path.join(model_master_folder, 'english_test_Gen_final.txt')
-        test_LC_english_tagged = os.path.join(model_master_folder, 'english_test_LC_final.txt')
-        test_Gen_hindi_tagged = os.path.join(model_master_folder, 'hindi_test_Gen_final.txt')
-        test_LC_hindi_tagged = os.path.join(model_master_folder, 'hindi_test_LC_final.txt')
 
         if not any ([os.path.exists(model_intermediate_folder),os.path.exists(model_master_folder)]):
             os.makedirs(model_intermediate_folder)
@@ -240,10 +153,6 @@ def english_hindi_experiments(eng_file,hindi_file):
         format_handler.tag_number_date_url(hindi_dev_separated, dev_hindi_tagged)
 
         logger.info("url,num and date tagging done, corpus in master folder")
-        format_handler.tag_number_date_url(ocl.english_hindi['TEST_ENGLISH_GEN'], test_Gen_english_tagged)
-        format_handler.tag_number_date_url(ocl.english_hindi['TEST_ENGLISH_LC'], test_LC_english_tagged)
-        format_handler.tag_number_date_url(ocl.english_hindi['TEST_HINDI_GEN'], test_Gen_hindi_tagged)
-        format_handler.tag_number_date_url(ocl.english_hindi['TEST_HINDI_LC'], test_LC_hindi_tagged)
         logger.info("test data taggeg and in master folder : Preprocesssing finished !")
 
         os.system('rm -f {0} {1} {2} {3} {4} {5} {6} {7} {8} {9}'.format(tab_sep_out_file,tab_sep_out_file_no_duplicate,shuffled_tab_sep_file,\
@@ -281,19 +190,11 @@ def english_gujarati(eng_file,gujarati_file):
 
         dev_english_tagged = os.path.join(model_master_folder, 'english_dev_final'+unique_id+'.txt')
         dev_gujarati_tagged = os.path.join(model_master_folder, 'gujarati_dev_final'+unique_id+'.txt')
-        # test_english_tagged = os.path.join(model_master_folder, 'english_test_final.txt')
-        # test_gujarati_tagged = os.path.join(model_master_folder, 'gujarati_test_final.txt')
 
         if not any ([os.path.exists(model_intermediate_folder),os.path.exists(model_master_folder)]):
             os.makedirs(model_intermediate_folder)
             os.makedirs(model_master_folder)
             logger.info("folder created at {} and {}".format(model_intermediate_folder,model_master_folder))
-        
-        # file_names_english = ocl.english_gujarati['FILE_NAMES_ENGLISH']
-        # file_names_gujarati = ocl.english_gujarati['FILE_NAMES_GUJARATI']
-        # fm.file_merger(file_names_english, english_merged_file_name)
-        # fm.file_merger(file_names_gujarati, gujarati_merged_file_name)
-        # print("original src and tgt file merged successfully")
                 
         fc.tab_separated_parllel_corpus(gujarati_file, eng_file, tab_sep_out_file)
         logger.info("tab separated corpus created")
@@ -323,9 +224,6 @@ def english_gujarati(eng_file,gujarati_file):
         format_handler.tag_number_date_url(gujarati_dev_separated, dev_gujarati_tagged)
 
         logger.info("url,num and date tagging done, corpus in master folder")
-        # format_handler.tag_number_date_url(ocl.english_gujarati['TEST_ENGLISH'], test_english_tagged)
-        # format_handler.tag_number_date_url(ocl.english_gujarati['TEST_GUJARATI'], test_gujarati_tagged)
-        # logger.info("test data taggeg and in master folder : Preprocesssing finished !")
         os.system('rm -f {0} {1} {2} {3} {4} {5} {6} {7} {8} {9}'.format(tab_sep_out_file,tab_sep_out_file_no_duplicate,shuffled_tab_sep_file,\
                   replaced_hindi_number_file_name,train_file,dev_file,eng_separated,gujarati_separated,eng_dev_separated,gujarati_dev_separated))
 
@@ -337,7 +235,6 @@ def english_gujarati(eng_file,gujarati_file):
     except Exception as e:
         logger.error("error in english_gujarati corpus/scripts- {}".format(e))
     
-
 def english_bengali(eng_file,bengali_file):
     try:
         logger.info("English and bengali corpus preprocessing: starting")
@@ -363,19 +260,11 @@ def english_bengali(eng_file,bengali_file):
 
         dev_english_tagged = os.path.join(model_master_folder, 'english_dev_final'+unique_id+'.txt')
         dev_bengali_tagged = os.path.join(model_master_folder, 'bengali_dev_final'+unique_id+'.txt')
-        # test_english_tagged = os.path.join(model_master_folder, 'english_test_final.txt')
-        # test_bengali_tagged = os.path.join(model_master_folder, 'bengali_test_final.txt')
 
         if not any ([os.path.exists(model_intermediate_folder),os.path.exists(model_master_folder)]):
             os.makedirs(model_intermediate_folder)
             os.makedirs(model_master_folder)
             logger.info("folder created at {} and {}".format(model_intermediate_folder,model_master_folder))
-        
-        # file_names_english = ocl.english_bengali['FILE_NAMES_ENGLISH']
-        # file_names_bengali = ocl.english_bengali['FILE_NAMES_BENGALI']
-        # fm.file_merger(file_names_english, english_merged_file_name)
-        # fm.file_merger(file_names_bengali, bengali_merged_file_name)
-        # print("original src and tgt file merged successfully")
                 
         fc.tab_separated_parllel_corpus(bengali_file, eng_file, tab_sep_out_file)
         logger.info("tab separated corpus created")
@@ -405,9 +294,6 @@ def english_bengali(eng_file,bengali_file):
         format_handler.tag_number_date_url(bengali_dev_separated, dev_bengali_tagged)
 
         logger.info("url,num and date tagging done, corpus in master folder")
-        # format_handler.tag_number_date_url(ocl.english_bengali['TEST_ENGLISH'], test_english_tagged)
-        # format_handler.tag_number_date_url(ocl.english_bengali['TEST_BENGALI'], test_bengali_tagged)
-        # logger.info("test data taggeg and in master folder : Preprocesssing finished !")
         os.system('rm -f {0} {1} {2} {3} {4} {5} {6} {7} {8} {9}'.format(tab_sep_out_file,tab_sep_out_file_no_duplicate,shuffled_tab_sep_file,\
                   replaced_hindi_number_file_name,train_file,dev_file,eng_separated,bengali_separated,eng_dev_separated,bengali_dev_separated))
 
@@ -444,20 +330,12 @@ def english_marathi(eng_file,marathi_file):
 
         dev_english_tagged = os.path.join(model_master_folder, 'english_dev_final'+unique_id+'.txt')
         dev_marathi_tagged = os.path.join(model_master_folder, 'marathi_dev_final'+unique_id+'.txt')
-        # test_english_tagged = os.path.join(model_master_folder, 'english_test_final.txt')
-        # test_marathi_tagged = os.path.join(model_master_folder, 'marathi_test_final.txt')
 
         if not any ([os.path.exists(model_intermediate_folder),os.path.exists(model_master_folder)]):
             os.makedirs(model_intermediate_folder)
             os.makedirs(model_master_folder)
             logger.info("folder created at {} and {}".format(model_intermediate_folder,model_master_folder))
-        
-        # file_names_english = ocl.english_marathi['FILE_NAMES_ENGLISH']
-        # file_names_marathi = ocl.english_marathi['FILE_NAMES_marathi']
-        # fm.file_merger(file_names_english, english_merged_file_name)
-        # fm.file_merger(file_names_marathi, marathi_merged_file_name)
-        # print("original src and tgt file merged successfully")
-                
+            
         fc.tab_separated_parllel_corpus(marathi_file, eng_file, tab_sep_out_file)
         logger.info("tab separated corpus created")
         logger.info(os.system('wc -l {}'.format(tab_sep_out_file)))
@@ -486,9 +364,6 @@ def english_marathi(eng_file,marathi_file):
         format_handler.tag_number_date_url(marathi_dev_separated, dev_marathi_tagged)
 
         logger.info("url,num and date tagging done, corpus in master folder")
-        # format_handler.tag_number_date_url(ocl.english_marathi['TEST_ENGLISH'], test_english_tagged)
-        # format_handler.tag_number_date_url(ocl.english_marathi['TEST_MARATHI'], test_marathi_tagged)
-        # logger.info("test data taggeg and in master folder : Preprocesssing finished !")
         os.system('rm -f {0} {1} {2} {3} {4} {5} {6} {7} {8} {9}'.format(tab_sep_out_file,tab_sep_out_file_no_duplicate,shuffled_tab_sep_file,\
                   replaced_hindi_number_file_name,train_file,dev_file,eng_separated,marathi_separated,eng_dev_separated,marathi_dev_separated))
 
@@ -500,7 +375,6 @@ def english_marathi(eng_file,marathi_file):
     except Exception as e:
         logger.error("error in english_marathi_experiments corpus/scripts/en-mr- {}".format(e))
     
-
 def english_kannada(eng_file,kannada_file):
     try:
         logger.info("English and kannada corpus preprocessing: starting")
@@ -526,19 +400,11 @@ def english_kannada(eng_file,kannada_file):
 
         dev_english_tagged = os.path.join(model_master_folder, 'english_dev_final'+unique_id+'.txt')
         dev_kannada_tagged = os.path.join(model_master_folder, 'kannada_dev_final'+unique_id+'.txt')
-        # test_english_tagged = os.path.join(model_master_folder, 'english_test_final.txt')
-        # test_kannada_tagged = os.path.join(model_master_folder, 'kannada_test_final.txt')
 
         if not any ([os.path.exists(model_intermediate_folder),os.path.exists(model_master_folder)]):
             os.makedirs(model_intermediate_folder)
             os.makedirs(model_master_folder)
             logger.info("folder created at {} and {}".format(model_intermediate_folder,model_master_folder))
-        
-        # file_names_english = ocl.english_kannada['FILE_NAMES_ENGLISH']
-        # file_names_kannada = ocl.english_kannada['FILE_NAMES_KANNADA']
-        # fm.file_merger(file_names_english, english_merged_file_name)
-        # fm.file_merger(file_names_kannada, kannada_merged_file_name)
-        # print("original src and tgt file merged successfully")
                 
         fc.tab_separated_parllel_corpus(kannada_file, eng_file, tab_sep_out_file)
         logger.info("tab separated corpus created")
@@ -568,9 +434,6 @@ def english_kannada(eng_file,kannada_file):
         format_handler.tag_number_date_url(kannada_dev_separated, dev_kannada_tagged)
 
         logger.info("url,num and date tagging done, corpus in master folder")
-        # format_handler.tag_number_date_url(ocl.english_kannada['TEST_ENGLISH'], test_english_tagged)
-        # format_handler.tag_number_date_url(ocl.english_kannada['TEST_KANNADA'], test_kannada_tagged)
-        # logger.info("test data taggeg and in master folder : Preprocesssing finished !")
         os.system('rm -f {0} {1} {2} {3} {4} {5} {6} {7} {8} {9}'.format(tab_sep_out_file,tab_sep_out_file_no_duplicate,shuffled_tab_sep_file,\
                   replaced_hindi_number_file_name,train_file,dev_file,eng_separated,kannada_separated,eng_dev_separated,kannada_dev_separated))
 
@@ -582,7 +445,6 @@ def english_kannada(eng_file,kannada_file):
     except Exception as e:
         logger.error("error in english_kannada corpus/scripts/en-kannada- {}".format(e))
     
-
 def english_telugu(eng_file,telugu_file):
     try:
         logger.info("English and telugu corpus preprocessing: starting")
@@ -608,19 +470,11 @@ def english_telugu(eng_file,telugu_file):
 
         dev_english_tagged = os.path.join(model_master_folder, 'english_dev_final'+unique_id+'.txt')
         dev_telugu_tagged = os.path.join(model_master_folder, 'telugu_dev_final'+unique_id+'.txt')
-        # test_english_tagged = os.path.join(model_master_folder, 'english_test_final.txt')
-        # test_telugu_tagged = os.path.join(model_master_folder, 'telugu_test_final.txt')
 
         if not any ([os.path.exists(model_intermediate_folder),os.path.exists(model_master_folder)]):
             os.makedirs(model_intermediate_folder)
             os.makedirs(model_master_folder)
             logger.info("folder created at {} and {}".format(model_intermediate_folder,model_master_folder))
-        
-        # file_names_english = ocl.english_telugu['FILE_NAMES_ENGLISH']
-        # file_names_telugu = ocl.english_telugu['FILE_NAMES_TELUGU']
-        # fm.file_merger(file_names_english, english_merged_file_name)
-        # fm.file_merger(file_names_telugu, telugu_merged_file_name)
-        # print("original src and tgt file merged successfully")
                 
         fc.tab_separated_parllel_corpus(telugu_file, eng_file, tab_sep_out_file)
         logger.info("tab separated corpus created")
@@ -650,9 +504,6 @@ def english_telugu(eng_file,telugu_file):
         format_handler.tag_number_date_url(telugu_dev_separated, dev_telugu_tagged)
 
         logger.info("url,num and date tagging done, corpus in master folder")
-        # format_handler.tag_number_date_url(ocl.english_telugu['TEST_ENGLISH'], test_english_tagged)
-        # format_handler.tag_number_date_url(ocl.english_telugu['TEST_TELUGU'], test_telugu_tagged)
-        # logger.info("test data taggeg and in master folder : Preprocesssing finished !")
         os.system('rm -f {0} {1} {2} {3} {4} {5} {6} {7} {8} {9}'.format(tab_sep_out_file,tab_sep_out_file_no_duplicate,shuffled_tab_sep_file,\
                   replaced_hindi_number_file_name,train_file,dev_file,eng_separated,telugu_separated,eng_dev_separated,telugu_dev_separated))
 
@@ -664,7 +515,6 @@ def english_telugu(eng_file,telugu_file):
     except Exception as e:
         logger.error("error in english_telugu corpus/scripts/en-telugu- {}".format(e))
     
-
 def english_malayalam(eng_file,malayalam_file):
     try:
         logger.info("English and malayalam corpus preprocessing: starting")
@@ -690,20 +540,12 @@ def english_malayalam(eng_file,malayalam_file):
 
         dev_english_tagged = os.path.join(model_master_folder, 'english_dev_final'+unique_id+'.txt')
         dev_malayalam_tagged = os.path.join(model_master_folder, 'malayalam_dev_final'+unique_id+'.txt')
-        # test_english_tagged = os.path.join(model_master_folder, 'english_test_final.txt')
-        # test_malayalam_tagged = os.path.join(model_master_folder, 'malayalam_test_final.txt')
 
         if not any ([os.path.exists(model_intermediate_folder),os.path.exists(model_master_folder)]):
             os.makedirs(model_intermediate_folder)
             os.makedirs(model_master_folder)
             logger.info("folder created at {} and {}".format(model_intermediate_folder,model_master_folder))
-        
-        # file_names_english = ocl.english_malayalam['FILE_NAMES_ENGLISH']
-        # file_names_malayalam = ocl.english_malayalam['FILE_NAMES_MALAYALAM']
-        # fm.file_merger(file_names_english, english_merged_file_name)
-        # fm.file_merger(file_names_malayalam, malayalam_merged_file_name)
-        # print("original src and tgt file merged successfully")
-                
+                     
         fc.tab_separated_parllel_corpus(malayalam_file, eng_file, tab_sep_out_file)
         logger.info("tab separated corpus created")
         logger.info(os.system('wc -l {}'.format(tab_sep_out_file)))
@@ -732,9 +574,6 @@ def english_malayalam(eng_file,malayalam_file):
         format_handler.tag_number_date_url(malayalam_dev_separated, dev_malayalam_tagged)
 
         logger.info("url,num and date tagging done, corpus in master folder")
-        # format_handler.tag_number_date_url(ocl.english_malayalam['TEST_ENGLISH'], test_english_tagged)
-        # format_handler.tag_number_date_url(ocl.english_malayalam['TEST_MALAYALAM'], test_malayalam_tagged)
-        # logger.info("test data taggeg and in master folder : Preprocesssing finished !")
         os.system('rm -f {0} {1} {2} {3} {4} {5} {6} {7} {8} {9}'.format(tab_sep_out_file,tab_sep_out_file_no_duplicate,shuffled_tab_sep_file,\
                   replaced_hindi_number_file_name,train_file,dev_file,eng_separated,malayalam_separated,eng_dev_separated,malayalam_dev_separated))
 
@@ -745,7 +584,6 @@ def english_malayalam(eng_file,malayalam_file):
 
     except Exception as e:
         logger.error("error in english_malayalam corpus/scripts/en-malayalam- {}".format(e))
-    
 
 def english_punjabi(eng_file,punjabi_file):
     try:
@@ -772,19 +610,11 @@ def english_punjabi(eng_file,punjabi_file):
 
         dev_english_tagged = os.path.join(model_master_folder, 'english_dev_final'+unique_id+'.txt')
         dev_punjabi_tagged = os.path.join(model_master_folder, 'punjabi_dev_final'+unique_id+'.txt')
-        # test_english_tagged = os.path.join(model_master_folder, 'english_test_final.txt')
-        # test_punjabi_tagged = os.path.join(model_master_folder, 'punjabi_test_final.txt')
-
+        
         if not any ([os.path.exists(model_intermediate_folder),os.path.exists(model_master_folder)]):
             os.makedirs(model_intermediate_folder)
             os.makedirs(model_master_folder)
             logger.info("folder created at {} and {}".format(model_intermediate_folder,model_master_folder))
-        
-        # file_names_english = ocl.english_punjabi['FILE_NAMES_ENGLISH']
-        # file_names_punjabi = ocl.english_punjabi['FILE_NAMES_MALAYALAM']
-        # fm.file_merger(file_names_english, english_merged_file_name)
-        # fm.file_merger(file_names_punjabi, punjabi_merged_file_name)
-        # print("original src and tgt file merged successfully")
                 
         fc.tab_separated_parllel_corpus(punjabi_file, eng_file, tab_sep_out_file)
         logger.info("tab separated corpus created")
@@ -814,9 +644,6 @@ def english_punjabi(eng_file,punjabi_file):
         format_handler.tag_number_date_url(punjabi_dev_separated, dev_punjabi_tagged)
 
         logger.info("url,num and date tagging done, corpus in master folder")
-        # format_handler.tag_number_date_url(ocl.english_punjabi['TEST_ENGLISH'], test_english_tagged)
-        # format_handler.tag_number_date_url(ocl.english_punjabi['TEST_PUNJABI'], test_punjabi_tagged)
-        # logger.info("test data taggeg and in master folder : Preprocesssing finished !")
         os.system('rm -f {0} {1} {2} {3} {4} {5} {6} {7} {8} {9}'.format(tab_sep_out_file,tab_sep_out_file_no_duplicate,shuffled_tab_sep_file,\
                   replaced_hindi_number_file_name,train_file,dev_file,eng_separated,punjabi_separated,eng_dev_separated,punjabi_dev_separated))
 
@@ -828,56 +655,3 @@ def english_punjabi(eng_file,punjabi_file):
     except Exception as e:
         logger.error("error in english_punjabi corpus/scripts/en-punjabi- {}".format(e))
     
-
-def file_shuffler():
-    try:
-        model_intermediate_folder = os.path.join(INTERMEDIATE_DATA_LOCATION, 'file_shuffler','en-kn-19-mar')
-        tab_sep_out_file = os.path.join(model_intermediate_folder, 'tab_sep_corpus.txt')
-        shuffled_tab_sep_file = os.path.join(model_intermediate_folder, 'shuffled_tab_sep_file.txt')
-        eng_separated = os.path.join(model_intermediate_folder, 'eng_corpus.txt')
-        target_separated = os.path.join(model_intermediate_folder, 'kn_corpus.txt')
-
-        if not any ([os.path.exists(model_intermediate_folder)]):
-            os.makedirs(model_intermediate_folder)
-            print("folder created at {}".format(model_intermediate_folder))                
-
-        fc.tab_separated_parllel_corpus("corpus/original_data/english_kannada/en-kn_19-mar/c9af0df7-99cc-44ec-8321-3c089922c985_target.txt", "corpus/original_data/english_kannada/en-kn_19-mar/c9af0df7-99cc-44ec-8321-3c089922c985_source.txt", tab_sep_out_file)
-        print("tab separated corpus created")
-        
-        format_handler.shuffle_file(tab_sep_out_file,shuffled_tab_sep_file)
-        print("tab_sep_file_shuffled_successfully!")
-
-        fc.separate_corpus(0, shuffled_tab_sep_file, eng_separated)
-        fc.separate_corpus(1, shuffled_tab_sep_file, target_separated)
-        print("corpus separated into src and tgt")
-
-    except Exception as e:
-        print(e)
-
-# if __name__ == '__main__':
-#     if sys.argv[1] == "english-tamil":
-#         english_tamil()
-#     elif sys.argv[1] == "english-hindi":
-#         english_hindi()
-#     elif sys.argv[1] == "english-gujrati":
-#         english_gujrati() 
-#     elif sys.argv[1] == "english-bengali":
-#         english_bengali()
-#     elif sys.argv[1] == "english-marathi":
-#         english_marathi() 
-#     elif sys.argv[1] == "english-kannada":
-#         english_kannada()  
-#     elif sys.argv[1] == "english-telgu":
-#         english_telgu()
-#     elif sys.argv[1] == "english-malayalam":
-#         english_malayalam()   
-#     elif sys.argv[1] == "english-punjabi":
-#         english_punjabi() 
-#     elif sys.argv[1] == "english-hindi-exp":
-#         english_hindi_experiments()   
-#     elif sys.argv[1] == "english-hindi-exp_5.10":
-#         english_hindi_exp_5_10()   
-#     elif sys.argv[1] == "ik_5_4_shuffle_for_graders":
-#         ik_5_4_shuffle_for_graders()                           
-#     else:
-#         print("invalid request", sys.argv)

@@ -27,10 +27,3 @@ file_location ={
   "ENGLISH_BENCHMARK":"benchmark/english/",
   "FILE_LOC":"benchmark/"
 }
-
-model_id = {
-  "HINDI_TO_ENG":[2,3,4],
-  "ENG_TO_HIN":[1]
-}
-
-## 3 is the oldest, 2 is sp ,4 is subword
